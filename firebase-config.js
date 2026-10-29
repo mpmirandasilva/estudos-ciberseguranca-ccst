@@ -4,5 +4,7 @@ window.FIREBASE_CONFIG = {
   apiKey: "",
   authDomain: "",
   projectId: "",
-  appId: ""
+  appId: "",
+  // Só esta conta Google pode grifar e apagar grifos.
+  ownerEmail: "mirandasilva.mariapaula@gmail.com"
 };

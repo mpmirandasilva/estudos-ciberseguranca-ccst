@@ -20,7 +20,7 @@ Cada resumo é uma trilha independente, com módulos, glossário, exercícios e 
   - *fixação*: conceitos e cálculos (binário, máscaras, sub-redes, IPv6), corrigidos na hora;
   - *estilo CCST*: cenários de suporte, saídas de comandos para interpretar (`ipconfig`, `show ip route`, `tracert`, `netstat`…), questões de "escolha duas", associação e ordenação. Cada questão é marcada com o domínio do blueprint (1.0 a 6.0).
 - **Simulado CCST**: 40 questões em 50 minutos (ou versão curta), sorteadas das duas trilhas, com resultado por domínio e correção comentada.
-- **Grifos pessoais**: selecione um trecho para grifar em amarelo; toque em um grifo (seu ou do material) para apagá-lo. Os grifos ficam salvos com o seu progresso e não aparecem para outras pessoas.
+- **Grifos da autora**: com o login da conta definida em `ownerEmail` (no `firebase-config.js`), é possível selecionar um trecho para grifar em turquesa e tocar em um grifo para apagá-lo. Os grifos ficam salvos na conta dela; para outras pessoas, o modo de grifar não aparece.
 - **Explicação em cada resposta**, com link para o item do material que deve ser revisado.
 - **Padrão visual único**: figuras desenhadas em SVG (acompanham o tema claro e escuro), tabelas, terminais, notas e fluxos com o mesmo estilo em todas as trilhas.
 - **Progresso salvo** no navegador e, com login Google, sincronizado entre aparelhos.

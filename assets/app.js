@@ -212,11 +212,13 @@ function openTo(t,m,num){
 
 /* ---------- grifos pessoais (só da pessoa; salvos com o progresso) ---------- */
 const HL={
+  enabled(){const o=(window.FIREBASE_CONFIG||{}).ownerEmail; return !!(o&&Sync.user&&Sync.user.email&&Sync.user.email.toLowerCase()===o.toLowerCase())},
   get(t,k){const S=ST[t.id]; S.hl=S.hl||{}; const h=S.hl[k]; return h?{add:(h.add||[]).slice(),off:(h.off||[]).slice(),ts:h.ts||0}:{add:[],off:[],ts:0}},
   put(t,k,h){const S=ST[t.id]; S.hl=S.hl||{}; h.ts=Date.now(); if(!h.add.length&&!h.off.length) S.hl[k]={add:[],off:[],ts:h.ts}; else S.hl[k]=h; save(t.id)},
   nodes(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&n.parentElement.closest('svg,.hl-foot')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}); const a=[]; let n; while((n=w.nextNode())) a.push(n); return a},
   render(t,box){
-    const h=this.get(t,box.dataset.k);
+    const on=this.enabled(); document.body.classList.toggle('can-hl',on);
+    const h=on?this.get(t,box.dataset.k):{add:[],off:[],ts:0};
     box.querySelectorAll('mark.u').forEach(mk=>mk.replaceWith(...mk.childNodes)); box.normalize();
     box.querySelectorAll('mark:not(.u)').forEach((mk,i)=>{mk.dataset.b=i; mk.classList.toggle('off',h.off.includes(i))});
     h.add.forEach((r,j)=>this.wrap(box,r.s,r.e,j));
@@ -278,13 +280,14 @@ const HL={
     const out=[]; box.querySelectorAll('mark:not(.u):not(.off)').forEach(mk=>{const a=this.offset(box,mk,0), b=a+mk.textContent.length; if(b>s&&a<e) out.push(+mk.dataset.b)}); return out;
   },
   init(){
-    const check=()=>{const i=this.selInfo(); if(!i){ if(this.ctx&&this.ctx.sel) this.hide(); return }
+    const check=()=>{if(!this.enabled()){this.hide();return} const i=this.selInfo(); if(!i){ if(this.ctx&&this.ctx.sel) this.hide(); return }
       const h=this.get(cur.t,i.box.dataset.k); const base=this.baseIn(i.box,i.s,i.e); const anyU=h.add.some(r=>r.e>i.s&&r.s<i.e);
       this.ctx={box:i.box,s:i.s,e:i.e,base,sel:true};
       this.showBar(i.rect,[['add','Grifar'],...((anyU||base.length)?[['del','Apagar grifo']]:[])]);};
     let tm=null; document.addEventListener('selectionchange',()=>{clearTimeout(tm); tm=setTimeout(check,matchMedia('(pointer:coarse)').matches?450:120)});
     document.addEventListener('click',e=>{
       if(e.target.closest('.hl-bar')) return;
+      if(!this.enabled()){this.hide();return}
       const mk=e.target.closest('#v-mod .prose[data-k] mark'); const sel=getSelection();
       if(mk&&(!sel||sel.isCollapsed)&&!mk.classList.contains('off')){
         const box=mk.closest('.prose[data-k]');
@@ -542,13 +545,14 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
     }
     const old=$('#acctMenu'); if(old){old.remove();return}
     const m=document.createElement('div'); m.id='acctMenu'; m.className='frame'; m.style.cssText='position:absolute;right:0;top:calc(100% + 8px);padding:12px;display:grid;gap:8px;min-width:240px;z-index:9';
-    m.innerHTML=`<b style="font-size:14px">${esc(this.user.displayName||'Conta Google')}</b><span class="sync on" style="font-size:12px"><i></i>${esc(this.user.email||'')} · progresso sincronizado</span><button class="btn ghost sm" type="button" id="out">Sair</button>`;
+    m.innerHTML=`<b style="font-size:14px">${esc(this.user.displayName||'Conta Google')}</b><span class="sync on" style="font-size:12px"><i></i>${esc(this.user.email||'')} · progresso sincronizado</span>${HL.enabled()?'<span class="sync on" style="font-size:12px"><i></i>modo de grifar ativo</span>':''}<button class="btn ghost sm" type="button" id="out">Sair</button>`;
     $('#acctBtn').parentElement.appendChild(m);
     $('#out',m).addEventListener('click',()=>{this.auth.signOut(); m.remove()});
     setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)&&e.target.closest('#acctBtn')==null){m.remove();document.removeEventListener('click',h)}}),0);
   },
   onUser(u){
     this.user=u; this.paint(); if(this.unsub){this.unsub(); this.unsub=null}
+    if(!$('#v-mod').hidden&&cur.t) $('#v-mod').querySelectorAll('.prose[data-k]').forEach(b=>HL.render(cur.t,b));
     if(!u){this.doc=null; return}
     this.doc=this.db.collection('progresso').doc(u.uid);
     this.doc.get().then(snap=>{ if(snap.exists) this.apply(snap.data()); this.push(true); toast('Progresso sincronizado com '+(u.email||'sua conta')+'.');
