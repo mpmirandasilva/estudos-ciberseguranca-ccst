@@ -156,7 +156,7 @@ function renderMod(t,idx,focus){
     <div class="layout">
       <nav class="frame toc" id="toc" aria-label="Tópicos do módulo"></nav>
       <div style="min-width:0">
-        ${m.intro?`<div class="frame intro prose" style="border-top:2px solid var(--edge)">${m.intro}</div>`:''}
+        ${m.intro?`<div class="frame intro prose" data-k="m${idx}" style="border-top:2px solid var(--edge)">${m.intro}</div>`:''}
         <div class="cards" id="cards"></div>
         <div class="ex-wrap" id="ex-box"></div>
         <div class="nextmod">
@@ -169,12 +169,13 @@ function renderMod(t,idx,focus){
   m.topics.forEach((x,i)=>{
     const c=document.createElement('article'); c.className='frame card'; c.id=cid(x.num);
     c.innerHTML=`<button class="card-h" type="button" aria-expanded="false"><span class="n">${x.num}</span><span class="t">${esc(x.title)}</span><span class="hint"></span></button>
-      <div class="card-b"><div><div class="prose">${x.html}</div></div></div>`;
+      <div class="card-b"><div><div class="prose" data-k="${x.num}">${x.html}</div></div></div>`;
     c.querySelector('.card-h').addEventListener('click',()=>toggle(t,m,i));
     cards.appendChild(c);
   });
   $('#goEx').addEventListener('click',()=>$('#ex-box').scrollIntoView({behavior:'smooth'}));
   $('#openAll').addEventListener('click',()=>{m.topics.forEach(x=>S.open[x.num]=1); save(t.id); m.topics.forEach((x,i)=>setCard(m,i,true)); refreshMod(t,m)});
+  v.querySelectorAll('.prose[data-k]').forEach(b=>HL.render(t,b));
   refreshMod(t,m); renderEx(t,m);
   if(focus) openTo(t,m,focus); else window.scrollTo(0,0);
 }
@@ -208,6 +209,95 @@ function openTo(t,m,num){
   ST[t.id].open[num]=1; save(t.id); setCard(m,i,true); refreshMod(t,m);
   const c=document.getElementById(cid(num)); setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
+
+/* ---------- grifos pessoais (só da pessoa; salvos com o progresso) ---------- */
+const HL={
+  get(t,k){const S=ST[t.id]; S.hl=S.hl||{}; const h=S.hl[k]; return h?{add:(h.add||[]).slice(),off:(h.off||[]).slice(),ts:h.ts||0}:{add:[],off:[],ts:0}},
+  put(t,k,h){const S=ST[t.id]; S.hl=S.hl||{}; h.ts=Date.now(); if(!h.add.length&&!h.off.length) S.hl[k]={add:[],off:[],ts:h.ts}; else S.hl[k]=h; save(t.id)},
+  nodes(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&n.parentElement.closest('svg,.hl-foot')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}); const a=[]; let n; while((n=w.nextNode())) a.push(n); return a},
+  render(t,box){
+    const h=this.get(t,box.dataset.k);
+    box.querySelectorAll('mark.u').forEach(mk=>mk.replaceWith(...mk.childNodes)); box.normalize();
+    box.querySelectorAll('mark:not(.u)').forEach((mk,i)=>{mk.dataset.b=i; mk.classList.toggle('off',h.off.includes(i))});
+    h.add.forEach((r,j)=>this.wrap(box,r.s,r.e,j));
+    let f=box.querySelector('.hl-foot'); if(f) f.remove();
+    if(h.add.length||h.off.length){
+      f=document.createElement('div'); f.className='hl-foot';
+      f.innerHTML=`<span>Seus grifos neste tópico</span>${h.add.length?'<button type="button" class="linkbtn" data-a="clear">apagar os meus</button>':''}${h.off.length?'<button type="button" class="linkbtn" data-a="restore">restaurar os originais</button>':''}`;
+      f.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const x=this.get(t,box.dataset.k); if(b.dataset.a==='clear') x.add=[]; else x.off=[]; this.put(t,box.dataset.k,x); this.render(t,box)}));
+      box.appendChild(f);
+    }
+  },
+  wrap(box,s,e,j){
+    let pos=0;
+    for(const n of this.nodes(box)){
+      const L=n.length, a=pos, b=pos+L; pos=b;
+      if(b<=s||a>=e) continue;
+      const x=Math.max(s,a)-a, y=Math.min(e,b)-a; if(y<=x) continue;
+      let node=n; if(x>0) node=node.splitText(x); if(y-x<node.length) node.splitText(y-x);
+      if(!node.textContent.trim()&&node.parentNode&&/^(TR|TBODY|THEAD|TABLE|UL|OL)$/.test(node.parentNode.nodeName)) continue;
+      const mk=document.createElement('mark'); mk.className='u'; mk.dataset.u=j; node.parentNode.insertBefore(mk,node); mk.appendChild(node);
+    }
+  },
+  offset(box,container,off){
+    const r=document.createRange(); r.setStart(box,0); r.setEnd(container,off); let n=0;
+    for(const t of this.nodes(box)){ if(!r.intersectsNode(t)) break; n+= t===container?off:t.length }
+    return n;
+  },
+  merge(list){list.sort((a,b)=>a.s-b.s); const o=[]; list.forEach(r=>{const l=o[o.length-1]; if(l&&r.s<=l.e) l.e=Math.max(l.e,r.e); else o.push({s:r.s,e:r.e})}); return o},
+  selInfo(){
+    const sel=getSelection(); if(!sel||sel.isCollapsed||!sel.rangeCount) return null;
+    const rg=sel.getRangeAt(0); const box=(rg.commonAncestorContainer.nodeType===1?rg.commonAncestorContainer:rg.commonAncestorContainer.parentElement).closest('.prose[data-k]');
+    if(!box||!box.closest('#v-mod')||box.closest('.card:not(.open)')) return null;
+    const s=this.offset(box,rg.startContainer,rg.startOffset), e=this.offset(box,rg.endContainer,rg.endOffset);
+    if(e-s<1) return null; return {box,s,e,rect:rg.getBoundingClientRect()};
+  },
+  bar:null, ctx:null,
+  showBar(rect,buttons){
+    let b=this.bar; if(!b){b=this.bar=document.createElement('div'); b.className='hl-bar frame'; b.setAttribute('role','toolbar'); b.setAttribute('aria-label','Grifos'); document.body.appendChild(b);
+      b.addEventListener('mousedown',e=>e.preventDefault()); b.addEventListener('click',e=>{const x=e.target.closest('button'); if(x) this.act(x.dataset.a)})}
+    b.innerHTML=buttons.map(([a,l])=>`<button type="button" data-a="${a}">${l}</button>`).join('');
+    b.hidden=false; const touch=matchMedia('(pointer:coarse)').matches;
+    const w=b.offsetWidth, h=b.offsetHeight; let x=rect.left+rect.width/2-w/2; x=Math.max(8,Math.min(innerWidth-w-8,x));
+    let y=touch?rect.bottom+10:rect.top-h-8; if(y<70) y=rect.bottom+10; if(y+h>innerHeight-8) y=Math.max(70,rect.top-h-8);
+    b.style.left=x+'px'; b.style.top=y+'px';
+  },
+  hide(){if(this.bar) this.bar.hidden=true; this.ctx=null},
+  act(a){
+    const c=this.ctx; if(!c) return; const t=cur.t; const k=c.box.dataset.k; const h=this.get(t,k);
+    if(a==='add'){h.add.push({s:c.s,e:c.e}); h.add=this.merge(h.add)}
+    if(a==='del'){ // apaga a seleção: recorta os grifos pessoais e desliga os originais tocados
+      const o=[]; h.add.forEach(r=>{ if(r.e<=c.s||r.s>=c.e) o.push(r); else { if(r.s<c.s) o.push({s:r.s,e:c.s}); if(r.e>c.e) o.push({s:c.e,e:r.e}) } }); h.add=o;
+      (c.base||[]).forEach(i=>{if(!h.off.includes(i)) h.off.push(i)});
+    }
+    if(a==='delu'){ h.add.splice(c.u,1) }
+    if(a==='delb'){ if(!h.off.includes(c.b)) h.off.push(c.b) }
+    this.put(t,k,h); this.render(t,c.box); getSelection().removeAllRanges(); this.hide();
+  },
+  baseIn(box,s,e){ // grifos originais que a seleção toca
+    const out=[]; box.querySelectorAll('mark:not(.u):not(.off)').forEach(mk=>{const a=this.offset(box,mk,0), b=a+mk.textContent.length; if(b>s&&a<e) out.push(+mk.dataset.b)}); return out;
+  },
+  init(){
+    const check=()=>{const i=this.selInfo(); if(!i){ if(this.ctx&&this.ctx.sel) this.hide(); return }
+      const h=this.get(cur.t,i.box.dataset.k); const base=this.baseIn(i.box,i.s,i.e); const anyU=h.add.some(r=>r.e>i.s&&r.s<i.e);
+      this.ctx={box:i.box,s:i.s,e:i.e,base,sel:true};
+      this.showBar(i.rect,[['add','Grifar'],...((anyU||base.length)?[['del','Apagar grifo']]:[])]);};
+    let tm=null; document.addEventListener('selectionchange',()=>{clearTimeout(tm); tm=setTimeout(check,matchMedia('(pointer:coarse)').matches?450:120)});
+    document.addEventListener('click',e=>{
+      if(e.target.closest('.hl-bar')) return;
+      const mk=e.target.closest('#v-mod .prose[data-k] mark'); const sel=getSelection();
+      if(mk&&(!sel||sel.isCollapsed)&&!mk.classList.contains('off')){
+        const box=mk.closest('.prose[data-k]');
+        if(mk.classList.contains('u')) this.ctx={box,u:+mk.dataset.u}; else this.ctx={box,b:+mk.dataset.b};
+        this.showBar(mk.getBoundingClientRect(),[[mk.classList.contains('u')?'delu':'delb','Apagar grifo']]); return;
+      }
+      if(!this.ctx||!this.ctx.sel) this.hide();
+    });
+    addEventListener('scroll',()=>{if(this.ctx&&!this.ctx.sel) this.hide()},{passive:true});
+    addEventListener('hashchange',()=>this.hide());
+  }
+};
+HL.init();
 
 /* ---------- exercícios ---------- */
 function renderEx(t,m){
@@ -469,6 +559,7 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
     if(!d||!d.tracks) return; this.applying=true; let changed=false;
     TR.forEach(t=>{const a=ST[t.id], b=d.tracks[t.id]; if(!b) return;
       Object.keys(b.open||{}).forEach(k=>{if(!a.open[k]){a.open[k]=1; changed=true}});
+      a.hl=a.hl||{}; Object.entries(b.hl||{}).forEach(([k,h])=>{const l=a.hl[k]; if(!l||(h.ts||0)>(l.ts||0)){a.hl[k]=h; changed=true}});
       Object.entries(b.ex||{}).forEach(([k,r])=>{const l=a.ex[k]; if(!l||(r.ts||0)>(l.ts||0)){a.ex[k]=r; changed=true}});
       if((b.exTs||0)>(a.exTs||0)){ Object.keys(a.ex).forEach(k=>{ if(!(k in (b.ex||{})) && (a.ex[k].ts||0)<b.exTs){delete a.ex[k]; changed=true} }); a.exTs=b.exTs }
       if((b.lastTs||0)>(a.lastTs||0)){a.last=b.last; a.lastTs=b.lastTs; changed=true}
@@ -557,7 +648,7 @@ function route(soft){
     const t=TRK[tm[1]], sub=tm[2]||''; setTrackNav(t);
     if(sub==='glossario'){show('v-glossario'); navCur('glossario'); renderGloss(t); if(!keepScroll) window.scrollTo(0,0); return}
     const mm=sub.match(/^m-(\d+)(?:-t-([\d-]+))?$/);
-    if(mm){show('v-mod'); navCur(''); if(soft&&cur.t===t&&cur.m===+mm[1]){const m=t.MODS[cur.m-1]; refreshMod(t,m); renderEx(t,m); return} renderMod(t,+mm[1],mm[2]?mm[2].replace(/-/g,'.'):null); return}
+    if(mm){show('v-mod'); navCur(''); if(soft&&cur.t===t&&cur.m===+mm[1]){const m=t.MODS[cur.m-1]; $('#v-mod').querySelectorAll('.prose[data-k]').forEach(b=>HL.render(t,b)); refreshMod(t,m); renderEx(t,m); return} renderMod(t,+mm[1],mm[2]?mm[2].replace(/-/g,'.'):null); return}
     show('v-trilha'); navCur(''); renderTrack(t); if(!keepScroll) window.scrollTo(0,0); return;
   }
   show('v-inicio'); setTrackNav(null); navCur(''); renderHome(); netColors(); if(!keepScroll) window.scrollTo(0,0);
