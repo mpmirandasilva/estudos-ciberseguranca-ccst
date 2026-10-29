@@ -1,8 +1,8 @@
-# Trilhas de Redes
+# Estudos de Cibersegurança · Certificação CCST
 
-Material de estudo interativo de redes de computadores, feito a partir dos meus resumos dos cursos da Cisco Networking Academy, com foco na certificação **Cisco Certified Support Technician (CCST) Networking (100-150)**.
+Material de estudo interativo, feito a partir dos meus resumos dos cursos da Cisco Networking Academy, organizado em trilhas rumo à certificação **Cisco Certified Support Technician (CCST)**. As trilhas atuais cobrem a prova **CCST Networking (100-150)**.
 
-🔗 **Acesse:** https://mpmirandasilva.github.io/fundamentos-de-redes/
+🔗 **Acesse:** https://mpmirandasilva.github.io/estudos-ciberseguranca-ccst/
 
 ## Trilhas
 

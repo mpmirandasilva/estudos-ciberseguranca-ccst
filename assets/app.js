@@ -1,4 +1,4 @@
-/* Trilhas de Redes — app de estudo (HTML, CSS e JS puros).
+/* Estudos de Cibersegurança · Certificação CCST — app de estudo (HTML, CSS e JS puros).
    Dados: window.TRACKS (um arquivo por trilha em /data). Progresso: localStorage por trilha,
    sincronizado com a conta Google quando o Firebase está configurado (firebase-config.js). */
 (function(){
