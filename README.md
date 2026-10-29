@@ -33,5 +33,5 @@ O site é uma única página em HTML, CSS e JavaScript puros, sem frameworks. Os
 
 ## Créditos
 
-Resumo, organização e curadoria do conteúdo: **Maria Paula Miranda Silva**.
+Resumo, organização e curadoria do conteúdo: **Maria Paula Miranda da Silva**.
 Conteúdo baseado no curso Networking Basics, da Cisco Networking Academy. Este projeto é um material de estudo pessoal e não tem vínculo com a Cisco.
