@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Trilhas de estudo interativas de redes de computadores, rumo à certificação Cisco CCST Networking: cards revelados por clique, exercícios corrigidos na hora e simulado no formato da prova.">
+<title>Trilhas de Redes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Crect width='12' height='12' fill='%230b1b24'/%3E%3Cpath d='M4 1h4v1H4zM2 2h2v1H2zM8 2h2v1H8zM1 3h1v1H1zM10 3h1v1h-1z' fill='%23e4f0f3'/%3E%3Cpath d='M4 3h4v1H4zM3 4h1v1H3zM8 4h1v1H8zM4 5h1v1H4zM7 5h1v1H7zM5 6h2v1H5z' fill='%2358e2d6'/%3E%3Cpath d='M5 8h2v2H5z' fill='%23e4f0f3'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=__V__">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#inicio" aria-label="Trilhas de Redes, início"><span id="brandIco"></span><b>Trilhas de Redes</b></a>
+    <a class="chip brand-track" id="brandTrack" href="#inicio" hidden></a>
+    <div class="grow"></div>
+    <div class="xp" title="Progresso"><span id="meterTxt">0%</span><div class="seg"><i id="meterBar" style="width:0"></i></div></div>
+    <nav class="nav" aria-label="Seções">
+      <a class="nbtn" href="#simulado" data-nav="simulado"><svg class="px" viewBox="0 0 7 7" fill="currentColor"><path d="M2 0h3v1H2zM1 1h1v1H1zM5 1h1v1H5zM0 2h1v3H0zM6 2h1v3H6zM1 5h1v1H1zM5 5h1v1H5zM2 6h3v1H2zM3 2h1v2H3zM4 3h1v1H4z"/></svg><span class="lbl">Simulado</span></a>
+      <a class="nbtn" href="#t/fundamentos/glossario" id="navGloss" data-nav="glossario" hidden><svg class="px" viewBox="0 0 7 7" fill="currentColor"><path d="M0 0h5v1H0zM0 1h1v6H0zM5 1h1v5H5zM1 6h5v1H1zM2 2h2v1H2zM2 4h2v1H2z"/></svg><span class="lbl">Siglas</span></a>
+      <a class="nbtn" href="#sobre" data-nav="sobre"><svg class="px" viewBox="0 0 7 7" fill="currentColor"><path d="M3 0h1v1H3zM3 2h1v5H3zM2 2h1v1H2zM2 6h3v1H2z"/></svg><span class="lbl">Sobre</span></a>
+      <span class="acct"><button class="nbtn" id="acctBtn" type="button" hidden></button></span>
+      <button class="nbtn" id="themeBtn" type="button" aria-label="Alternar tema claro e escuro"><svg class="px" viewBox="0 0 7 7" fill="currentColor"><path d="M2 0h3v1H2zM1 1h1v1H1zM0 2h1v3H0zM1 5h1v1H1zM2 6h3v1H2zM5 5h1v1H5zM4 4h2v1H4zM3 1h1v3H3z"/></svg></button>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="view" id="v-inicio">
+    <div class="hero">
+      <div class="hero-txt">
+        <div class="label">Material de estudo · rumo ao CCST Networking</div>
+        <h1>Trilhas de Redes</h1>
+        <p class="lead">Duas trilhas de estudo que se completam, do bit à configuração de roteadores Cisco. Os tópicos começam fechados: abra um por vez, termine cada módulo com exercícios corrigidos na hora e teste-se no simulado no formato da prova.</p>
+        <div class="hero-cta" id="continueBox"></div>
+      </div>
+      <div class="frame term" aria-label="Animação: pacotes viajando entre dispositivos de uma rede">
+        <div class="term-bar"><i></i><i></i><i></i><span>rede.sim</span></div>
+        <canvas id="net" width="320" height="180" class="px"></canvas>
+        <div class="term-log" id="netlog">&gt; aguardando pacotes…</div>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="sec-head"><div><div class="label">Escolha por onde estudar</div><h2>Trilhas</h2></div></div>
+    <div class="tracks" id="tracks"></div>
+    <div class="sim-card">
+      <div class="ico" id="simIco"></div>
+      <div><div class="label">Prática de prova</div><h3>Simulado CCST Networking</h3><p id="simSub"></p></div>
+      <a class="btn" href="#simulado">Fazer o simulado ▸</a>
+    </div>
+  </section>
+  <section class="view" id="v-trilha" hidden></section>
+  <section class="view" id="v-mod" hidden></section>
+  <section class="view" id="v-glossario" hidden></section>
+  <section class="view" id="v-simulado" hidden></section>
+  <section class="view" id="v-sobre" hidden>
+    <div class="page-head">
+      <div class="crumbs"><a href="#inicio">Início</a><span>/</span><span>Sobre</span></div>
+      <h1>Sobre o projeto</h1>
+    </div>
+    <div class="about">
+      <div class="frame">
+        <h3>O que é</h3>
+        <p>Um material de estudo interativo de redes de computadores, feito a partir dos meus resumos dos cursos da Cisco Networking Academy e organizado em trilhas independentes. O objetivo é a certificação <strong>Cisco Certified Support Technician (CCST) Networking</strong>.</p>
+        <ul>
+          <li><strong>Fundamentos de Redes de Computadores</strong>: do curso Networking Basics.</li>
+          <li><strong>Dispositivos de Rede e Configuração Inicial</strong>: do curso Networking Devices and Initial Configuration.</li>
+        </ul>
+        <h3 style="margin-top:14px">Como estudar</h3>
+        <ul>
+          <li>Abra os tópicos em sequência: o próximo só libera depois do anterior.</li>
+          <li>Cada módulo termina com questões de fixação e questões no estilo da prova CCST, marcadas pelo domínio do blueprint.</li>
+          <li>Errou? A explicação aponta o item exato para revisar.</li>
+          <li>Faça o simulado: questões das duas trilhas, com tempo e resultado por domínio.</li>
+          <li>O progresso fica salvo neste navegador e, entrando com a conta Google, em todos os seus aparelhos.</li>
+        </ul>
+        <h3 style="margin-top:14px">Sobre as questões</h3>
+        <p>As questões são autorais, escritas no formato e no nível da prova a partir dos tópicos oficiais do exame 100-150. Não são questões reais da prova, que são confidenciais.</p>
+      </div>
+      <div class="frame">
+        <h3>Em números</h3>
+        <div class="stats" id="stats2" style="grid-template-columns:repeat(2,minmax(0,1fr));margin:0"></div>
+        <h3 style="margin-top:16px">Domínios do CCST Networking</h3>
+        <div class="chips"><span class="chip">1.0 Padrões e conceitos</span><span class="chip">2.0 Endereçamento</span><span class="chip">3.0 Endpoints e mídias</span><span class="chip">4.0 Infraestrutura</span><span class="chip">5.0 Diagnóstico</span><span class="chip">6.0 Segurança</span></div>
+        <p style="margin-top:16px;color:var(--muted);font-size:14px">Resumo, organização e curadoria: Maria Paula Miranda da Silva. Conteúdo baseado nos cursos da Cisco Networking Academy. Projeto pessoal de estudo, sem vínculo com a Cisco.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="data/fundamentos.js?v=__V__"></script>
+<script src="data/dispositivos.js?v=__V__"></script>
+<script src="firebase-config.js?v=__V__"></script>
+<script src="assets/app.js?v=__V__"></script>
+</body>
+</html>
