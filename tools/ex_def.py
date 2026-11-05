@@ -58,8 +58,8 @@ EX[2]=[
 ]
 EX[3]=[
  mc('O que é o reforço (hardening) do sistema operacional?',
-    ['Reduzir as brechas do sistema, removendo o que não é usado e aplicando correções','Instalar mais programas para aumentar a segurança','Trocar o sistema operacional a cada ano','Desativar todas as contas de usuário'],
-    'Hardening é diminuir a superfície de ataque: remover serviços e aplicativos não usados, fechar portas e manter correções.','3.2'),
+    ['Configurar o sistema de forma segura, reduzindo as brechas que um atacante poderia usar','Instalar mais programas para aumentar a segurança','Trocar o sistema operacional a cada ano','Desativar todas as contas de usuário'],
+    'Exemplos de medidas: trocar contas e senhas padrão, aplicar políticas de conta e controlar o acesso aos arquivos.','3.2'),
  mc('Qual é a função de um analisador de pacotes (sniffer)?',
     ['Interceptar e registrar o tráfego da rede','Bloquear pacotes maliciosos','Distribuir endereços IP','Criptografar o tráfego'],
     'Ele captura cada pacote e mostra o valor de cada campo. Exemplos: Wireshark e tcpdump.','3.4'),
@@ -67,8 +67,8 @@ EX[3]=[
     ['Para auditoria, identificação de tendências e de problemas','Para acelerar a rede','Para guardar as senhas dos usuários','Para substituir o backup'],
     'Os logs registram atividades e permitem investigar o que aconteceu.','3.3'),
  mc('O que faz o gerenciamento de configuração?',
-    ['Mantém o controle das configurações de hardware e software e de suas mudanças','Monitora os usuários em tempo real','Substitui o inventário de ativos','Cria contas de administrador'],
-    'Ele registra como cada equipamento está configurado, para manter a padronização e rastrear mudanças.','3.1'),
+    ['Identifica, controla e audita a implantação dos sistemas e as alterações na linha de base','Monitora os usuários em tempo real','Substitui o inventário de ativos','Cria contas de administrador'],
+    'A linha de base é o modelo de configuração para todos os sistemas semelhantes.','3.1'),
 ]
 EX[4]=[
  mc('Qual política define os aplicativos e usos da rede aceitáveis e as consequências da violação?',
@@ -119,9 +119,9 @@ EX[6]=[
  mc('Por que o HMAC resiste ao ataque man-in-the-middle e o hash simples não?',
     ['Porque o HMAC depende de uma chave secreta que o atacante não tem','Porque o HMAC é mais longo','Porque o HMAC criptografa a mensagem inteira','Porque o HMAC usa a chave pública do destinatário'],
     'Sem a chave, o atacante não consegue calcular um HMAC válido para a mensagem alterada.','6.6'),
- mc('Para que serve o salt no armazenamento de senhas?',
-    ['Para que senhas iguais gerem hashes diferentes e dificultar tabelas pré-calculadas','Para criptografar a senha com AES','Para guardar a senha em texto claro com segurança','Para encurtar o hash'],
-    'O salt é um valor aleatório somado à senha antes do hash, o que inutiliza tabelas de pesquisa e rainbow.','6.7'),
+ mc('O que os sistemas guardam para conferir a senha no login?',
+    ['Apenas o hash da senha','A senha em texto claro','A senha criptografada com a chave pública do usuário','A senha dividida em duas partes'],
+    'No login, o sistema compara o hash da senha digitada com o hash guardado.','6.7'),
 ]
 EX[7]=[
  mc('O que é criptografado em uma assinatura digital?',
