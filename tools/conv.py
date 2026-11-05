@@ -1,11 +1,12 @@
 import re, json, subprocess, html
 from bs4 import BeautifulSoup, NavigableString
-import os
+import os, sys
 HERE=os.path.dirname(os.path.abspath(__file__))
-md=open(os.path.join(HERE,'src','dispositivos.md')).read()
+NAME=sys.argv[1] if len(sys.argv)>1 else 'dispositivos'
+md=open(os.path.join(HERE,'src',NAME+'.md')).read()
 body=md.split('\n## Glossário')[0]
 gl=md.split('\n## Glossário de Siglas')[1].split('\n## Exercícios')[0]
-phr=json.load(open(os.path.join(HERE,'src','grifos_dispositivos.json')))
+phr=json.load(open(os.path.join(HERE,'src','grifos_'+NAME+'.json')))
 def tohtml(t):
     t=re.sub(r'!\[([^\]]*)\]\((?:/tmp/claude-0/diag|img/dispositivos)/(\w+)\.png\)(\{[^}]*\})?', r'![\1](img/dispositivos/\2.png)', t)
     return subprocess.run(['pandoc','-f','markdown-smart','-t','html5','--wrap=none'],input=t,capture_output=True,text=True,check=True).stdout
@@ -68,5 +69,5 @@ for m in mods:
         tps.append({'num':t['num'],'title':t['title'],'html':str(s).strip()})
     out.append({'title':m['title'],'intro':str(si).strip() if si else '','topics':tps})
 gs=post(tohtml(gl.strip()))
-json.dump({'DATA':out,'GLOSS':str(gs).strip()},open(os.path.join(HERE,'src','dispositivos.json'),'w'),ensure_ascii=False)
+json.dump({'DATA':out,'GLOSS':str(gs).strip()},open(os.path.join(HERE,'src',NAME+'.json'),'w'),ensure_ascii=False)
 print('mods',len(out),'topics',sum(len(m['topics']) for m in out),'hl',len(done),'/',len(phr),[p for p in phr if p not in done])

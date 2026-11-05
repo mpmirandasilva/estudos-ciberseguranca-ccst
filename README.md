@@ -1,6 +1,6 @@
 # Estudos de Cibersegurança · Certificação CCST
 
-Material de estudo interativo, feito a partir dos meus roteiros de estudo dos cursos da Cisco Networking Academy e organizado em trilhas rumo à certificação **Cisco Certified Support Technician (CCST)**. O nome aponta para o objetivo maior, a cibersegurança; as trilhas atuais cobrem a primeira etapa, a prova **CCST Networking (100-150)**.
+Material de estudo interativo, feito a partir dos meus roteiros de estudo dos cursos da Cisco Networking Academy e organizado em trilhas rumo à certificação **Cisco Certified Support Technician (CCST)**. O nome aponta para o objetivo maior, a cibersegurança: as trilhas 1 e 2 cobrem a prova **CCST Networking (100-150)**, e a trilha 3 inicia o caminho para a **CCST Cybersecurity**.
 
 🔗 **Acesse:** https://mpmirandasilva.github.io/estudos-ciberseguranca-ccst/
 
@@ -12,15 +12,16 @@ Cada resumo é uma trilha independente, com módulos, glossário, exercícios e 
 |---|---|---|---|---|
 | Fundamentos de Redes de Computadores | Networking Basics | 20 | 146 | 263 (89) |
 | Dispositivos de Rede e Configuração Inicial | Networking Devices and Initial Configuration | 13 | 70 | 194 (59) |
-| **Total** | | **33** | **216** | **457 (148)** |
+| Defesa de Rede | Network Defense | 30 | 181 | 140 (—) |
+| **Total** | | **63** | **397** | **597 (148)** |
 
 ## Como funciona
 
 - **Cards em sequência**: os tópicos começam fechados e se revelam ao clicar; o próximo só abre depois do anterior.
-- **Exercícios por módulo**, em duas partes:
+- **Exercícios por módulo**, em duas partes (na trilha 3, por enquanto, só a de fixação):
   - *fixação*: conceitos e cálculos (binário, máscaras, sub-redes, IPv6), corrigidos na hora;
   - *estilo CCST*: cenários de suporte, saídas de comandos para interpretar (`ipconfig`, `show ip route`, `tracert`, `netstat`…), questões de "escolha duas", associação e ordenação. Cada questão é marcada com o domínio do blueprint (1.0 a 6.0).
-- **Simulado CCST**: 40 questões em 50 minutos (ou versão curta), sorteadas das duas trilhas, com resultado por domínio e correção comentada.
+- **Simulado CCST**: 40 questões em 50 minutos (ou versão curta), sorteadas das trilhas 1 e 2 (as de redes), com resultado por domínio e correção comentada.
 - **Grifos da autora**: com o login da conta definida em `ownerEmail` (no `firebase-config.js`), é possível selecionar um trecho e grifá-lo em turquesa, apagar grifos (inclusive os originais do resumo) e restaurá-los. Os grifos ficam salvos na conta dela; para outras pessoas, o modo de grifar não aparece.
 - **Explicação em cada resposta**, com link para o item do material que deve ser revisado.
 - **Padrão visual único**: figuras desenhadas em SVG (acompanham o tema claro e escuro), tabelas, terminais, notas e fluxos com o mesmo estilo em todas as trilhas.

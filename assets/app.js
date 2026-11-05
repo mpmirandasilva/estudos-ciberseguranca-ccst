@@ -111,7 +111,7 @@ function renderHome(){
   box.innerHTML=last?`<a class="btn" href="#t/${last.t.id}/m-${last.m}">Continuar: ${esc(last.t.short)}, módulo ${last.m} ▸</a><a class="btn ghost" href="#simulado">Simulado CCST</a>`
     :`<a class="btn" href="#t/${TR[0].id}">Começar pela trilha 1 ▸</a><a class="btn ghost" href="#simulado">Simulado CCST</a>`;
   const h=SIM.hist[SIM.hist.length-1];
-  $('#simSub').textContent=h?`Último simulado: ${h.ok}/${h.n} (${Math.round(h.ok/h.n*100)}%) em ${new Date(h.end).toLocaleDateString('pt-BR')}.`:'Questões das duas trilhas no formato da prova, com tempo e resultado por domínio do blueprint.';
+  $('#simSub').textContent=h?`Último simulado: ${h.ok}/${h.n} (${Math.round(h.ok/h.n*100)}%) em ${new Date(h.end).toLocaleDateString('pt-BR')}.`:'Questões das trilhas de redes no formato da prova CCST Networking, com tempo e resultado por domínio do blueprint.';
 }
 
 /* ---------- trilha ---------- */
@@ -306,7 +306,7 @@ HL.init();
 function renderEx(t,m){
   const box=$('#ex-box'); const qs=t.EX[m.idx]||[];
   const base=qs.map((q,i)=>[q,i]).filter(([q])=>!q.dom), cc=qs.map((q,i)=>[q,i]).filter(([q])=>q.dom);
-  box.innerHTML=`<div class="ex-head"><div><div class="label">Fase final</div><h2>Exercícios do módulo ${m.idx}</h2><p>${qs.length} questões: ${base.length} de fixação e ${cc.length} no estilo da prova CCST. Múltipla escolha corrige no clique; as demais, em "Verificar".</p></div>
+  box.innerHTML=`<div class="ex-head"><div><div class="label">Fase final</div><h2>Exercícios do módulo ${m.idx}</h2><p>${cc.length?`${qs.length} questões: ${base.length} de fixação e ${cc.length} no estilo da prova CCST.`:`${qs.length} questões de fixação.`} Múltipla escolha corrige no clique; as demais, em "Verificar".</p></div>
     <div class="score" id="score"></div></div><div id="qs" style="display:grid;gap:16px"></div>`;
   const list=$('#qs',box); let n=0;
   if(base.length){list.insertAdjacentHTML('beforeend','<div class="ex-sec">Fixação</div>'); base.forEach(([q,i])=>list.appendChild(renderQ(t,m,q,i,++n)))}
@@ -421,7 +421,7 @@ function renderSim(){
   const P=pool(); const dc={}; P.forEach(x=>dc[x.d]=(dc[x.d]||0)+1);
   const hist=SIM.hist.slice(-8).reverse();
   v.innerHTML=`<div class="page-head"><div class="crumbs"><a href="#inicio">Início</a><span>/</span><span>Simulado CCST</span></div><h1>Simulado CCST Networking</h1>
-    <p class="lead">Questões no formato da prova 100-150, sorteadas das duas trilhas e distribuídas pelos seis domínios do blueprint. Sem correção durante a prova: o resultado sai no final, por domínio, com explicação e o item para revisar.</p></div>
+    <p class="lead">Questões no formato da prova 100-150, sorteadas das trilhas de redes (1 e 2) e distribuídas pelos seis domínios do blueprint. Sem correção durante a prova: o resultado sai no final, por domínio, com explicação e o item para revisar.</p></div>
     <div class="about"><div class="frame">
       <h3>Como funciona</h3>
       <ul><li><b>${SIMN} questões</b> em <b>${SIMMIN} minutos</b>, como a prova (tempo oficial: 50 minutos).</li><li>Dá para pular, marcar para revisar e voltar antes de entregar.</li><li>Questões de "escolha duas" só contam se as duas estiverem certas, como na prova.</li><li>A Cisco não publica a nota de aprovação; use <b>80%</b> como meta de segurança.</li></ul>
