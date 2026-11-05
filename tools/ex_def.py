@@ -119,9 +119,9 @@ EX[6]=[
  mc('Por que o HMAC resiste ao ataque man-in-the-middle e o hash simples não?',
     ['Porque o HMAC depende de uma chave secreta que o atacante não tem','Porque o HMAC é mais longo','Porque o HMAC criptografa a mensagem inteira','Porque o HMAC usa a chave pública do destinatário'],
     'Sem a chave, o atacante não consegue calcular um HMAC válido para a mensagem alterada.','6.6'),
- mc('O que os sistemas guardam para conferir a senha no login?',
-    ['Apenas o hash da senha','A senha em texto claro','A senha criptografada com a chave pública do usuário','A senha dividida em duas partes'],
-    'No login, o sistema compara o hash da senha digitada com o hash guardado.','6.7'),
+ mc('Para que serve o salt no armazenamento de senhas?',
+    ['Para que senhas iguais gerem hashes diferentes e dificultar tabelas pré-calculadas','Para criptografar a senha com AES','Para guardar a senha em texto claro com segurança','Para encurtar o hash'],
+    'O salt é um valor aleatório somado à senha antes do hash, o que inutiliza tabelas de pesquisa e rainbow.','6.7'),
 ]
 EX[7]=[
  mc('O que é criptografado em uma assinatura digital?',
