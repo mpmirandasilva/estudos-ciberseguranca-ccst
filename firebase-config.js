@@ -7,6 +7,6 @@ window.FIREBASE_CONFIG = {
   storageBucket: "estudos-ccst.firebasestorage.app",
   messagingSenderId: "473996843095",
   appId: "1:473996843095:web:3b767e8f38a2001a31eb12",
-  // Só esta conta Google pode grifar e apagar grifos.
+  // Só esta conta Google pode grifar e editar os textos (o que ela muda aparece para todos).
   ownerEmail: "mirandasilva.mariapaula@gmail.com"
 };

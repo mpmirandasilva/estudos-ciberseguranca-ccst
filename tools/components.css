@@ -173,3 +173,14 @@ body.can-hl .prose mark.off{cursor:auto}
 .hl-bar button:hover{filter:brightness(1.1)}
 .hl-foot{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:14px;padding-top:10px;border-top:2px dashed var(--line);font:500 12.5px var(--f-label);color:var(--muted)}
 .hl-foot .linkbtn{font-size:13px}
+/* editor de texto (só a dona do site) */
+.hl-foot .btn.sm{padding:4px 10px;font-size:12.5px}
+.ed-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 62px);z-index:5;display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px;margin:0 0 10px;background:var(--surface);box-shadow:3px 3px 0 var(--turq)}
+.ed-bar .ed-l{font:600 12px var(--f-label);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:0 6px}
+.ed-bar .ed-sp{flex:1}
+.ed-bar button{font:600 13.5px var(--f-body);border:2px solid var(--edge);background:var(--surface);color:var(--ink);padding:5px 10px;cursor:pointer;min-height:36px}
+.ed-bar button:hover{background:var(--turq-soft)}
+.ed-bar .ed-mk{background:var(--mark);color:var(--mark-ink)}
+.ed-bar .ed-save{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.prose.editing{outline:2px dashed var(--turq);outline-offset:6px;min-height:3em;cursor:text}
+.prose.editing:focus{outline-style:solid}

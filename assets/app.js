@@ -156,7 +156,7 @@ function renderMod(t,idx,focus){
     <div class="layout">
       <nav class="frame toc" id="toc" aria-label="Tópicos do módulo"></nav>
       <div style="min-width:0">
-        ${m.intro?`<div class="frame intro prose" data-k="m${idx}" style="border-top:2px solid var(--edge)">${m.intro}</div>`:''}
+        ${m.intro?`<div class="frame intro prose" data-k="m${idx}" style="border-top:2px solid var(--edge)">${boxHtml(t,'m'+idx)}</div>`:''}
         <div class="cards" id="cards"></div>
         <div class="ex-wrap" id="ex-box"></div>
         <div class="nextmod">
@@ -169,7 +169,7 @@ function renderMod(t,idx,focus){
   m.topics.forEach((x,i)=>{
     const c=document.createElement('article'); c.className='frame card'; c.id=cid(x.num);
     c.innerHTML=`<button class="card-h" type="button" aria-expanded="false"><span class="n">${x.num}</span><span class="t">${esc(x.title)}</span><span class="hint"></span></button>
-      <div class="card-b"><div><div class="prose" data-k="${x.num}">${x.html}</div></div></div>`;
+      <div class="card-b"><div><div class="prose" data-k="${x.num}">${boxHtml(t,x.num)}</div></div></div>`;
     c.querySelector('.card-h').addEventListener('click',()=>toggle(t,m,i));
     cards.appendChild(c);
   });
@@ -210,25 +210,74 @@ function openTo(t,m,num){
   const c=document.getElementById(cid(num)); setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 
-/* ---------- grifos pessoais (só da pessoa; salvos com o progresso) ---------- */
+/* ---------- conteúdo publicado: edições e grifos da dona do site, visíveis para todos ----------
+   Fica no Firestore em conteudo/<trilha> (leitura pública; só a conta ownerEmail grava).
+   Cópia local em localStorage para abrir rápido e funcionar sem internet. */
+const PKEY=id=>'redes-conteudo-'+id+'-v1';
+const PK=k=>'k'+String(k).replace(/\./g,'_');
+const Pub={data:{},loaded:{},last:{},
+  init(db){
+    TR.forEach(t=>db.collection('conteudo').doc(t.id).onSnapshot(snap=>{
+      const d=(snap.exists&&snap.data().k)||{}; const js=JSON.stringify(d);
+      this.loaded[t.id]=true;
+      if(js!==this.last[t.id]){this.last[t.id]=js; this.data[t.id]=d; store(PKEY(t.id),d); this.refresh(t)}
+      Migr.run();
+    },()=>{}));
+  },
+  get(t,k){return (this.data[t.id]||{})[PK(k)]||null},
+  set(t,k,obj){
+    const d=this.data[t.id]=this.data[t.id]||{}, key=PK(k), prev=d[key];
+    if(!Sync.db||!Sync.user){toast('Sem conexão com a nuvem agora. Nada foi publicado; tente de novo em instantes.'); return Promise.resolve(false)}
+    if(obj){obj.ts=Date.now(); d[key]=obj} else delete d[key];
+    this.last[t.id]=JSON.stringify(d); store(PKEY(t.id),d);
+    const undo=()=>{if(prev) d[key]=prev; else delete d[key]; this.last[t.id]=JSON.stringify(d); store(PKEY(t.id),d)};
+    const FV=firebase.firestore.FieldValue;
+    return Sync.db.collection('conteudo').doc(t.id).set({k:{[key]:obj?obj:FV.delete()},updated:FV.serverTimestamp()},{merge:true})
+      .then(()=>true).catch(e=>{undo(); toast('Não foi possível publicar: '+(e.code||e.message)); this.refresh(t); return false});
+  },
+  refresh(t){ if(Edit.box||cur.t!==t||$('#v-mod').hidden) return; $('#v-mod').querySelectorAll('.prose[data-k]').forEach(b=>paintBox(t,b)) }
+};
+TR.forEach(t=>{Pub.data[t.id]=load(PKEY(t.id))||{}; Pub.last[t.id]=JSON.stringify(Pub.data[t.id])});
+function origHtml(t,k){
+  if(/^m\d+$/.test(k)) return (t.MODS[+k.slice(1)-1]||{}).intro||'';
+  const m=t.MODS[(t.topicMod[k]||0)-1]; const x=m&&m.topics.find(y=>y.num===k); return x?x.html:'';
+}
+function boxHtml(t,k){const p=Pub.get(t,k); return p&&typeof p.html==='string'?p.html:origHtml(t,k)}
+function paintBox(t,b){b.innerHTML=boxHtml(t,b.dataset.k); HL.render(t,b)}
+/* Leva para o site público os grifos que a dona tinha feito quando eles eram pessoais (uma vez só). */
+const Migr={busy:{},run(){
+  if(!HL.enabled()) return;
+  TR.forEach(t=>{const S=ST[t.id]; if(S.hlMig||!Pub.loaded[t.id]||Migr.busy[t.id]) return; Migr.busy[t.id]=true;
+    const jobs=[]; Object.entries(S.hl||{}).forEach(([k,h])=>{ if(!h||(!(h.add||[]).length&&!(h.off||[]).length)||Pub.get(t,k)) return; jobs.push(Pub.set(t,k,{hl:{add:h.add||[],off:h.off||[]}})) });
+    Promise.all(jobs).then(r=>{Migr.busy[t.id]=false; if(r.every(Boolean)){S.hlMig=1; save(t.id)} if(jobs.length) Pub.refresh(t)});
+  });
+}};
+/* ---------- grifos (a dona grifa; todos veem) ---------- */
 const HL={
   enabled(){const o=(window.FIREBASE_CONFIG||{}).ownerEmail; return !!(o&&Sync.user&&Sync.user.email&&Sync.user.email.toLowerCase()===o.toLowerCase())},
-  get(t,k){const S=ST[t.id]; S.hl=S.hl||{}; const h=S.hl[k]; return h?{add:(h.add||[]).slice(),off:(h.off||[]).slice(),ts:h.ts||0}:{add:[],off:[],ts:0}},
-  put(t,k,h){const S=ST[t.id]; S.hl=S.hl||{}; h.ts=Date.now(); if(!h.add.length&&!h.off.length) S.hl[k]={add:[],off:[],ts:h.ts}; else S.hl[k]=h; save(t.id)},
+  get(t,k){const p=Pub.get(t,k), h=p&&p.hl; return h?{add:(h.add||[]).map(r=>({s:r.s,e:r.e})),off:(h.off||[]).slice()}:{add:[],off:[]}},
+  put(t,k,h){const p=Pub.get(t,k)||{}, o={}; if(typeof p.html==='string') o.html=p.html; if(h.add.length||h.off.length) o.hl={add:h.add,off:h.off}; Pub.set(t,k,(o.html!==undefined||o.hl)?o:null)},
   nodes(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&n.parentElement.closest('svg,.hl-foot')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}); const a=[]; let n; while((n=w.nextNode())) a.push(n); return a},
   render(t,box){
     const on=this.enabled(); document.body.classList.toggle('can-hl',on);
-    const h=on?this.get(t,box.dataset.k):{add:[],off:[],ts:0};
+    const k=box.dataset.k, h=this.get(t,k), p=Pub.get(t,k), edited=!!(p&&typeof p.html==='string');
     box.querySelectorAll('mark.u').forEach(mk=>mk.replaceWith(...mk.childNodes)); box.normalize();
     box.querySelectorAll('mark:not(.u)').forEach((mk,i)=>{mk.dataset.b=i; mk.classList.toggle('off',h.off.includes(i))});
     h.add.forEach((r,j)=>this.wrap(box,r.s,r.e,j));
     let f=box.querySelector('.hl-foot'); if(f) f.remove();
-    if(h.add.length||h.off.length){
-      f=document.createElement('div'); f.className='hl-foot';
-      f.innerHTML=`<span>Seus grifos neste tópico</span>${h.add.length?'<button type="button" class="linkbtn" data-a="clear">apagar os meus</button>':''}${h.off.length?'<button type="button" class="linkbtn" data-a="restore">restaurar os originais</button>':''}`;
-      f.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const x=this.get(t,box.dataset.k); if(b.dataset.a==='clear') x.add=[]; else x.off=[]; this.put(t,box.dataset.k,x); this.render(t,box)}));
-      box.appendChild(f);
-    }
+    if(!on) return;
+    f=document.createElement('div'); f.className='hl-foot';
+    f.innerHTML=`<button type="button" class="btn ghost sm" data-a="edit">Editar texto</button>`
+      +(edited?'<span>texto editado</span><button type="button" class="linkbtn" data-a="orig">voltar ao texto original</button>':'')
+      +(h.add.length?'<button type="button" class="linkbtn" data-a="clear">apagar os grifos novos</button>':'')
+      +(h.off.length?'<button type="button" class="linkbtn" data-a="restore">restaurar os grifos originais</button>':'');
+    f.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const a=b.dataset.a;
+      if(a==='edit'){Edit.start(t,box); return}
+      if(a==='orig'){ if(!b.dataset.ok){b.dataset.ok=1; b.textContent='confirmar: voltar ao original?'; setTimeout(()=>{if(b.isConnected){delete b.dataset.ok; b.textContent='voltar ao texto original'}},5000); return}
+        Pub.set(t,k,null); paintBox(t,box); toast('Texto original restaurado.'); return}
+      const x=this.get(t,k); if(a==='clear') x.add=[]; else x.off=[]; this.put(t,k,x); this.render(t,box)}));
+    box.appendChild(f);
   },
   wrap(box,s,e,j){
     let pos=0;
@@ -250,7 +299,7 @@ const HL={
   selInfo(){
     const sel=getSelection(); if(!sel||sel.isCollapsed||!sel.rangeCount) return null;
     const rg=sel.getRangeAt(0); const box=(rg.commonAncestorContainer.nodeType===1?rg.commonAncestorContainer:rg.commonAncestorContainer.parentElement).closest('.prose[data-k]');
-    if(!box||!box.closest('#v-mod')||box.closest('.card:not(.open)')) return null;
+    if(!box||box.isContentEditable||!box.closest('#v-mod')||box.closest('.card:not(.open)')) return null;
     const s=this.offset(box,rg.startContainer,rg.startOffset), e=this.offset(box,rg.endContainer,rg.endOffset);
     if(e-s<1) return null; return {box,s,e,rect:rg.getBoundingClientRect()};
   },
@@ -288,7 +337,7 @@ const HL={
     document.addEventListener('click',e=>{
       if(e.target.closest('.hl-bar')) return;
       if(!this.enabled()){this.hide();return}
-      const mk=e.target.closest('#v-mod .prose[data-k] mark'); const sel=getSelection();
+      const mk=e.target.closest('#v-mod .prose[data-k] mark'); const sel=getSelection(); if(mk&&mk.closest('.prose').isContentEditable) return;
       if(mk&&(!sel||sel.isCollapsed)&&!mk.classList.contains('off')){
         const box=mk.closest('.prose[data-k]');
         if(mk.classList.contains('u')) this.ctx={box,u:+mk.dataset.u}; else this.ctx={box,b:+mk.dataset.b};
@@ -301,6 +350,84 @@ const HL={
   }
 };
 HL.init();
+/* ---------- editor de texto (só a dona) ---------- */
+function cleanHtml(src){
+  const d=document.createElement('div'); d.innerHTML=src;
+  d.querySelectorAll('script,style,iframe,object,embed,link,meta,form,input,button,.hl-foot,.ed-bar').forEach(e=>e.remove());
+  d.querySelectorAll('*').forEach(el=>{ const inSvg=!!el.closest('svg');
+    [...el.attributes].forEach(a=>{const n=a.name.toLowerCase();
+      if(n.startsWith('on')||n==='contenteditable'||n==='spellcheck'||(n.startsWith('data-')&&!inSvg)||(n==='style'&&!inSvg)) el.removeAttribute(a.name);
+      else if(/(^|:)(href|src)$/.test(n)&&/^\s*(javascript|data):/i.test(a.value)) el.removeAttribute(a.name)});
+    if(!inSvg&&el.tagName==='MARK') el.removeAttribute('class');
+  });
+  const ren=(sel,tag)=>d.querySelectorAll(sel).forEach(el=>{const n=document.createElement(tag); while(el.firstChild) n.appendChild(el.firstChild); el.replaceWith(n)});
+  ren('b','strong'); ren('i','em');
+  d.querySelectorAll('font').forEach(el=>el.replaceWith(...el.childNodes));
+  d.querySelectorAll('span:not([class])').forEach(el=>{ if(!el.closest('svg')&&!el.closest('.flow')) el.replaceWith(...el.childNodes)});
+  d.querySelectorAll('mark mark').forEach(el=>el.replaceWith(...el.childNodes));
+  d.querySelectorAll('mark,strong,em').forEach(el=>{if(!el.textContent.trim()&&!el.querySelector('img,svg')) el.replaceWith(...el.childNodes)});
+  [...d.childNodes].forEach(n=>{ if(n.nodeType===1&&n.tagName==='DIV'&&!n.className){const p=document.createElement('p'); while(n.firstChild) p.appendChild(n.firstChild); n.replaceWith(p)}
+    else if(n.nodeType===3&&n.textContent.trim()){const p=document.createElement('p'); n.replaceWith(p); p.appendChild(n)} else if(n.nodeType===3) n.remove()});
+  d.querySelectorAll('p').forEach(p=>{if(!p.textContent.trim()&&!p.querySelector('img,svg')) p.remove()});
+  d.normalize(); return d.innerHTML.trim();
+}
+const Edit={box:null,t:null,k:null,bar:null,
+  start(t,box){
+    if(this.box) this.cancel(); HL.hide();
+    this.t=t; this.box=box; this.k=box.dataset.k;
+    box.querySelectorAll('.hl-foot').forEach(f=>f.remove());
+    box.querySelectorAll('mark.off').forEach(mk=>mk.replaceWith(...mk.childNodes));
+    box.querySelectorAll('mark').forEach(mk=>{mk.removeAttribute('class'); mk.removeAttribute('data-u'); mk.removeAttribute('data-b')});
+    box.querySelectorAll('mark mark').forEach(mk=>mk.replaceWith(...mk.childNodes)); box.normalize();
+    box.querySelectorAll('svg,figure,img').forEach(el=>el.setAttribute('contenteditable','false'));
+    const bar=this.bar=document.createElement('div'); bar.className='ed-bar frame'; bar.setAttribute('role','toolbar'); bar.setAttribute('aria-label','Editar texto');
+    bar.innerHTML=`<span class="ed-l">Editando</span>
+      <button type="button" data-c="bold" title="Negrito (Ctrl+B)"><b>N</b></button>
+      <button type="button" data-c="italic" title="Itálico (Ctrl+I)"><i>I</i></button>
+      <button type="button" data-c="mark" class="ed-mk" title="Grifar o trecho selecionado">Grifar</button>
+      <button type="button" data-c="unmark" title="Tirar o grifo do trecho selecionado">Tirar grifo</button>
+      <button type="button" data-c="ul" title="Lista com marcadores">• Lista</button>
+      <button type="button" data-c="undo" title="Desfazer (Ctrl+Z)">Desfazer</button>
+      <span class="ed-sp"></span>
+      <button type="button" data-c="cancel">Cancelar</button>
+      <button type="button" data-c="save" class="ed-save">Salvar</button>`;
+    bar.addEventListener('mousedown',e=>{if(e.target.closest('button')) e.preventDefault()});
+    bar.addEventListener('click',e=>{const b=e.target.closest('button'); if(b) this.cmd(b.dataset.c)});
+    box.parentNode.insertBefore(bar,box);
+    box.contentEditable='true'; box.spellcheck=true; box.classList.add('editing');
+    try{document.execCommand('defaultParagraphSeparator',false,'p')}catch(e){}
+    box.addEventListener('paste',this.onPaste);
+    box.focus(); bar.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },
+  onPaste(e){e.preventDefault(); const tx=(e.clipboardData||window.clipboardData).getData('text/plain'); document.execCommand('insertText',false,tx)},
+  inBox(){const sel=getSelection(); if(!sel||!sel.rangeCount) return null; const rg=sel.getRangeAt(0); return this.box.contains(rg.commonAncestorContainer)?rg:null},
+  cmd(c){
+    const box=this.box; if(!box) return;
+    if(c==='save') return this.save(); if(c==='cancel') return this.cancel();
+    if(c==='bold'||c==='italic'||c==='undo'){document.execCommand(c); return}
+    if(c==='ul'){document.execCommand('insertUnorderedList'); return}
+    const rg=this.inBox(); if(!rg||rg.collapsed){toast('Selecione o trecho primeiro.'); return}
+    if(c==='mark'){ const s=HL.offset(box,rg.startContainer,rg.startOffset), e=HL.offset(box,rg.endContainer,rg.endOffset);
+      HL.wrap(box,s,e,0); box.querySelectorAll('mark.u').forEach(m=>{m.removeAttribute('class'); m.removeAttribute('data-u')});
+      box.querySelectorAll('mark mark').forEach(m=>m.replaceWith(...m.childNodes)); box.normalize(); getSelection().removeAllRanges(); return}
+    if(c==='unmark'){ box.querySelectorAll('mark').forEach(m=>{if(rg.intersectsNode(m)) m.replaceWith(...m.childNodes)}); box.normalize(); return}
+  },
+  close(){const box=this.box; if(!box) return; box.removeEventListener('paste',this.onPaste); box.removeAttribute('contenteditable'); box.classList.remove('editing'); if(this.bar) this.bar.remove(); this.bar=null; this.box=null},
+  cancel(){const t=this.t, box=this.box; this.close(); if(box) paintBox(t,box)},
+  save(){
+    const t=this.t, k=this.k, box=this.box;
+    if(!box.textContent.trim()){toast('O texto ficou vazio. Use "Cancelar" ou escreva algo antes de salvar.'); return}
+    const html=cleanHtml(box.innerHTML), orig=cleanHtml(origHtml(t,k)); const sv=this.bar&&this.bar.querySelector('.ed-save');
+    if(sv){sv.disabled=true; sv.textContent='Salvando…'}
+    Pub.set(t,k,html===orig?null:{html}).then(ok=>{
+      if(ok){this.close(); paintBox(t,box); toast('Texto salvo e publicado no site.')}
+      else if(sv){sv.disabled=false; sv.textContent='Salvar'}
+    });
+  }
+};
+addEventListener('beforeunload',e=>{if(Edit.box){e.preventDefault(); e.returnValue=''}});
+addEventListener('hashchange',()=>{if(Edit.box) Edit.close()});
+
 
 /* ---------- exercícios ---------- */
 function renderEx(t,m){
@@ -525,7 +652,7 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
     const V='10.12.5', base=`https://www.gstatic.com/firebasejs/${V}/`;
     const load=src=>new Promise((ok,no)=>{const s=document.createElement('script'); s.src=base+src; s.onload=ok; s.onerror=no; document.head.appendChild(s)});
     load('firebase-app-compat.js').then(()=>Promise.all([load('firebase-auth-compat.js'),load('firebase-firestore-compat.js')])).then(()=>{
-      firebase.initializeApp(cfg); this.auth=firebase.auth(); this.db=firebase.firestore(); this.on=true;
+      firebase.initializeApp(cfg); this.auth=firebase.auth(); this.db=firebase.firestore(); this.on=true; Pub.init(this.db);
       this.auth.getRedirectResult().catch(()=>{});
       this.auth.onAuthStateChanged(u=>this.onUser(u));
     }).catch(()=>{btn.title='Não foi possível carregar o login'; this.paint()});
@@ -545,17 +672,18 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
     }
     const old=$('#acctMenu'); if(old){old.remove();return}
     const m=document.createElement('div'); m.id='acctMenu'; m.className='frame'; m.style.cssText='position:absolute;right:0;top:calc(100% + 8px);padding:12px;display:grid;gap:8px;min-width:240px;z-index:9';
-    m.innerHTML=`<b style="font-size:14px">${esc(this.user.displayName||'Conta Google')}</b><span class="sync on" style="font-size:12px"><i></i>${esc(this.user.email||'')} · progresso sincronizado</span>${HL.enabled()?'<span class="sync on" style="font-size:12px"><i></i>modo de grifar ativo</span>':''}<button class="btn ghost sm" type="button" id="out">Sair</button>`;
+    m.innerHTML=`<b style="font-size:14px">${esc(this.user.displayName||'Conta Google')}</b><span class="sync on" style="font-size:12px"><i></i>${esc(this.user.email||'')} · progresso sincronizado</span>${HL.enabled()?'<span class="sync on" style="font-size:12px"><i></i>modo de edição ativo: grifar e editar textos</span>':''}<button class="btn ghost sm" type="button" id="out">Sair</button>`;
     $('#acctBtn').parentElement.appendChild(m);
     $('#out',m).addEventListener('click',()=>{this.auth.signOut(); m.remove()});
     setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)&&e.target.closest('#acctBtn')==null){m.remove();document.removeEventListener('click',h)}}),0);
   },
   onUser(u){
     this.user=u; this.paint(); if(this.unsub){this.unsub(); this.unsub=null}
+    if(Edit.box&&!HL.enabled()) Edit.cancel();
     if(!$('#v-mod').hidden&&cur.t) $('#v-mod').querySelectorAll('.prose[data-k]').forEach(b=>HL.render(cur.t,b));
     if(!u){this.doc=null; return}
     this.doc=this.db.collection('progresso').doc(u.uid);
-    this.doc.get().then(snap=>{ if(snap.exists) this.apply(snap.data()); this.push(true); toast('Progresso sincronizado com '+(u.email||'sua conta')+'.');
+    this.doc.get().then(snap=>{ if(snap.exists) this.apply(snap.data()); this.push(true); Migr.run(); toast('Progresso sincronizado com '+(u.email||'sua conta')+'.');
       this.unsub=this.doc.onSnapshot(s=>{ if(!s.metadata.hasPendingWrites && s.exists) this.apply(s.data()) });
     }).catch(e=>toast('Erro ao sincronizar: '+(e.code||e.message)));
   },

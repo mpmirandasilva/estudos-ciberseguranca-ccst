@@ -22,7 +22,7 @@ Cada resumo é uma trilha independente, com módulos, glossário, exercícios e 
   - *fixação*: conceitos e cálculos (binário, máscaras, sub-redes, IPv6), corrigidos na hora;
   - *estilo CCST*: cenários de suporte, saídas de comandos para interpretar (`ipconfig`, `show ip route`, `tracert`, `netstat`…), questões de "escolha duas", associação e ordenação. Cada questão é marcada com o domínio do blueprint (1.0 a 6.0).
 - **Simulado CCST**: 40 questões em 50 minutos (ou versão curta), sorteadas das trilhas 1 e 2 (as de redes), com resultado por domínio e correção comentada.
-- **Grifos da autora**: com o login da conta definida em `ownerEmail` (no `firebase-config.js`), é possível selecionar um trecho e grifá-lo em turquesa, apagar grifos (inclusive os originais do resumo) e restaurá-los. Os grifos ficam salvos na conta dela; para outras pessoas, o modo de grifar não aparece.
+- **Grifos e edição pela autora**: com o login da conta definida em `ownerEmail` (no `firebase-config.js`), é possível grifar trechos em turquesa, apagar grifos (inclusive os originais do resumo) e editar o texto de cada tópico (negrito, itálico, grifo e listas), com opção de voltar ao original. As mudanças ficam no Firestore (`conteudo/<trilha>`) e aparecem para todos os visitantes; as regras em `firestore.rules` deixam só essa conta gravar.
 - **Explicação em cada resposta**, com link para o item do material que deve ser revisado.
 - **Padrão visual único**: figuras desenhadas em SVG (acompanham o tema claro e escuro), tabelas, terminais, notas e fluxos com o mesmo estilo em todas as trilhas.
 - **Progresso salvo** no navegador e, com login Google, sincronizado entre aparelhos.
@@ -55,7 +55,7 @@ Para incluir uma nova trilha: adicione as fontes em `tools/src`, registre-a em `
 
 ## Autoria
 
-- **Idealização, roteiros e direção do projeto:** Maria Paula Miranda da Silva. Ela definiu o conteúdo, o modelo de resumo, a organização em trilhas e cada funcionalidade do site (cards em sequência, exercícios no estilo CCST, simulado, login, grifos e padrão visual).
+- **Idealização, roteiros e direção do projeto:** Maria Paula Miranda da Silva. Ela definiu o conteúdo, o modelo de resumo, a organização em trilhas e cada funcionalidade do site (cards em sequência, exercícios no estilo CCST, simulado, login, grifos, edição dos textos e padrão visual).
 - **Desenvolvimento** (HTML, CSS, JavaScript, gerador em Python, figuras em SVG e questões no estilo CCST): feito com o [Claude](https://claude.ai), assistente de IA da Anthropic, seguindo as orientações dela. Por isso os commits aparecem com o autor "Claude".
 
 Conteúdo baseado nos cursos da Cisco Networking Academy. Projeto pessoal de estudo, sem vínculo com a Cisco. Cisco, CCST e Networking Academy são marcas da Cisco Systems.
