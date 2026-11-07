@@ -1,6 +1,6 @@
 # Estudos de Cibersegurança · Certificação CCST
 
-Material de estudo interativo, feito a partir dos meus roteiros de estudo dos cursos da Cisco Networking Academy e organizado em trilhas rumo à certificação **Cisco Certified Support Technician (CCST)**. O nome aponta para o objetivo maior, a cibersegurança: as trilhas 1 e 2 cobrem a prova **CCST Networking (100-150)**, e a trilha 3 inicia o caminho para a **CCST Cybersecurity**.
+Material de estudo interativo, feito a partir dos meus roteiros de estudo dos cursos da Cisco Networking Academy e organizado em trilhas rumo à certificação **Cisco Certified Support Technician (CCST)**. O nome aponta para o objetivo maior, a cibersegurança: as trilhas 1 e 2 cobrem a prova **CCST Networking (100-150)**, e as trilhas 3 a 5 seguem o caminho para a **CCST Cybersecurity**, na ordem em que um conteúdo prepara o seguinte.
 
 🔗 **Acesse:** https://mpmirandasilva.github.io/estudos-ciberseguranca-ccst/
 
@@ -12,13 +12,15 @@ Cada resumo é uma trilha independente, com módulos, glossário, exercícios e 
 |---|---|---|---|---|
 | Fundamentos de Redes de Computadores | Networking Basics | 20 | 146 | 263 (89) |
 | Dispositivos de Rede e Configuração Inicial | Networking Devices and Initial Configuration | 13 | 70 | 194 (59) |
+| Segurança de Endpoint | Endpoint Security | 30 | 189 | 121 (—) |
 | Defesa de Rede | Network Defense | 30 | 181 | 140 (—) |
-| **Total** | | **63** | **397** | **597 (148)** |
+| Gerenciamento de Ameaças Cibernéticas | Cyber Threat Management | 17 | 101 | 77 (—) |
+| **Total** | | **110** | **687** | **795 (148)** |
 
 ## Como funciona
 
 - **Cards em sequência**: os tópicos começam fechados e se revelam ao clicar; o próximo só abre depois do anterior.
-- **Exercícios por módulo**, em duas partes (na trilha 3, por enquanto, só a de fixação):
+- **Exercícios por módulo**, em duas partes (nas trilhas 3 a 5, por enquanto, só a de fixação):
   - *fixação*: conceitos e cálculos (binário, máscaras, sub-redes, IPv6), corrigidos na hora;
   - *estilo CCST*: cenários de suporte, saídas de comandos para interpretar (`ipconfig`, `show ip route`, `tracert`, `netstat`…), questões de "escolha duas", associação e ordenação. Cada questão é marcada com o domínio do blueprint (1.0 a 6.0).
 - **Simulado CCST**: 40 questões em 50 minutos (ou versão curta), sorteadas das trilhas 1 e 2 (as de redes), com resultado por domínio e correção comentada.

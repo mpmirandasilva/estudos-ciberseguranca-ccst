@@ -171,21 +171,39 @@ def main():
                  'title':'Dispositivos de Rede e Configuração Inicial',
                  'desc':'Redes confiáveis, design hierárquico, nuvem, sistemas numéricos, Ethernet e switches, camada de rede, ARP, transporte, DNS e DHCP, Cisco IOS, configuração de switches e roteadores e ICMP.',
                  'icon':ic2[5]},d2['DATA'],d2['GLOSS'],ex2,ic2)
-    # trilha 3
+    # trilha 3: Segurança de Endpoint
+    subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'endpoint'],check=True)
+    d3=json.load(open(os.path.join(src,'endpoint.json')))
+    ex3=modload(os.path.join(HERE,'ex_end.py')).EX
+    ic3=modload(os.path.join(HERE,'icons_end.py')).ICONS
+    build_track({'id':'endpoint','order':3,'short':'Endpoint','label':'Trilha 3 · Endpoint Security',
+                 'title':'Segurança de Endpoint',
+                 'desc':'Tríade CIA, ameaças e engenharia social, malware, ataques ao IP, TCP, ARP, DNS e serviços, redes sem fio, infraestrutura de segurança, Windows, Linux, proteção de endpoints e políticas.',
+                 'icon':ic3[18]},d3['DATA'],d3['GLOSS'],ex3,ic3)
+    # trilha 4: Defesa de Rede
     subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'defesa'],check=True)
-    d3=json.load(open(os.path.join(src,'defesa.json')))
-    ex3=modload(os.path.join(HERE,'ex_def.py')).EX
-    ic3=modload(os.path.join(HERE,'icons_def.py')).ICONS
-    build_track({'id':'defesa','order':3,'short':'Defesa de Rede','label':'Trilha 3 · Network Defense',
+    d4=json.load(open(os.path.join(src,'defesa.json')))
+    ex4=modload(os.path.join(HERE,'ex_def.py')).EX
+    ic4=modload(os.path.join(HERE,'icons_def.py')).ICONS
+    build_track({'id':'defesa','order':4,'short':'Defesa de Rede','label':'Trilha 4 · Network Defense',
                  'title':'Defesa de Rede',
                  'desc':'Defesa em profundidade, criptografia e PKI, controle de acesso e AAA, segurança física, de aplicações e sem fio, alta disponibilidade, ACLs, firewalls e ZPF, nuvem e monitoramento com logs, SIEM e avaliação de alertas.',
-                 'icon':ic3[1]},d3['DATA'],d3['GLOSS'],ex3,ic3)
+                 'icon':ic4[1]},d4['DATA'],d4['GLOSS'],ex4,ic4)
+    # trilha 5: Gerenciamento de Ameaças Cibernéticas
+    subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'ameacas'],check=True)
+    d5=json.load(open(os.path.join(src,'ameacas.json')))
+    ex5=modload(os.path.join(HERE,'ex_gt.py')).EX
+    ic5=modload(os.path.join(HERE,'icons_gt.py')).ICONS
+    build_track({'id':'ameacas','order':5,'short':'Ameaças','label':'Trilha 5 · Cyber Threat Management',
+                 'title':'Gerenciamento de Ameaças Cibernéticas',
+                 'desc':'Governança, ética e leis, ISO 27000, NIST e CIS, gerenciamento de riscos e controles, inteligência de ameaças, testes e CVSS, gerenciamento de patches, Cyber Kill Chain, Modelo Diamond, perícia forense, resposta a incidentes e continuidade.',
+                 'icon':ic5[1]},d5['DATA'],d5['GLOSS'],ex5,ic5)
     # css e shell
     css='\n'.join(l for l in open(os.path.join(HERE,'base.css')).read().split('\n') if not re.match(r'\s*(\.tbl|figure|\.gl td:first-child)',l))+open(os.path.join(HERE,'components.css')).read()
     os.makedirs(os.path.join(OUT,'assets'),exist_ok=True)
     open(os.path.join(OUT,'assets','site.css'),'w').write(css)
     app=open(os.path.join(OUT,'assets','app.js')).read()
-    v=hashlib.md5((css+app+open(os.path.join(OUT,'data','fundamentos.js')).read()[:100000]+open(os.path.join(OUT,'data','dispositivos.js')).read()+open(os.path.join(OUT,'data','defesa.js')).read()).encode()).hexdigest()[:8]
+    v=hashlib.md5((css+app+open(os.path.join(OUT,'data','fundamentos.js')).read()[:100000]+open(os.path.join(OUT,'data','dispositivos.js')).read()+''.join(open(os.path.join(OUT,'data',n+'.js')).read() for n in ('endpoint','defesa','ameacas'))).encode()).hexdigest()[:8]
     open(os.path.join(OUT,'index.html'),'w').write(open(os.path.join(HERE,'shell.html')).read().replace('__V__',v))
     print('versão',v)
 if __name__=='__main__': main()
