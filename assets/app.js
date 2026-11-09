@@ -95,6 +95,8 @@ const statBox=(b,s)=>`<div class="frame stat"><b>${b}</b><span>${s}</span></div>
 /* ---------- início ---------- */
 function renderHome(){
   $('#simIco').innerHTML=pixSvg(SIMICON);
+  const pi=$('#pvIco'); if(pi&&PV){pi.innerHTML=pixSvg(PV.ICON); const ph=PRV.hist[PRV.hist.length-1], pc=PRV.cur;
+    $('#pvSub').textContent=pc&&!pc.done?`Rodada em andamento: ${Object.keys(pc.ans).length} de ${pc.order.length} respondidas.`:ph?`Última rodada: ${ph.ok}/${ph.n} (${Math.round(ph.ok/ph.n*100)}%) em ${new Date(ph.end).toLocaleDateString('pt-BR')}.`:`${PV.Q.length} questões da apostila, com correção comentada e índice de onde estudar cada assunto. A nota sai no final.`}
   const tm=TR.reduce((a,t)=>a+t.MODS.length,0), tt=TR.reduce((a,t)=>a+t.TOTALT,0), tq=TR.reduce((a,t)=>a+t.TOTALQ,0);
   $('#stats').innerHTML=[statBox(TR.length,'trilhas'),statBox(tm,'módulos'),statBox(tq,'exercícios'),statBox(Math.round(overall()*100)+'%','seu progresso')].join('');
   $('#tracks').innerHTML=TR.map(t=>{
@@ -638,6 +640,128 @@ function renderSimResult(){
   $('#again').addEventListener('click',()=>{SIM.cur=null; save(); renderSim()});
 }
 
+/* ---------- prova CCST Cybersecurity (trilha de teste) ----------
+   Banco em window.PROVA (data/prova.js). Cada questão mostra a correção e "onde estudar" logo depois da resposta;
+   a nota só aparece quando a rodada termina. Progresso em localStorage (PRKEY) e na nuvem (campo prova). */
+const PV=window.PROVA||null, PRKEY='redes-prova-cyber-v1';
+let PRV=Object.assign({hist:[],cur:null},load(PRKEY)||{});
+function savePrv(){store(PRKEY,PRV); Sync.push()}
+const PQ={}; if(PV) PV.Q.forEach(q=>PQ[q.n]=q);
+function pvGrade(q,v){
+  if(v==null) return false;
+  if(q.t==='mc') return v===q.a[0];
+  if(q.t==='ms') return Array.isArray(v)&&v.length===q.a.length&&q.a.every(x=>v.includes(x));
+  return Array.isArray(v)&&q.f.every((f,j)=>v[j]===f.a);
+}
+function pvRefHtml(q){
+  return `<div class="pv-refs"><div class="label">Onde estudar</div><ul>${q.refs.map(r=>{const x=PV.REFS[r]; if(!x) return '';
+    return `<li><a href="#t/${x.t}/m-${x.m}-t-${x.num.replace(/\./g,'-')}" target="_blank" rel="noopener"><span class="chip">${esc(x.short)}</span> ${esc(x.num)} ${esc(x.title)}</a><span class="pv-mod">Trilha ${x.order} · módulo ${x.m}: ${esc(x.mt)}</span></li>`}).join('')}</ul></div>`;
+}
+function pvAnsText(q){
+  if(q.t==='match') return q.f.map(f=>`${esc(f.l)} → <span class="pv-a">${esc(f.a)}</span>`).join('<br>');
+  return q.a.map(i=>esc(q.o[i])).join(' · ');
+}
+function renderProva(){
+  const v=$('#v-prova'); if(!PV){v.innerHTML='<p>Banco de questões indisponível.</p>'; return}
+  const c=PRV.cur;
+  if(c&&!c.done&&c.view!=='home') return renderProvaRun();
+  const dc={}; PV.Q.forEach(q=>dc[q.d]=(dc[q.d]||0)+1);
+  const hist=PRV.hist.slice(-8).reverse();
+  const done=c?Object.keys(c.ans).length:0;
+  v.innerHTML=`<div class="page-head"><div class="crumbs"><a href="#inicio">Início</a><span>/</span><span>Prova CCST Cybersecurity</span></div><h1>Prova CCST Cybersecurity</h1>
+    <p class="lead">As ${PV.Q.length} questões da apostila, para treinar para a prova. Depois de cada resposta aparecem a correção, uma explicação e os tópicos das trilhas onde estudar o assunto. A nota só sai no final, com o resultado por domínio e um índice do que revisar.</p></div>
+    <div class="about"><div class="frame">
+      <h3>Como funciona</h3>
+      <ul><li>Responda e confirme: a correção e o <b>onde estudar</b> aparecem na hora.</li><li>Os links abrem o tópico em outra aba, sem perder o lugar na prova.</li><li>Nada de nota parcial: o resultado aparece quando você termina (ou encerra) a rodada.</li><li>Questões de múltipla seleção só contam se todas as alternativas certas forem marcadas.</li></ul>
+      <div class="actions" style="margin-top:14px">${c&&!c.done?`<button class="btn" id="pvCont" type="button">Continuar a rodada (${done}/${c.order.length}) ▸</button>`:''}
+        <button class="btn${c&&!c.done?' ghost':''}" id="pvAll" type="button">Todas as ${PV.Q.length}, em ordem aleatória</button>
+        <button class="btn ghost" id="pvSeq" type="button">Todas, na ordem da apostila</button>
+        <button class="btn ghost" id="pvShort" type="button">Rodada curta: 50 sorteadas</button></div>
+      ${c&&!c.done?'<p class="hint" style="margin-top:10px">Começar outra rodada descarta a atual.</p>':''}
+    </div><div class="frame"><h3>Questões por domínio do exame</h3><div class="dom-rows">${Object.entries(PV.DOMAINS).map(([d,n])=>`<div class="dom-row"><span>${d}.0 ${esc(n)}</span>${seg((dc[d]||0)/Math.max(...Object.values(dc),1))}<em>${dc[d]||0}</em></div>`).join('')}</div>
+    ${hist.length?`<h3 style="margin-top:18px">Suas últimas rodadas</h3><table class="hist"><tr><th>Data</th><th>Acertos</th><th>%</th></tr>${hist.map(h=>`<tr><td>${new Date(h.end).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</td><td>${h.ok}/${h.n}</td><td>${Math.round(h.ok/h.n*100)}%</td></tr>`).join('')}</table>`:''}
+    </div></div>
+    ${c&&c.done?`<div style="margin-top:22px"><button class="btn ghost" id="pvLast" type="button">Ver o resultado da última rodada</button></div>`:''}`;
+  const start=mode=>{
+    let ord=PV.Q.map(q=>q.n); const r=seeded('pv'+Date.now());
+    if(mode!=='seq') ord=ord.map(n=>[r(),n]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+    if(mode==='short') ord=ord.slice(0,50);
+    PRV.cur={id:Date.now(),start:Date.now(),order:ord,ans:{},pos:0,done:false}; savePrv(); renderProvaRun(); window.scrollTo(0,0)};
+  $('#pvAll').addEventListener('click',()=>start('all'));
+  $('#pvSeq').addEventListener('click',()=>start('seq'));
+  $('#pvShort').addEventListener('click',()=>start('short'));
+  const k=$('#pvCont'); if(k) k.addEventListener('click',()=>{delete PRV.cur.view; renderProvaRun()});
+  const l=$('#pvLast'); if(l) l.addEventListener('click',()=>renderProvaResult());
+}
+function renderProvaRun(){
+  const v=$('#v-prova'); const c=PRV.cur; const N=c.order.length; c.pos=Math.max(0,Math.min(c.pos||0,N-1));
+  const n=c.order[c.pos], q=PQ[n], ans=c.ans[n], answered=ans!=null, total=Object.keys(c.ans).length;
+  v.innerHTML=`<div class="frame sim-top pv-top"><div><div class="label">Prova CCST Cybersecurity · questão ${c.pos+1} de ${N} · respondidas ${total} de ${N}</div><div class="pv-prog">${seg(total/N)}<label>Ir para <input id="pvJump" type="number" min="1" max="${N}" value="${c.pos+1}" inputmode="numeric"></label></div></div><div style="display:flex;gap:10px;align-items:center"><button class="btn ghost sm" id="pvOut" type="button">Sair</button><button class="btn sm" id="pvEnd" type="button">Encerrar e ver a nota</button></div></div>
+   <div class="frame q" id="pvQ"><div class="q-top"><span class="k">${pad(c.pos+1)}</span><div class="txt">${esc(q.q)}</div><span class="kind">${q.t==='ms'?'escolha '+q.a.length:q.t==='match'?(q.f.length>1?'associação':'complete'):'escolha 1'}</span><span class="kind ccst" title="${esc(PV.DOMAINS[q.d])}">Domínio ${q.d}</span></div><div class="body"></div><div id="pvFb"></div></div>
+   <div class="sim-nav"><button class="btn ghost" id="pvPrev" type="button" ${c.pos?'':'disabled'}>◂ Anterior</button><button class="btn" id="pvOk" type="button" ${answered?'hidden':''} disabled>Responder</button><button class="btn" id="pvNext" type="button" ${answered?'':'hidden'}>${c.pos<N-1?'Próxima ▸':'Ver a nota ▸'}</button></div>`;
+  $('#pvJump').addEventListener('change',e=>{const k=Math.max(1,Math.min(N,parseInt(e.target.value,10)||1)); c.pos=k-1; savePrv(); renderProvaRun()});
+  const body=$('#pvQ .body'), okBtn=$('#pvOk'); let cur=null;
+  if(q.t!=='match'){
+    const multi=q.t==='ms'; const opts=shuffled(q.o,c.id+'-'+n);
+    body.innerHTML=`<div class="opts">${opts.map(([tx,orig],k)=>`<button type="button" class="opt" data-o="${orig}">${multi?'<span class="box"></span>':''}<span class="l">${'ABCDEFGH'[k]}</span><span>${esc(tx)}</span></button>`).join('')}</div>${multi?`<span class="sync">selecione ${q.a.length}</span>`:''}`;
+    const btns=[...body.querySelectorAll('.opt')]; const sel=new Set(answered?(multi?ans:[ans]):[]);
+    const paint=()=>btns.forEach(b=>b.classList.toggle('sel',sel.has(+b.dataset.o)));
+    if(!answered) btns.forEach(b=>b.addEventListener('click',()=>{const o=+b.dataset.o;
+      if(multi){ if(sel.has(o)) sel.delete(o); else{ if(sel.size>=q.a.length) return; sel.add(o)} cur=sel.size===q.a.length?[...sel].sort((a,b)=>a-b):null }
+      else{ sel.clear(); sel.add(o); cur=o } okBtn.disabled=cur==null; paint()}));
+    paint();
+    if(answered){ btns.forEach(b=>{const o=+b.dataset.o; b.disabled=true; if(q.a.includes(o)) b.classList.add('right'); else if(sel.has(o)) b.classList.add('wrong')}) }
+  } else {
+    body.innerHTML=`<div class="fields">${q.f.map((f,k)=>{const id=`pv-${n}-${k}`; return `<div class="field"><label for="${id}">${esc(f.l)}</label><select id="${id}"><option value="">Escolha…</option>${shuffled(q.ch,c.id+'-'+n+'-'+k).map(([x])=>`<option>${esc(x)}</option>`).join('')}</select></div>`}).join('')}</div>`;
+    const sels=[...body.querySelectorAll('select')];
+    if(answered){ sels.forEach((s,k)=>{s.value=ans[k]||''; s.disabled=true; s.closest('.field').classList.add(ans[k]===q.f[k].a?'ok':'bad')}) }
+    else sels.forEach(s=>s.addEventListener('change',()=>{const vals=sels.map(x=>x.value); cur=vals.every(x=>x)?vals:null; okBtn.disabled=cur==null}));
+  }
+  const showFb=()=>{const a=c.ans[n]; const ok=pvGrade(q,a);
+    $('#pvFb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><b>${ok?'Correto!':'Não foi dessa vez'}</b><span>${q.t==='match'?'Respostas:<br>':'Resposta: '}${pvAnsText(q)}</span><span>${esc(q.e)}</span></div>${pvRefHtml(q)}`};
+  if(answered) showFb();
+  okBtn.addEventListener('click',()=>{ if(cur==null) return; c.ans[n]=cur; savePrv(); renderProvaRun(); const fb=$('#pvFb'); if(fb) fb.scrollIntoView({behavior:'smooth',block:'nearest'}) });
+  $('#pvNext').addEventListener('click',()=>{ if(c.pos<N-1){c.pos++; savePrv(); renderProvaRun(); window.scrollTo(0,0)} else finishProva() });
+  $('#pvPrev').addEventListener('click',()=>{c.pos--; savePrv(); renderProvaRun(); window.scrollTo(0,0)});
+  $('#pvOut').addEventListener('click',()=>{c.view='home'; renderProva(); delete c.view; window.scrollTo(0,0)});
+  $('#pvEnd').addEventListener('click',()=>{
+    const open=N-Object.keys(c.ans).length; const box=document.createElement('div'); box.className='frame q'; box.style.marginTop='14px';
+    box.innerHTML=`<b>Encerrar a rodada e ver a nota?</b><span>${open?`Ainda faltam ${open} questão(ões); elas contam como erro.`:'Todas as questões foram respondidas.'}</span><div class="actions"><button class="btn" type="button" id="yes">Encerrar agora</button><button class="btn ghost" type="button" id="no">Continuar</button></div>`;
+    v.appendChild(box); box.scrollIntoView({behavior:'smooth'});
+    $('#yes',box).addEventListener('click',finishProva); $('#no',box).addEventListener('click',()=>box.remove());
+  });
+}
+function finishProva(){
+  const c=PRV.cur; if(!c) return renderProva(); if(c.done) return renderProvaResult();
+  c.done=true; c.end=Date.now(); const byDom={}; let ok=0;
+  c.order.forEach(n=>{const q=PQ[n]; const g=pvGrade(q,c.ans[n]); if(g) ok++; const b=byDom[q.d]=byDom[q.d]||{n:0,ok:0}; b.n++; if(g) b.ok++});
+  PRV.hist.push({id:c.id,end:c.end,n:c.order.length,ok,byDom}); PRV.hist=PRV.hist.slice(-50); savePrv(); renderProvaResult(); window.scrollTo(0,0);
+}
+function renderProvaResult(){
+  const v=$('#v-prova'); const c=PRV.cur; if(!c||!c.done) return renderProva();
+  const h=PRV.hist.find(x=>x.id===c.id)||{n:c.order.length,ok:0,byDom:{}}; const p=Math.round(h.ok/h.n*100);
+  const wrong=c.order.filter(n=>!pvGrade(PQ[n],c.ans[n]));
+  // índice de estudo: tópicos ligados às questões erradas, agrupados por trilha
+  const cnt={}; wrong.forEach(n=>PQ[n].refs.forEach(r=>{cnt[r]=(cnt[r]||0)+1}));
+  const byT={}; Object.entries(cnt).forEach(([r,k])=>{const x=PV.REFS[r]; if(!x) return; (byT[x.t]=byT[x.t]||{x,items:[]}).items.push([x,k,r])});
+  const idx=Object.values(byT).sort((a,b)=>a.x.order-b.x.order).map(g=>{g.items.sort((a,b)=>a[0].m-b[0].m||a[0].num.localeCompare(b[0].num,undefined,{numeric:true}));
+    return `<div class="pv-idx"><h3>Trilha ${g.x.order} · ${esc(g.x.track)}</h3><ul>${g.items.map(([x,k])=>`<li><a href="#t/${x.t}/m-${x.m}-t-${x.num.replace(/\./g,'-')}" target="_blank" rel="noopener">${esc(x.num)} ${esc(x.title)}</a><span class="pv-mod">módulo ${x.m}: ${esc(x.mt)}</span>${k>1?`<em>${k} questões</em>`:''}</li>`).join('')}</ul></div>`}).join('');
+  v.innerHTML=`<div class="page-head"><div class="crumbs"><a href="#inicio">Início</a><span>/</span><a href="#prova" id="toPv">Prova CCST Cybersecurity</a><span>/</span><span>Resultado</span></div><h1>Resultado da rodada</h1></div>
+   <div class="about"><div class="frame"><div class="label">Nota</div><div class="big-score">${p}%</div><p>${h.ok} de ${h.n} questões. ${p>=80?'Acima de 80%: bom sinal para a prova.':'Abaixo de 80%: use o índice abaixo para revisar os assuntos que erraram.'}</p>
+     <div class="actions"><button class="btn" id="pvAgain" type="button">Nova rodada</button>${wrong.length?`<button class="btn ghost" id="pvRedo" type="button">Refazer as erradas e em branco (${wrong.length})</button>`:''}</div></div>
+   <div class="frame"><h3>Por domínio do exame</h3><div class="dom-rows">${Object.entries(PV.DOMAINS).filter(([d])=>h.byDom[d]).map(([d,n])=>{const b=h.byDom[d]; return `<div class="dom-row"><span>${d}.0 ${esc(n)}</span>${seg(b.ok/b.n,b.ok/b.n<.8?'ex':'')}<em>${b.ok}/${b.n}</em></div>`}).join('')}</div></div></div>
+   ${wrong.length?`<div class="sec-head" style="margin-top:26px"><div><div class="label">O que revisar</div><h2>Índice de estudo</h2></div></div><p class="lead" style="margin-top:-6px">Os tópicos das trilhas ligados às questões que você errou, na ordem das trilhas.</p><div class="frame pv-index">${idx}</div>`:''}
+   <div class="sec-head" style="margin-top:26px"><div><div class="label">Correção</div><h2>Questões erradas ou em branco</h2></div></div><div id="pvRev" style="display:grid;gap:14px"></div>`;
+  const rev=$('#pvRev');
+  if(!wrong.length) rev.innerHTML='<p class="lead">Nenhuma. Parabéns!</p>';
+  wrong.forEach(n=>{const q=PQ[n]; const a=c.ans[n]; const el=document.createElement('div'); el.className='frame q bad';
+    const mine=a==null?'em branco':q.t==='match'?q.f.map((f,j)=>esc(a[j]||'—')).join(' · '):(Array.isArray(a)?a:[a]).map(i=>esc(q.o[i])).join(' · ');
+    el.innerHTML=`<div class="q-top"><span class="k">${pad(c.order.indexOf(n)+1)}</span><div class="txt">${esc(q.q)}</div><span class="kind ccst">Domínio ${q.d}</span></div><div class="fb bad"><b>Sua resposta: ${mine}</b><span>${q.t==='match'?'Respostas:<br>':'Resposta: '}${pvAnsText(q)}</span><span>${esc(q.e)}</span></div>${pvRefHtml(q)}`;
+    rev.appendChild(el)});
+  $('#pvAgain').addEventListener('click',()=>{PRV.cur=null; savePrv(); renderProva(); window.scrollTo(0,0)});
+  const rd=$('#pvRedo'); if(rd) rd.addEventListener('click',()=>{PRV.cur={id:Date.now(),start:Date.now(),order:wrong,ans:{},pos:0,done:false}; savePrv(); renderProvaRun(); window.scrollTo(0,0)});
+}
+
 /* ---------- sobre ---------- */
 function renderAbout(){
   $('#stats2').innerHTML=TR.map(t=>statBox(t.MODS.length,'módulos · '+t.short)).join('')+statBox(TR.reduce((a,t)=>a+t.TOTALQ,0),'exercícios')+statBox(pool().length,'questões CCST');
@@ -699,13 +823,16 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
     if(d.sim){const ids=new Set(SIM.hist.map(h=>h.id)); (d.sim.hist||[]).forEach(h=>{if(!ids.has(h.id)){SIM.hist.push(h); changed=true}}); SIM.hist.sort((a,b)=>a.end-b.end);
       if(d.sim.cur&&(!SIM.cur||d.sim.cur.id>SIM.cur.id||(d.sim.cur.id===SIM.cur.id&&d.sim.cur.done&&!SIM.cur.done))){SIM.cur=d.sim.cur; changed=true}
       store(SIMKEY,SIM)}
+    if(d.prova){const ids=new Set(PRV.hist.map(h=>h.id)); (d.prova.hist||[]).forEach(h=>{if(!ids.has(h.id)){PRV.hist.push(h); changed=true}}); PRV.hist.sort((a,b)=>a.end-b.end);
+      const r=d.prova.cur; if(r&&(!PRV.cur||r.id>PRV.cur.id||(r.id===PRV.cur.id&&(r.done&&!PRV.cur.done||Object.keys(r.ans||{}).length>Object.keys(PRV.cur.ans||{}).length)))){PRV.cur=r; changed=true}
+      store(PRKEY,PRV)}
     this.applying=false;
     if(changed) route(true);
   },
   push(now){
     if(!this.doc||this.applying) return; clearTimeout(this.timer);
     const go=()=>{const tracks={}; TR.forEach(t=>tracks[t.id]=ST[t.id]);
-      this.doc.set({v:1,tracks,sim:SIM,updated:firebase.firestore.FieldValue.serverTimestamp()}).catch(e=>toast('Erro ao salvar na nuvem: '+(e.code||e.message)))};
+      this.doc.set({v:1,tracks,sim:SIM,prova:PRV,updated:firebase.firestore.FieldValue.serverTimestamp()}).catch(e=>toast('Erro ao salvar na nuvem: '+(e.code||e.message)))};
     if(now) go(); else this.timer=setTimeout(go,1500);
   }
 };
@@ -775,6 +902,7 @@ function route(soft){
   const keepScroll=soft===true;
   if(h==='sobre'){show('v-sobre'); setTrackNav(null); navCur('sobre'); renderAbout(); if(!keepScroll) window.scrollTo(0,0); return}
   if(h==='simulado'){show('v-simulado'); setTrackNav(null); navCur('simulado'); if(SIM.cur&&SIM.cur.done&&!soft) renderSimResult(); else if(!(soft&&SIM.cur&&!SIM.cur.done)) renderSim(); if(!keepScroll) window.scrollTo(0,0); return}
+  if(h==='prova'){show('v-prova'); setTrackNav(null); navCur('prova'); if(soft&&PRV.cur&&!PRV.cur.done) return; if(PRV.cur&&PRV.cur.done&&!soft) renderProvaResult(); else renderProva(); if(!keepScroll) window.scrollTo(0,0); return}
   const tm=h.match(/^t\/([\w-]+)(?:\/(.*))?$/);
   if(tm&&TRK[tm[1]]){
     const t=TRK[tm[1]], sub=tm[2]||''; setTrackNav(t);

@@ -202,12 +202,27 @@ def main():
                  'title':'Gerenciamento de Ameaças Cibernéticas',
                  'desc':'Governança, ética e leis, ISO 27000, NIST e CIS, gerenciamento de riscos e controles, inteligência de ameaças, testes e CVSS, gerenciamento de patches, Cyber Kill Chain, Modelo Diamond, perícia forense, resposta a incidentes e continuidade.',
                  'icon':ic5[1]},d5['DATA'],d5['GLOSS'],ex5,ic5)
+    # trilha de teste: Prova CCST Cybersecurity
+    P=modload(os.path.join(HERE,'prova_cyber.py'))
+    refs={}
+    for tid in ['fundamentos','dispositivos','endpoint','defesa','ameacas']:
+        s=open(os.path.join(OUT,'data',tid+'.js')).read(); d=json.loads(s[s.index('push(')+5:s.rindex(');')])
+        for mi,m in enumerate(d['DATA'],1):
+            for tp in m['topics']:
+                refs[tid+':'+tp['num']]={'t':tid,'order':d['order'],'short':d['short'],'track':d['title'],'m':mi,'num':tp['num'],'title':tp['title'],'mt':m['title']}
+    used={r for q in P.QS for r in q['refs']}
+    miss=sorted(used-set(refs))
+    if miss: print('PROBLEMAS prova refs',miss)
+    pv={'DOMAINS':{str(k):v for k,v in P.DOMAINS.items()},'Q':P.QS,'REFS':{r:refs[r] for r in sorted(used) if r in refs},
+        'ICON':modload(os.path.join(HERE,'icons_def.py')).CERT}
+    open(os.path.join(OUT,'data','prova.js'),'w').write('window.PROVA='+json.dumps(pv,ensure_ascii=False,separators=(',',':'))+';\n')
+    print('prova questões',len(P.QS),'tópicos citados',len(used))
     # css e shell
     css='\n'.join(l for l in open(os.path.join(HERE,'base.css')).read().split('\n') if not re.match(r'\s*(\.tbl|figure|\.gl td:first-child)',l))+open(os.path.join(HERE,'components.css')).read()
     os.makedirs(os.path.join(OUT,'assets'),exist_ok=True)
     open(os.path.join(OUT,'assets','site.css'),'w').write(css)
     app=open(os.path.join(OUT,'assets','app.js')).read()
-    v=hashlib.md5((css+app+open(os.path.join(OUT,'data','fundamentos.js')).read()[:100000]+open(os.path.join(OUT,'data','dispositivos.js')).read()+''.join(open(os.path.join(OUT,'data',n+'.js')).read() for n in ('endpoint','defesa','ameacas'))).encode()).hexdigest()[:8]
+    v=hashlib.md5((css+app+open(os.path.join(OUT,'data','fundamentos.js')).read()[:100000]+open(os.path.join(OUT,'data','dispositivos.js')).read()+''.join(open(os.path.join(OUT,'data',n+'.js')).read() for n in ('endpoint','defesa','ameacas','prova'))).encode()).hexdigest()[:8]
     open(os.path.join(OUT,'index.html'),'w').write(open(os.path.join(HERE,'shell.html')).read().replace('__V__',v))
     print('versão',v)
 if __name__=='__main__': main()
