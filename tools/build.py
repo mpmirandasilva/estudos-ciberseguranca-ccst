@@ -142,12 +142,16 @@ def build_track(meta,DATA,GLOSS,EX,ICONS):
     G=norm_html(GLOSS,meta['id'],0,{})
     probs=check_ex(meta['id'],EX,DATA)
     if probs: print('PROBLEMAS',meta['id'],probs)
-    tr=dict(meta); tr.update({'DATA':out,'GLOSS':G,'EX':{str(k):v for k,v in EX.items()},'ICONS':{str(k):v for k,v in ICONS.items()}})
+    # tempo estimado: leitura de estudo (~50 palavras por minuto, com releitura e anotações) + exercícios (1 min os de múltipla escolha, 2 min os demais)
+    words=sum(len(re.sub(r'<[^>]+>',' ',m['intro']+' '.join(x['html'] for x in m['topics'])).split()) for m in out)
+    exmin=sum(1 if q['t']=='mc' and not q.get('dom') else 2 for v in EX.values() for q in v)
+    hours=max(1,round(words/50/60+exmin/60))
+    tr=dict(meta); tr.update({'HOURS':hours,'DATA':out,'GLOSS':G,'EX':{str(k):v for k,v in EX.items()},'ICONS':{str(k):v for k,v in ICONS.items()}})
     js='window.TRACKS=window.TRACKS||[];\nwindow.TRACKS.push('+json.dumps(tr,ensure_ascii=False,separators=(',',':'))+');\n'
     os.makedirs(os.path.join(OUT,'data'),exist_ok=True)
     open(os.path.join(OUT,'data',meta['id']+'.js'),'w').write(js)
     nq=sum(len(v) for v in EX.values()); nc=sum(1 for v in EX.values() for q in v if q.get('dom'))
-    print(meta['id'],'módulos',len(out),'tópicos',sum(len(m['topics']) for m in out),'questões',nq,'ccst',nc,'figuras',sum(figc.values()),'kB',len(js)//1024)
+    print(meta['id'],'horas',hours,'módulos',len(out),'tópicos',sum(len(m['topics']) for m in out),'questões',nq,'ccst',nc,'figuras',sum(figc.values()),'kB',len(js)//1024)
 
 def main():
     src=os.path.join(HERE,'src')

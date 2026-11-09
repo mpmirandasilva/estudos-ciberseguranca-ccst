@@ -102,7 +102,7 @@ function renderHome(){
     return `<a class="frame track" href="#t/${t.id}">
       <div class="th"><div class="ico">${pixSvg(t.icon)}</div><div><div class="label">${esc(t.label)}</div><h3>${esc(t.title)}</h3></div></div>
       <p>${esc(t.desc)}</p>
-      <div class="meta"><span class="chip">${t.MODS.length} módulos</span><span class="chip">${t.TOTALT} tópicos</span><span class="chip">${t.TOTALQ} exercícios</span></div>
+      <div class="meta"><span class="chip">${t.MODS.length} módulos</span><span class="chip">${t.TOTALT} tópicos</span><span class="chip">${t.TOTALQ} exercícios</span>${t.HOURS?`<span class="chip" title="Tempo estimado de estudo: leitura dos tópicos e exercícios">≈ ${t.HOURS} h de estudo</span>`:''}</div>
       <div class="bars"><div><span>Tópicos ${x.o}/${t.TOTALT}</span>${seg(x.o/(t.TOTALT||1))}<em>${Math.round(x.o/(t.TOTALT||1)*100)}%</em></div>
       <div><span>Acertos ${qok}/${t.TOTALQ}</span>${seg(qok/(t.TOTALQ||1),'ex')}<em>${Math.round(qok/(t.TOTALQ||1)*100)}%</em></div></div>
       <span class="go">${x.o||x.a?'Continuar a trilha ▸':'Começar a trilha ▸'}</span></a>`}).join('');
@@ -120,7 +120,7 @@ function renderTrack(t){
   const v=$('#v-trilha');
   v.innerHTML=`<div class="crumbs"><a href="#inicio">Início</a><span>/</span><span>${esc(t.short)}</span></div>
    <div class="mod-head"><div class="frame big">${pixSvg(t.icon)}</div><div><div class="label">${esc(t.label)}</div><h1>${esc(t.title)}</h1></div></div>
-   <p class="lead" style="margin:-6px 0 22px">${esc(t.desc)}</p>
+   <p class="lead" style="margin:-6px 0 22px">${esc(t.desc)}${t.HOURS?`<br><span class="label" style="display:inline-block;margin-top:10px">Tempo estimado: cerca de ${t.HOURS} horas, entre leitura e exercícios</span>`:''}</p>
    <div class="stats">${statBox(t.MODS.length,'módulos')}${statBox(t.TOTALT,'tópicos')}${statBox(t.TOTALQ,'exercícios')}${statBox(Math.round(x.p*100)+'%','progresso')}</div>
    <div class="sec-head"><div><div class="label">Trilha</div><h2>Módulos</h2></div><a class="linkbtn" href="#t/${t.id}/glossario">Glossário de siglas →</a></div>
    <div class="grid" id="tiles"></div>`;
