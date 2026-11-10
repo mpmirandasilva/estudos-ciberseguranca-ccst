@@ -102,120 +102,11 @@ Para um banco pela internet, a lista de ameaças incluiria:
 
 **Observação:** nem toda ameaça é um ataque. Erros e desastres naturais também afetam a integridade e a disponibilidade.
 
-## 2. Defesa em Profundidade
-
-A **defesa em profundidade** é a abordagem que **usa várias camadas de segurança na borda da rede, dentro da rede e nos dispositivos finais**. Assim, a falha de uma proteção não compromete as outras.
-
-### 2.1 Camadas de uma Rede Protegida
-
-Na topologia mais simples (o desenho de como os equipamentos estão ligados), o tráfego da internet atravessa três linhas de defesa até a rede interna da empresa, a **LAN** (*Local Area Network* — rede local):
-
-Internet → Roteador de borda → Firewall → Roteador interno → Rede interna
-
-![O tráfego da internet atravessa três linhas de defesa até chegar à rede interna](img/defesa/def_camadas.png){width=6in}
-
-| Linha de defesa | Função |
-| --- | --- |
-| Roteador de borda | Primeira linha: é o roteador (equipamento que encaminha os pacotes entre redes) que liga a empresa à internet; segue regras que permitem ou negam o tráfego e repassa ao firewall o que vai para a rede interna |
-| Firewall | Segunda linha: funciona como um posto de controle; faz uma filtragem adicional e acompanha o estado das conexões, isto é, lembra quem abriu cada conversa para só deixar voltar as respostas esperadas |
-| Roteador interno | Aplica as regras finais de filtragem antes de encaminhar o tráfego ao destino |
-
-O **firewall** fica entre redes e decide qual tráfego pode passar. Ele **nega conexões iniciadas na rede externa (não confiável) em direção à rede interna (confiável)**, mas deixa os usuários internos estabelecerem conexões nos dois sentidos com as redes externas. Ele também pode **autenticar usuários**, ou seja, pedir que provem quem são (com usuário e senha, por exemplo) antes de liberar o acesso. Esse recurso se chama **proxy de autenticação** e é usado para dar a usuários remotos acesso aos recursos internos.
-
-Outras camadas comuns são:
-
-- o **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusão), que identifica e bloqueia ataques no tráfego;
-- a **AMP** (*Advanced Malware Protection*), proteção avançada da Cisco contra malware (programas maliciosos, como vírus);
-- os filtros de conteúdo web e de e-mail;
-- os serviços de identidade e de controle de acesso à rede, que verificam quem é cada usuário e cada aparelho antes de deixá-los entrar.
-
-### 2.2 A Cebola e a Alcachofra da Segurança
-
-Duas analogias descrevem a defesa em profundidade.
-
-Na **cebola de segurança**, o atacante precisa **descascar as defesas camada por camada** até chegar aos dados, no centro.
-
-Nas **redes sem fronteiras**, acessadas de celulares, de casa e da nuvem, vale a **alcachofra de segurança**: o atacante **não precisa remover todas as camadas, basta arrancar algumas folhas**. Exemplos de folhas: senhas, bancos de dados e aplicativos web.
-
-Cada folha protege, mas também abre um caminho para o ataque; folha após folha, o atacante chega a mais dados, até o **coração**, onde ficam os mais confidenciais. Os sistemas voltados para a internet costumam ser bem protegidos, mas um atacante persistente acaba achando uma brecha nesse exterior e, a partir dela, vai aonde quiser.
-
-| Característica | Cebola | Alcachofra |
-| --- | --- | --- |
-| Cenário | Rede com perímetro bem definido | Rede sem fronteiras |
-| Caminho do atacante | Atravessar todas as camadas | Remover só algumas folhas |
-
-**Observação:** a cebola de segurança é só uma figura de linguagem. Não tem relação com o **Security Onion**, um conjunto gratuito de ferramentas de monitoramento de rede visto no fim desta trilha.
-
-### 2.3 Estratégias de Defesa em Profundidade
-
-A defesa em profundidade não cria um escudo impenetrável, mas **minimiza os riscos**: mesmo que o atacante passe por uma camada, ainda encontra as outras. Ela funciona melhor com cinco estratégias:
-
-| Estratégia | Ideia central | Exemplo |
-| --- | --- | --- |
-| Sobreposição (camadas) | Várias defesas seguidas | Servidor com senha, em prédio trancado e cercado |
-| Limitação | Só o acesso necessário ao trabalho, com ferramentas (permissões de arquivo) e procedimentos definidos | Documentos sigilosos consultados em sala com câmeras |
-| Diversidade | Camadas diferentes entre si | Crachá de um fabricante e leitor de digital de outro; algoritmos de criptografia diferentes para dados em estados diferentes |
-| Ofuscação | Não revelar detalhes úteis ao atacante | Mensagem de erro sem a versão do sistema nem o tipo de equipamento |
-| Simplicidade | Simples por dentro, complexo por fora | Configuração que a equipe entende e mantém; um sistema complexo mal configurado é tão fácil de invadir quanto um simples |
-
-Na diversidade, a ideia é que a técnica que vence uma camada não vença as outras.
-
-## 3. Gerenciamento de Operações de Segurança
-
-O **gerenciamento de operações de segurança** reúne os processos do dia a dia que mantêm a rede segura: **controlar as configurações, registrar os eventos e observar o tráfego**.
-
-### 3.1 Gerenciamento de Configuração
-
-O **gerenciamento de configuração** é a **identificação, o controle e a auditoria da implantação de um sistema e de qualquer alteração feita na sua linha de base**.
-
-A **linha de base** (*baseline*) é o conjunto de configurações que serve de **modelo para todos os sistemas semelhantes**. Exemplo: quem implanta as estações Windows instala os aplicativos necessários e define as configurações conforme um padrão documentado.
-
-Devem ser documentados, entre outros:
-
-- mapas de rede, diagramas de cabeamento e especificações de configuração dos aplicativos;
-- convenções de nomes dos computadores;
-- esquema de endereçamento IP, para rastrear os endereços (o endereço IP é o número que identifica cada equipamento na rede, como 192.168.1.10).
-
-### 3.2 Reforço do Sistema Operacional
-
-O **reforço** (*hardening*) do sistema operacional consiste em **configurá-lo de forma segura, reduzindo as brechas que um atacante poderia usar**. As principais medidas são:
-
-- configurar logs (registros de eventos, explicados no próximo item) e auditoria;
-- trocar nomes de conta e senhas padrão (as que vêm de fábrica, como admin/admin, que qualquer atacante conhece);
-- aplicar políticas de conta, como tamanho mínimo da senha e bloqueio depois de várias tentativas erradas;
-- controlar o acesso aos arquivos.
-
-### 3.3 Arquivos de Log
-
-Um **log** é o **registro dos eventos que ocorrem em um sistema**. Cada evento vira uma **entrada de log**, com todas as informações dele, e o conjunto delas forma o **arquivo de log**. Registros precisos e completos são essenciais. Exemplos: o log de auditoria, com as tentativas de autenticação, e o log de acesso, com os pedidos a arquivos.
-
-Pelos logs, descobre-se **como um ataque aconteceu e se as defesas funcionaram**. Como o número de logs cresce, a empresa precisa de um **processo de gerenciamento de logs**, com procedimentos para cada etapa:
-
-Gerar → Transmitir → Armazenar → Analisar → Descartar
-
-| Fonte | O que registra | Para que serve |
-| --- | --- | --- |
-| Sistema operacional | Pedidos dos clientes e respostas dos servidores (como logins bem-sucedidos) e informações de uso (número e tamanho das transações em um período) | Acompanhar a operação do sistema |
-| Software de segurança (de rede ou do sistema) | Atividades mal-intencionadas detectadas | Análise de auditoria, identificação de tendências e de problemas de longo prazo e comprovação documental da conformidade com as leis e os requisitos regulatórios |
-
-### 3.4 Analisadores de Pacotes
-
-Um **analisador de pacotes** (*sniffer*) **intercepta e registra o tráfego da rede**. Na rede, toda informação viaja dividida em pequenos blocos, os **pacotes**; o analisador captura cada pacote, mostra os valores dos campos (como os endereços de origem e de destino) e analisa o conteúdo, em redes com e sem fio. Exemplos: o Wireshark, com interface gráfica, e o tcpdump, usado pela linha de comando.
-
-Ele serve para:
-
-- registrar o tráfego;
-- analisar problemas de rede;
-- detectar uso indevido e tentativas de invasão;
-- isolar um sistema explorado.
-
-A mesma ferramenta ajuda o atacante: com um sniffer, ele lê tudo o que trafega sem criptografia, inclusive senhas.
-
-## 4. Políticas, Regulamentos e Padrões
+## 2. Políticas, Regulamentos e Padrões
 
 As **políticas** são regras criadas pela própria organização; os **regulamentos** são regras externas, como leis, que ela precisa cumprir. Juntos, **definem o que é permitido e o que é proibido** na rede e nos dados.
 
-### 4.1 Políticas de Negócios
+### 2.1 Políticas de Negócios
 
 As **políticas de negócios** são diretrizes que governam as ações da organização. Na rede, elas formam uma **linha de base de uso aceitável**.
 
@@ -227,7 +118,7 @@ Por esse motivo, um comportamento que viola a política pode indicar que **ocorr
 | De funcionários | Criadas e mantidas pela equipe de recursos humanos; fornecidas e assinadas na contratação | Salário, cronograma de pagamento, horário de trabalho, benefícios, férias |
 | De segurança | Objetivos de segurança, regras de comportamento para usuários e administradores e requisitos do sistema, que juntos garantem a segurança da rede e dos sistemas; como o plano de continuidade, é um documento em constante evolução | Senhas, acesso remoto, uso aceitável; evoluem conforme o cenário de ameaças, as vulnerabilidades e os requisitos do negócio e dos funcionários |
 
-### 4.2 Política de Segurança
+### 2.2 Política de Segurança
 
 A **política de segurança** informa a todos os requisitos para proteger os ativos de tecnologia e de informação. Ela serve de linha de base para comprar, configurar e auditar sistemas.
 
@@ -250,13 +141,13 @@ Ela reúne políticas menores:
 | Manutenção de rede | Procedimentos de atualização dos sistemas operacionais dos dispositivos de rede (o software que controla roteadores e switches) e dos aplicativos dos usuários |
 | Tratamento de incidentes | Descreve como os incidentes são tratados |
 
-### 4.3 Política de Uso Aceitável (AUP)
+### 2.3 Política de Uso Aceitável (AUP)
 
 A **AUP** (*Acceptable Use Policy* — Política de Uso Aceitável) define **o que os usuários podem ou não fazer nos sistemas**. Também é chamada de **política de uso apropriado**. Ela deve ser o mais explícita possível, para evitar mal-entendidos. Exemplo: listar os sites, fóruns ou aplicativos que consomem muita largura de banda (a capacidade de transmissão da conexão) e que não podem ser acessados pela rede da empresa.
 
 Todo funcionário assina a AUP, e a cópia assinada é guardada durante todo o emprego.
 
-### 4.4 Políticas de BYOD
+### 2.4 Políticas de BYOD
 
 O **BYOD** (*Bring Your Own Device* — Traga seu Próprio Dispositivo) permite que os funcionários usem **seus próprios aparelhos para acessar sistemas, redes e informações da empresa**.
 
@@ -279,17 +170,75 @@ Ele traz produtividade, mobilidade, menos custos operacionais e de TI (tecnologi
 
 O **MDM** (*Mobile Device Management* — Gerenciamento de Dispositivos Móveis) permite à TI **aplicar configurações de segurança e de software em todos os dispositivos que se conectam à rede da empresa**.
 
-### 4.5 Conformidade com Regulamentos e Padrões
+### 2.5 Conformidade com Regulamentos e Padrões
 
 Há também regulamentos externos ligados à segurança da rede. Os profissionais da área precisam conhecer as leis e os códigos de ética que se aplicam aos profissionais de **INFOSEC** (*Information Systems Security* — Segurança de Sistemas de Informação).
 
 Os **regulamentos de conformidade** definem **pelo que a organização é responsável e quais são as consequências se ela não cumprir**. Eles variam conforme o tipo de organização e de dado. No Brasil, por exemplo, quem trata dados pessoais segue a LGPD (Lei Geral de Proteção de Dados).
 
-## 5. Criptografia e Confidencialidade
+## 3. Defesa em Profundidade
+
+A **defesa em profundidade** é a abordagem que **usa várias camadas de segurança na borda da rede, dentro da rede e nos dispositivos finais**. Assim, a falha de uma proteção não compromete as outras.
+
+### 3.1 Camadas de uma Rede Protegida
+
+Na topologia mais simples (o desenho de como os equipamentos estão ligados), o tráfego da internet atravessa três linhas de defesa até a rede interna da empresa, a **LAN** (*Local Area Network* — rede local):
+
+Internet → Roteador de borda → Firewall → Roteador interno → Rede interna
+
+![O tráfego da internet atravessa três linhas de defesa até chegar à rede interna](img/defesa/def_camadas.png){width=6in}
+
+| Linha de defesa | Função |
+| --- | --- |
+| Roteador de borda | Primeira linha: é o roteador (equipamento que encaminha os pacotes entre redes) que liga a empresa à internet; segue regras que permitem ou negam o tráfego e repassa ao firewall o que vai para a rede interna |
+| Firewall | Segunda linha: funciona como um posto de controle; faz uma filtragem adicional e acompanha o estado das conexões, isto é, lembra quem abriu cada conversa para só deixar voltar as respostas esperadas |
+| Roteador interno | Aplica as regras finais de filtragem antes de encaminhar o tráfego ao destino |
+
+O **firewall** fica entre redes e decide qual tráfego pode passar. Ele **nega conexões iniciadas na rede externa (não confiável) em direção à rede interna (confiável)**, mas deixa os usuários internos estabelecerem conexões nos dois sentidos com as redes externas. Ele também pode **autenticar usuários**, ou seja, pedir que provem quem são (com usuário e senha, por exemplo) antes de liberar o acesso. Esse recurso se chama **proxy de autenticação** e é usado para dar a usuários remotos acesso aos recursos internos.
+
+Outras camadas comuns são:
+
+- o **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusão), que identifica e bloqueia ataques no tráfego;
+- a **AMP** (*Advanced Malware Protection*), proteção avançada da Cisco contra malware (programas maliciosos, como vírus);
+- os filtros de conteúdo web e de e-mail;
+- os serviços de identidade e de controle de acesso à rede, que verificam quem é cada usuário e cada aparelho antes de deixá-los entrar.
+
+### 3.2 A Cebola e a Alcachofra da Segurança
+
+Duas analogias descrevem a defesa em profundidade.
+
+Na **cebola de segurança**, o atacante precisa **descascar as defesas camada por camada** até chegar aos dados, no centro.
+
+Nas **redes sem fronteiras**, acessadas de celulares, de casa e da nuvem, vale a **alcachofra de segurança**: o atacante **não precisa remover todas as camadas, basta arrancar algumas folhas**. Exemplos de folhas: senhas, bancos de dados e aplicativos web.
+
+Cada folha protege, mas também abre um caminho para o ataque; folha após folha, o atacante chega a mais dados, até o **coração**, onde ficam os mais confidenciais. Os sistemas voltados para a internet costumam ser bem protegidos, mas um atacante persistente acaba achando uma brecha nesse exterior e, a partir dela, vai aonde quiser.
+
+| Característica | Cebola | Alcachofra |
+| --- | --- | --- |
+| Cenário | Rede com perímetro bem definido | Rede sem fronteiras |
+| Caminho do atacante | Atravessar todas as camadas | Remover só algumas folhas |
+
+**Observação:** a cebola de segurança é só uma figura de linguagem. Não tem relação com o **Security Onion**, um conjunto gratuito de ferramentas de monitoramento de rede visto no fim desta trilha.
+
+### 3.3 Estratégias de Defesa em Profundidade
+
+A defesa em profundidade não cria um escudo impenetrável, mas **minimiza os riscos**: mesmo que o atacante passe por uma camada, ainda encontra as outras. Ela funciona melhor com cinco estratégias:
+
+| Estratégia | Ideia central | Exemplo |
+| --- | --- | --- |
+| Sobreposição (camadas) | Várias defesas seguidas | Servidor com senha, em prédio trancado e cercado |
+| Limitação | Só o acesso necessário ao trabalho, com ferramentas (permissões de arquivo) e procedimentos definidos | Documentos sigilosos consultados em sala com câmeras |
+| Diversidade | Camadas diferentes entre si | Crachá de um fabricante e leitor de digital de outro; algoritmos de criptografia diferentes para dados em estados diferentes |
+| Ofuscação | Não revelar detalhes úteis ao atacante | Mensagem de erro sem a versão do sistema nem o tipo de equipamento |
+| Simplicidade | Simples por dentro, complexo por fora | Configuração que a equipe entende e mantém; um sistema complexo mal configurado é tão fácil de invadir quanto um simples |
+
+Na diversidade, a ideia é que a técnica que vence uma camada não vença as outras.
+
+## 4. Criptografia e Confidencialidade
 
 A **criptografia** é a ciência de criar e quebrar códigos. Ela **embaralha os dados para que só quem conhece o segredo certo consiga lê-los** e é a principal ferramenta da confidencialidade.
 
-### 5.1 Conceitos Básicos de Criptografia
+### 4.1 Conceitos Básicos de Criptografia
 
 Os dados legíveis são o **texto claro** (ou texto simples); criptografados, viram **texto cifrado**, uma mensagem ilegível e disfarçada. O caminho de volta é a **descriptografia**.
 
@@ -304,7 +253,7 @@ Existem duas classes de criptografia, que diferem na maneira de usar as chaves:
 - **simétrica**: a mesma chave criptografa e descriptografa;
 - **assimétrica**: um par de chaves diferentes, uma para cada operação.
 
-### 5.2 Estados dos Dados
+### 4.2 Estados dos Dados
 
 Os dados precisam de proteção em **três estados**:
 
@@ -316,7 +265,7 @@ Os dados precisam de proteção em **três estados**:
 
 Todo dado que não está em trânsito nem em processamento está em repouso.
 
-### 5.3 Criptografia Simétrica
+### 4.3 Criptografia Simétrica
 
 Na **criptografia simétrica**, **as duas partes usam a mesma chave**, chamada de **chave pré-compartilhada** ou **chave secreta**. Ela precisa ser conhecida pelo remetente e pelo receptor **antes** da comunicação.
 
@@ -339,7 +288,7 @@ Os algoritmos simétricos funcionam de duas formas:
 
 **Observação:** no AES, só o tamanho da **chave** varia; o **bloco** é sempre de 128 bits.
 
-### 5.4 Criptografia Assimétrica
+### 4.4 Criptografia Assimétrica
 
 Na **criptografia assimétrica**, ou **de chave pública**, cada um tem **um par de chaves**: a **pública**, que pode ser divulgada, e a **privada**, que só o dono conhece.
 
@@ -360,13 +309,13 @@ Os algoritmos assimétricos mais conhecidos são:
 
 | Algoritmo | Tamanho de chave (bits) | Características |
 | --- | --- | --- |
-| Diffie-Hellman (DH), nome dos seus criadores | 512, 1.024, 2.048, 3.072 e 4.096 | Não criptografa mensagens: serve para **duas partes combinarem uma chave secreta** pela internet sem enviá-la (explicado no item 5.6); a segurança vem de que é fácil elevar um número a uma potência, mas difícil descobrir qual potência foi usada |
-| DSS (*Digital Signature Standard*) e DSA (*Digital Signature Algorithm*) | 512 a 1.024 | O DSS é o padrão do governo dos EUA para **assinaturas digitais** (a "assinatura" eletrônica que prova quem enviou um documento, vista na seção 7), e o DSA é o algoritmo que ele define; baseado no ElGamal (abaixo); assina na mesma velocidade do RSA, mas verifica de 10 a 40 vezes mais devagar |
+| Diffie-Hellman (DH), nome dos seus criadores | 512, 1.024, 2.048, 3.072 e 4.096 | Não criptografa mensagens: serve para **duas partes combinarem uma chave secreta** pela internet sem enviá-la (explicado no item 4.6); a segurança vem de que é fácil elevar um número a uma potência, mas difícil descobrir qual potência foi usada |
+| DSS (*Digital Signature Standard*) e DSA (*Digital Signature Algorithm*) | 512 a 1.024 | O DSS é o padrão do governo dos EUA para **assinaturas digitais** (a "assinatura" eletrônica que prova quem enviou um documento, explicada na seção 6), e o DSA é o algoritmo que ele define; baseado no ElGamal (abaixo); assina na mesma velocidade do RSA, mas verifica de 10 a 40 vezes mais devagar |
 | RSA (iniciais de Rivest, Shamir e Adleman, seus criadores) | 512 a 2.048 | Baseado na dificuldade de fatorar números grandes; o primeiro que serve tanto para assinatura quanto para criptografia; muito usado no comércio eletrônico e nos certificados dos sites |
 | ElGamal (nome do criador) | 512 a 1.024 | Derivado do Diffie-Hellman; a mensagem cifrada fica com o dobro do tamanho, por isso só serve para mensagens pequenas, como chaves |
 | Curvas elípticas (ECC, *Elliptic Curve Cryptography*) | 224 ou mais | Usa uma matemática diferente (curvas elípticas) para adaptar algoritmos como DH e ElGamal; vantagem: **chaves muito menores com a mesma segurança**, o que poupa bateria e processamento em celulares |
 
-### 5.5 Confidencialidade e Autenticação com Chaves Assimétricas
+### 4.5 Confidencialidade e Autenticação com Chaves Assimétricas
 
 O resultado depende da chave usada para criptografar:
 
@@ -375,7 +324,7 @@ O resultado depende da chave usada para criptografar:
 
 ![A chave usada para criptografar define o resultado: a pública do destinatário dá confidencialidade; a privada do remetente, autenticação](img/defesa/def_assim.png){width=6in}
 
-#### 5.5.1 Exemplo Resolvido: Alice Envia uma Mensagem Sigilosa a Bob
+#### 4.5.1 Exemplo Resolvido: Alice Envia uma Mensagem Sigilosa a Bob
 
 1. Alice pede e recebe a chave pública de Bob;
 2. Alice criptografa a mensagem com essa chave, usando um algoritmo combinado, e a envia;
@@ -383,13 +332,13 @@ O resultado depende da chave usada para criptografar:
 
 Se uma chave privada for comprometida, é preciso gerar outro par para substituí-la.
 
-#### 5.5.2 Exemplo Resolvido: Bob Confere que a Mensagem Veio de Alice
+#### 4.5.2 Exemplo Resolvido: Bob Confere que a Mensagem Veio de Alice
 
 1. Alice criptografa a mensagem com a própria chave privada e a envia;
 2. Bob pede a chave pública de Alice;
 3. Bob descriptografa com essa chave; se der certo, a mensagem só pode ter vindo de Alice.
 
-#### 5.5.3 Exemplo Resolvido: Confidencialidade, Integridade e Autenticação Juntas
+#### 4.5.3 Exemplo Resolvido: Confidencialidade, Integridade e Autenticação Juntas
 
 1. Alice criptografa a mensagem com a chave **pública de Bob** (confidencialidade);
 2. Alice calcula um **hash** da mensagem (um resumo dela, explicado logo abaixo) e o criptografa com a própria chave **privada** (autenticação e integridade); depois envia os dois;
@@ -398,11 +347,11 @@ Se uma chave privada for comprometida, é preciso gerar outro par para substitu�
 
 O **hash** é um resumo de tamanho fixo calculado a partir dos dados, que muda se qualquer parte deles mudar.
 
-### 5.6 Diffie-Hellman
+### 4.6 Diffie-Hellman
 
-O **Diffie-Hellman (DH)** permite que **dois computadores gerem o mesmo segredo compartilhado sem nunca terem se comunicado antes**. A nova chave **nunca é trocada** entre eles: cada lado a calcula sozinho. Ela depois é usada por um algoritmo simétrico, como o AES. Usos comuns: as **VPNs IPsec** e o **SSH**, descritos no item 5.4.
+O **Diffie-Hellman (DH)** permite que **dois computadores gerem o mesmo segredo compartilhado sem nunca terem se comunicado antes**. A nova chave **nunca é trocada** entre eles: cada lado a calcula sozinho. Ela depois é usada por um algoritmo simétrico, como o AES. Usos comuns: as **VPNs IPsec** e o **SSH**, descritos no item 4.4.
 
-#### 5.6.1 Exemplo Resolvido: a Analogia das Cores
+#### 4.6.1 Exemplo Resolvido: a Analogia das Cores
 
 1. Alice e Bob combinam uma cor pública: amarelo;
 2. cada um escolhe uma cor secreta, que nunca é compartilhada: Alice, vermelho; Bob, azul;
@@ -420,7 +369,7 @@ A segurança do DH vem dos **números enormes** usados nos cálculos: um número
 | 14, 15 e 16 | 2.048, 3.072 e 4.096 bits |
 | 19, 20 e 24 | Curvas elípticas |
 
-### 5.7 Resumo de Criptografia Simétrica e Assimétrica
+### 4.7 Resumo de Criptografia Simétrica e Assimétrica
 
 | Característica | Simétrica | Assimétrica |
 | --- | --- | --- |
@@ -432,22 +381,22 @@ A segurança do DH vem dos **números enormes** usados nos cálculos: um número
 
 As duas trabalham juntas. Os sistemas assimétricos são lentos demais para criptografia em massa. Por isso, o **DH cria as chaves, e um algoritmo simétrico (como o AES ou o 3DES) criptografa o grande volume de dados**.
 
-## 6. Hash, Integridade e Autenticidade
+## 5. Hash, Integridade e Autenticidade
 
 A criptografia impede a leitura dos dados, mas não garante que eles chegaram sem alteração nem quem os enviou. Para isso existem o **hash** e o **HMAC**.
 
-### 6.1 Elementos das Comunicações Seguras
+### 5.1 Elementos das Comunicações Seguras
 
 As organizações precisam proteger os dados que viajam pelos links (as conexões entre redes), principalmente os que saem para filiais, trabalho remoto e parceiros. A criptografia pode ser usada em praticamente qualquer comunicação, e **a tendência é que toda comunicação seja criptografada**. As comunicações seguras se apoiam em **quatro elementos**:
 
 | Elemento | O que garante | Como é obtido |
 | --- | --- | --- |
-| Integridade dos dados | A mensagem não foi alterada; qualquer alteração em trânsito é detectada | Hash, com algoritmos como SHA-2 ou SHA-3; o MD5 ainda é muito usado, mas é inseguro (todos explicados nos itens 6.2 e 6.3) |
-| Autenticação de origem | A mensagem não é falsificada e vem de quem diz ter enviado | HMAC, um hash calculado com uma chave secreta (ver item 6.6) |
+| Integridade dos dados | A mensagem não foi alterada; qualquer alteração em trânsito é detectada | Hash, com algoritmos como SHA-2 ou SHA-3; o MD5 ainda é muito usado, mas é inseguro (todos explicados nos itens 5.2 e 5.3) |
+| Autenticação de origem | A mensagem não é falsificada e vem de quem diz ter enviado | HMAC, um hash calculado com uma chave secreta (ver item 5.6) |
 | Confidencialidade | Só autorizados leem; se interceptada, a mensagem não é decifrada em tempo razoável | Criptografia simétrica e assimétrica |
 | Não repúdio | O remetente não pode negar o envio, porque só ele tem a característica ou a assinatura exclusiva | Assinatura digital |
 
-### 6.2 Funções Hash
+### 5.2 Funções Hash
 
 Uma **função hash** recebe dados de qualquer tamanho e produz uma **representação de tamanho fixo**, chamada de **hash** (ou *digest*).
 
@@ -462,7 +411,7 @@ Suas características são:
 
 Por esse motivo, **qualquer alteração nos dados, por menor que seja, muda o hash**. Os hashes funcionam como **impressões digitais** dos dados e também servem para detectar arquivos duplicados e mudanças de versão.
 
-### 6.3 Algoritmos de Hash
+### 5.3 Algoritmos de Hash
 
 | Algoritmo | Tamanho do hash | Situação |
 | --- | --- | --- |
@@ -473,7 +422,7 @@ Por esse motivo, **qualquer alteração nos dados, por menor que seja, muda o ha
 
 A sigla **SHA** significa *Secure Hash Algorithm*. O **NIST** (*National Institute of Standards and Technology*, instituto de padrões dos EUA) o especificou no padrão de hash seguro (SHS).
 
-### 6.4 Verificação de Integridade com Hash
+### 5.4 Verificação de Integridade com Hash
 
 A verificação compara o hash calculado antes e depois da transmissão:
 
@@ -488,13 +437,13 @@ Usos comuns:
 - **downloads**: comparar o hash publicado pelo fabricante com o do arquivo baixado; a Cisco, por exemplo, publica os hashes (também chamados de *checksums*) MD5 e SHA dos arquivos do IOS, para que se confira se o sistema instalado no equipamento é original;
 - **perícia forense**: o perito faz uma **cópia bit a bit** (clone) da mídia e compara o hash dela com o da original. Hashes iguais provam a **invariabilidade**: os dados não foram corrompidos nem alterados. O perito então examina a cópia e deixa o original intacto.
 
-### 6.5 Limitação do Hash
+### 5.5 Limitação do Hash
 
 O hash detecta alterações acidentais, mas **não protege contra alterações deliberadas**: ele não traz nenhuma identificação do remetente, e qualquer pessoa com a função certa consegue calculá-lo.
 
 Um atacante no meio do caminho pode alterar a mensagem, calcular um novo hash e anexá-lo; o receptor só confere o hash que veio junto. Esse é o **ataque *man-in-the-middle* (MitM)**, em que o criminoso se coloca entre as duas partes.
 
-### 6.6 HMAC
+### 5.6 HMAC
 
 O **HMAC** (*Hash-based Message Authentication Code*) é um hash calculado **a partir da mensagem e de uma chave secreta que só o remetente e o destinatário conhecem**.
 
@@ -504,7 +453,7 @@ Sem a chave, o atacante não gera um HMAC válido. Por isso, o HMAC garante a **
 2. o destinatário calcula o HMAC com a mesma chave;
 3. valores iguais → mensagem íntegra e de origem confiável.
 
-Existem outros métodos de **MAC** (*Message Authentication Code* — código de autenticação de mensagem; não confundir com o endereço MAC das placas de rede), mas o HMAC é o usado no SSL/TLS (ver item 5.4), no IPsec, no SSH e na autenticação entre roteadores que usam o **OSPF** (*Open Shortest Path First*, um protocolo com que os roteadores trocam informações sobre os caminhos da rede).
+Existem outros métodos de **MAC** (*Message Authentication Code* — código de autenticação de mensagem; não confundir com o endereço MAC das placas de rede), mas o HMAC é o usado no SSL/TLS (ver item 4.4), no IPsec, no SSH e na autenticação entre roteadores que usam o **OSPF** (*Open Shortest Path First*, um protocolo com que os roteadores trocam informações sobre os caminhos da rede).
 
 O HMAC também autentica usuários da web. Muitos serviços usam a **autenticação básica** do HTTP (o protocolo das páginas web), que **não criptografa** o usuário e a senha. Com o HMAC, o usuário envia um identificador e um HMAC calculado com a chave privada dele; o servidor busca essa chave, calcula o HMAC e confere se os dois batem. As VPNs IPsec usam o HMAC para autenticar a origem de cada pacote e conferir a integridade.
 
@@ -512,11 +461,11 @@ Resumindo, as funções hash servem para:
 
 - provar a **autenticidade**, com uma chave secreta simétrica, no IPsec e na autenticação de protocolos de roteamento (os roteadores Cisco IOS fazem isso);
 - gerar respostas únicas e unidirecionais a **desafios** nos protocolos de autenticação;
-- provar a **integridade**, como nos contratos assinados digitalmente e nos certificados digitais da PKI (a infraestrutura de chave pública, vista na seção 7).
+- provar a **integridade**, como nos contratos assinados digitalmente e nos certificados digitais da PKI (a infraestrutura de chave pública, explicada na seção 6).
 
 Ao escolher um algoritmo de hash, use o **SHA-256 ou superior** e evite o SHA-1 e o MD5.
 
-#### 6.6.1 Exemplo Resolvido: HMAC entre Roteadores OSPF
+#### 5.6.1 Exemplo Resolvido: HMAC entre Roteadores OSPF
 
 O roteador R1 avisa o roteador vizinho R2 sobre um caminho para a rede 10.2.0.0/16, enviando uma atualização de estado do link (**LSU**, *Link-State Update*, a mensagem do OSPF que informa as rotas):
 
@@ -530,7 +479,7 @@ O roteador R1 avisa o roteador vizinho R2 sobre um caminho para a rede 10.2.0.0/
 | Quem calcula | Qualquer pessoa | Só quem tem a chave |
 | Resiste ao man-in-the-middle | Não | Sim |
 
-### 6.7 Hash de Senhas
+### 5.7 Hash de Senhas
 
 Os sistemas não guardam as senhas: **guardam apenas o hash da senha**. No login, comparam o hash da senha digitada com o guardado. Assim, a senha fica protegida e ainda pode ser verificada.
 
@@ -541,7 +490,7 @@ Quem rouba os hashes precisa adivinhar as senhas, por dois ataques:
 
 O **alongamento de chave** (*key stretching*) deixa cada tentativa muito lenta, o que reduz a eficácia de equipamentos capazes de calcular bilhões de hashes por segundo.
 
-#### 6.7.1 Salt
+#### 5.7.1 Salt
 
 O **salt** é uma **sequência aleatória acrescentada à senha antes do cálculo do hash**. Assim, senhas iguais geram hashes diferentes.
 
@@ -564,11 +513,11 @@ O salt impede o ataque de dicionário e inutiliza as tabelas que os atacantes pr
 | Tabela de pesquisa reversa | Liga cada hash roubado a todos os usuários que o usam, para atacar vários hashes sem tabela pré-calculada |
 | Tabela rainbow | Sacrifica a velocidade para ocupar menos espaço e guardar soluções para mais hashes |
 
-## 7. Assinaturas Digitais e Infraestrutura de Chave Pública (PKI)
+## 6. Assinaturas Digitais e Infraestrutura de Chave Pública (PKI)
 
-A **assinatura digital** combina o hash (ver item 6.2) e a criptografia assimétrica para provar quem enviou uma mensagem. Para confiar nas chaves públicas usadas nessa prova, existe a **PKI**.
+A **assinatura digital** combina o hash (ver item 5.2) e a criptografia assimétrica para provar quem enviou uma mensagem. Para confiar nas chaves públicas usadas nessa prova, existe a **PKI**.
 
-### 7.1 Assinatura Digital
+### 6.1 Assinatura Digital
 
 A **assinatura digital** é uma técnica matemática que garante **autenticidade, integridade e não repúdio**. O **não repúdio** significa que quem assinou não pode depois negar que assinou. Ela vale como **prova legal** de que a troca de dados ocorreu.
 
@@ -579,21 +528,21 @@ Suas características são:
 - não reutilizável: não pode ser transferida para outro documento;
 - não repudiável: o documento assinado vale como um documento físico, e o signatário não pode negar a assinatura.
 
-Os dois usos mais comuns são a **assinatura de código** (ver item 7.3) e os **certificados digitais** (ver item 7.4), uma espécie de carteira de identidade virtual que prova quem é um site ou um sistema e permite abrir uma conexão criptografada com ele.
+Os dois usos mais comuns são a **assinatura de código** (ver item 6.3) e os **certificados digitais** (ver item 6.4), uma espécie de carteira de identidade virtual que prova quem é um site ou um sistema e permite abrir uma conexão criptografada com ele.
 
-O padrão **DSS** (*Digital Signature Standard*), já citado no item 5.4, admite três algoritmos:
+O padrão **DSS** (*Digital Signature Standard*), já citado no item 4.4, admite três algoritmos:
 
 - **DSA**: o padrão original, com chaves de 512 a 1.024 bits;
-- **RSA** (ver item 5.4): assimétrico, muito usado para gerar e verificar assinaturas;
+- **RSA** (ver item 4.4): assimétrico, muito usado para gerar e verificar assinaturas;
 - **ECDSA** (*Elliptic Curve DSA*): variante mais recente do DSA, com curvas elípticas (ECC); mais eficiente, com assinaturas menores e menos dados trafegando na rede.
 
 Nos anos 1990, a empresa RSA Security começou a publicar os **PKCS** (*Public-Key Cryptography Standards*), padrões de criptografia de chave pública. Eram 15, um deles retirado. Não são padrões oficiais do setor, mas são bem reconhecidos e passaram a interessar a organizações como a **IETF** (*Internet Engineering Task Force*), a entidade que publica os padrões técnicos da internet.
 
-### 7.2 Como a Assinatura É Criada e Verificada
+### 6.2 Como a Assinatura É Criada e Verificada
 
 A assinatura usa a chave **privada** do remetente para assinar e a chave **pública** dele para conferir.
 
-#### 7.2.1 Exemplo Resolvido: Bob Confirma um Pedido de Alice
+#### 6.2.1 Exemplo Resolvido: Bob Confirma um Pedido de Alice
 
 Bob confirma um pedido de Alice. Para assinar:
 
@@ -611,7 +560,7 @@ Para verificar:
 
 **Importante:** o que se criptografa na assinatura é o **hash** do documento. Por isso, a assinatura não dá confidencialidade: o documento continua legível.
 
-### 7.3 Assinatura de Código
+### 6.3 Assinatura de Código
 
 A **assinatura de código** aplica a assinatura digital a programas: o executável vem em um **envelope assinado digitalmente**, e o usuário confere a assinatura antes de instalar. Ela garante que:
 
@@ -624,17 +573,17 @@ O padrão **FIPS 140-3** (*Federal Information Processing Standard*, norma de se
 
 No Windows, nas propriedades de um programa baixado (botão direito → Propriedades), a aba Assinaturas Digitais mostra quem assinou (por exemplo, a Cisco Systems Inc.), o algoritmo do *digest*, isto é, do hash (por exemplo, sha256), e a data da assinatura.
 
-### 7.4 Certificados Digitais
+### 6.4 Certificados Digitais
 
 Um **certificado digital** funciona como um **passaporte eletrônico**: ele **associa uma chave pública a uma identidade confirmada**, de um site, de uma pessoa ou de uma organização. Ele informa para quem foi emitido, quem o emitiu e até quando vale. Serve para **autenticar quem envia** uma mensagem e também para dar ao receptor um meio de **criptografar a resposta**.
 
 **Importante:** o **certificado verifica a identidade**; a **assinatura verifica que algo veio dessa identidade**.
 
-### 7.5 Infraestrutura de Chave Pública (PKI)
+### 6.5 Infraestrutura de Chave Pública (PKI)
 
 Ao abrir uma conexão assimétrica, dois hosts trocam suas chaves públicas. Para confiar nelas, um **terceiro confiável** precisa confirmar a quem pertencem, como o órgão que emite a carteira de motorista: ele faz uma investigação aprofundada e emite credenciais difíceis de falsificar, que todos os que confiam nele aceitam.
 
-Na prática, para um site usar HTTPS (o SSL/TLS do item 5.4), o dono obtém um certificado para o seu domínio (o nome do site, como exemplo.com.br) junto a um provedor de certificados. Quando alguém acessa o site, o navegador recebe esse certificado, e a chave pública do site, que vem nele, protege as comunicações seguintes.
+Na prática, para um site usar HTTPS (o SSL/TLS do item 4.4), o dono obtém um certificado para o seu domínio (o nome do site, como exemplo.com.br) junto a um provedor de certificados. Quando alguém acessa o site, o navegador recebe esse certificado, e a chave pública do site, que vem nele, protege as comunicações seguintes.
 
 A **PKI** (*Public Key Infrastructure* — Infraestrutura de Chave Pública) é o conjunto de especificações, hardware, software, pessoas, políticas e procedimentos que **criam, gerenciam, distribuem, armazenam e revogam certificados digitais**. Ela permite distribuir e identificar chaves públicas em grande escala, com uma relação de confiança muito escalável, e foi projetada para proteger identidades digitais até de atacantes sofisticados e de Estados.
 
@@ -659,7 +608,7 @@ De forma simplificada:
 
 A **autoridade de registro** (**RA**, *Registration Authority*) confere a identidade de quem pede o certificado e encaminha o pedido; quem emite é sempre uma CA.
 
-### 7.6 Classes de Certificados
+### 6.6 Classes de Certificados
 
 As CAs, principalmente as terceirizadas, emitem certificados em classes. O número depende do **rigor da verificação de identidade** na emissão: **quanto maior a classe, mais confiável o certificado**.
 
@@ -674,9 +623,9 @@ As CAs, principalmente as terceirizadas, emitem certificados em classes. O núme
 
 Na classe 1, basta responder a um e-mail, o que é uma autenticação fraca. Nas classes 3 e 4, o titular comparece **pessoalmente com pelo menos dois documentos oficiais** de identificação.
 
-Os navegadores já trazem a lista de **autoridades de certificação raiz confiáveis**, as CAs do topo, em quem todos confiam (ver item 7.7).
+Os navegadores já trazem a lista de **autoridades de certificação raiz confiáveis**, as CAs do topo, em quem todos confiam (ver item 6.7).
 
-### 7.7 Topologias de PKI
+### 6.7 Topologias de PKI
 
 | Topologia | Como funciona | Vantagem | Desvantagem |
 | --- | --- | --- | --- |
@@ -689,7 +638,7 @@ O **ponto único de falha** é qualquer componente cuja falha derruba o sistema 
 
 A interoperabilidade é um problema, porque muitos fornecedores criaram soluções próprias para a PKI e seus serviços de diretório, como o **LDAP** (*Lightweight Directory Access Protocol*) e o **X.500**, usados para consultar um diretório (um cadastro central de usuários e equipamentos, como o Active Directory da Microsoft) e conferir usuário e senha. Para resolver isso, a IETF publicou a RFC 2527 (os padrões da internet são publicados em documentos numerados chamados RFC, *Request for Comments*), um modelo de políticas para a PKI X.509.
 
-### 7.8 Padrão X.509
+### 6.8 Padrão X.509
 
 O padrão **X.509 versão 3**, do **ITU-T** (o setor de telecomunicações da União Internacional de Telecomunicações, órgão da ONU), define o **formato dos certificados digitais**: que campos o certificado tem e em que ordem. Ele é usado em:
 
@@ -698,7 +647,7 @@ O padrão **X.509 versão 3**, do **ITU-T** (o setor de telecomunicações da Un
 - **S/MIME** (*Secure/Multipurpose Internet Mail Extensions*): padrão que programas de e-mail usam para assinar e criptografar as mensagens;
 - **EAP-TLS**: método de autenticação do padrão **802.1X**, em que o switch só libera a porta da rede depois que o dispositivo conectado prova a identidade com um certificado; o switch repassa essa verificação a um servidor central de autenticação (na Cisco, o ACS, *Access Control Server*).
 
-### 7.9 Inscrição e Revogação de Certificados
+### 6.9 Inscrição e Revogação de Certificados
 
 O primeiro passo é obter com segurança a chave pública da CA, o **certificado autoassinado**, que verifica todos os certificados que ela emite. **Só uma CA raiz** pode emitir um certificado autoassinado reconhecido pelas outras CAs. Nos navegadores, os certificados raiz públicos já vêm instalados.
 
@@ -711,7 +660,7 @@ Um certificado pode ser **revogado**, por exemplo quando a chave é comprometida
 | CRL (*Certificate Revocation List*) | Lista dos números de série dos certificados revogados; as entidades da PKI consultam o repositório regularmente |
 | OCSP (*Online Certificate Status Protocol*) | Consulta a um servidor OCSP sobre um certificado X.509; as revogações vão imediatamente para um banco de dados on-line |
 
-### 7.10 Aplicações da PKI
+### 6.10 Aplicações da PKI
 
 A PKI está em:
 
@@ -729,12 +678,66 @@ O navegador mostra um aviso de segurança em dois casos:
 - **validade**: o certificado X.509v3 traz datas de "não antes" e "não depois"; um certificado vencido pode ser só descuido do administrador ou algo mais grave;
 - **erro de validação da assinatura**: sem validar a assinatura, não há garantia de que a chave pública é autêntica; isso acontece quando o certificado raiz da CA não está no armazenamento do navegador.
 
-O SSL/TLS é modular: o **conjunto de cifras** (*cipher suite*) reúne o algoritmo de MAC (o HMAC (ver item 6.6) do item 6.6), o de criptografia (como o AES), o de troca de chaves (como o DH) e o de autenticação (como o RSA). Cada um pode ser trocado sem mudar o protocolo inteiro, o que permite corrigir falhas que a **criptoanálise** (o estudo de como quebrar cifras) descobre. Quando as versões do conjunto mudam, muda também o número de versão do SSL/TLS.
+O SSL/TLS é modular: o **conjunto de cifras** (*cipher suite*) reúne o algoritmo de MAC (o HMAC (ver item 5.6) do item 5.6), o de criptografia (como o AES), o de troca de chaves (como o DH) e o de autenticação (como o RSA). Cada um pode ser trocado sem mudar o protocolo inteiro, o que permite corrigir falhas que a **criptoanálise** (o estudo de como quebrar cifras) descobre. Quando as versões do conjunto mudam, muda também o número de versão do SSL/TLS.
 
 A criptografia afeta as investigações de duas formas:
 
 - o ataque pode mirar o próprio algoritmo; quebrado o algoritmo e obtidas as chaves, todos os dados capturados podem ser lidos;
 - os dados ficam **escondidos à vista**: o criminoso também usa criptografia. Os comandos que ele envia às máquinas infectadas (o chamado **comando e controle**) vão cifrados, e assim ele pode infectar mais computadores e formar uma **botnet** (rede de computadores infectados comandados à distância) sem que o conteúdo seja lido; achá-los é demorado, muitas vezes por tentativa e erro.
+
+## 7. Protocolos Seguros
+
+Com a criptografia, o hash e os certificados explicados, dá para entender os **protocolos seguros**: as versões protegidas dos protocolos que a rede usa todos os dias. Eles juntam as peças vistas até aqui: a criptografia assimétrica e os certificados provam a identidade e combinam uma chave, e a criptografia simétrica e o HMAC protegem o resto da conversa. Este módulo reúne em um só lugar o acesso remoto (Telnet e SSH), a navegação (HTTP e HTTPS), o gerenciamento (SNMP), a transferência de arquivos e o e-mail.
+
+### 7.1 Telnet, SSH e SCP
+
+O **Telnet** e o **SSH** (*Secure Shell*, apresentado no item 4.4) dão acesso remoto, por linha de comando, a dispositivos como roteadores:
+
+| Característica | Telnet | SSH |
+| --- | --- | --- |
+| Criptografia | Nenhuma | Tudo criptografado |
+| Porta | TCP 23 | TCP 22 |
+| O que um sniffer (como o Wireshark) vê | Usuário e senha do administrador em texto claro | Apenas os endereços IP; usuário e senha vão criptografados |
+| Recomendação | Evitar | Usar sempre |
+
+O **SCP** (*Secure Copy*) **transfere arquivos entre dois sistemas remotos usando o SSH**, inclusive na autenticação, o que garante a autenticidade e a confidencialidade dos dados em trânsito.
+
+### 7.2 SNMP, SSL/TLS, FTPS e E-mail Seguro
+
+Os principais protocolos têm versões seguras:
+
+- **SNMPv3**: o **SNMP** (*Simple Network Management Protocol*) coleta estatísticas dos dispositivos, como uso de processador e de tráfego, para monitorar a rede; a versão 3, padrão atual, usa criptografia contra espionagem e alteração dos dados;
+- **SSL e TLS** (ver item 4.4): o HTTP (porta 80) não tem proteção e pode ser monitorado; o SSL criptografa a sessão depois de um *handshake* (a "apresentação" inicial em que os dois lados combinam os algoritmos e as chaves), e o **TLS** é o **substituto atualizado e mais seguro do SSL**; com eles, o navegador usa o **HTTPS**, detalhado no item 7.3;
+- **FTPS**: no **FTP** (*File Transfer Protocol*, protocolo de transferência de arquivos), o cliente se conecta com usuário e senha em texto claro; o FTPS acrescenta TLS e SSL contra interceptação, alteração e falsificação;
+- **e-mail**: o **POP** (*Post Office Protocol*, porta 110), que baixa as mensagens para o computador, e o **IMAP** (*Internet Message Access Protocol*, porta 143), que as mantém no servidor e sincroniza vários aparelhos, recebem as mensagens; o **MIME** (*Multipurpose Internet Mail Extensions*) permite anexar dados que não são texto, como imagens e vídeos; POP e IMAP devem usar SSL/TLS, e o **S/MIME** envia e-mails **assinados e criptografados**, com autenticação, integridade e não repúdio.
+
+### 7.3 HTTP e HTTPS
+
+O **HTTP** (*HyperText Transfer Protocol*) é o protocolo das páginas web e trafega **em texto claro**: qualquer pessoa no caminho pode ler e alterar o que passa. O **HTTPS** acrescenta ao HTTP a criptografia **SSL/TLS** (ver item 4.4), que deixa os dados ilegíveis do computador de origem até o servidor. É ele que faz aparecer o cadeado no navegador.
+
+Usando a chave pública, a chave simétrica e o certificado, a conexão ocorre assim:
+
+1. o navegador pede a página com https://;
+2. o servidor envia sua chave pública junto com o certificado;
+3. o navegador confere se o certificado não venceu, não foi revogado e foi emitido por uma parte confiável;
+4. o navegador cria uma chave simétrica e a envia ao servidor, que a descriptografa com a própria chave privada;
+5. o servidor criptografa a página com a chave simétrica, e o navegador a descriptografa e mostra ao usuário.
+
+![No HTTPS, a criptografia assimétrica protege a troca da chave simétrica, que depois cifra a página](img/defesa/def_https.png){width=6in}
+
+**Importante:** o HTTPS **protege os dados apenas no caminho**, não o servidor: um site com cadeado pode ser malicioso. Os efeitos do HTTPS sobre o monitoramento da rede são vistos no item 26.2.
+
+### 7.4 Resumo de Protocolos Inseguros e Seguros
+
+| Função | Protocolo inseguro | Alternativa segura |
+| --- | --- | --- |
+| Acesso remoto | Telnet (TCP 23) | SSH (TCP 22) |
+| Cópia de arquivos | FTP | FTPS ou SCP |
+| Navegação web | HTTP (porta 80) | HTTPS (porta 443) |
+| Gerenciamento | SNMPv1 e SNMPv2 | SNMPv3 |
+| E-mail | POP (110) e IMAP (143) sem criptografia | POP e IMAP com SSL/TLS; S/MIME |
+| Resolução de nomes | DNS sem autenticação | DNSSEC |
+| Tempo | NTP sem autenticação | NTP com autenticação |
 
 ## 8. Ocultação de Dados
 
@@ -789,7 +792,7 @@ Os dois últimos métodos usam **assinaturas de esteganografia**.
 | Chama atenção? | Sim | Não | Não |
 | Uso típico | Dados em trânsito e em repouso | Comunicação secreta | Testes e análises |
 
-## 9. Controle de Acesso e AAA
+## 9. Controle de Acesso e Autenticação
 
 O **controle de acesso** é o conjunto de medidas que **define quem pode acessar cada recurso, o que pode fazer com ele e quando**.
 
@@ -807,7 +810,7 @@ Alguns itens merecem uma explicação:
 
 - **mantrap** (eclusa): entrada com duas portas que controla o fluxo de pessoas e pode prender um visitante indesejado entre elas;
 - **níveis de corte** (*clipping levels*): limite de erros permitido antes de disparar um alerta;
-- **ACL** (*Access Control List* — lista de controle de acesso): lista de regras, configurada em roteadores, firewalls ou arquivos, que define o que é permitido e o que é bloqueado (detalhada na seção 20);
+- **ACL** (*Access Control List* — lista de controle de acesso): lista de regras, configurada em roteadores, firewalls ou arquivos, que define o que é permitido e o que é bloqueado (detalhada na seção 16);
 - **política**: declaração de intenções; **procedimento**: os passos detalhados para realizar uma atividade;
 - **verificação de antecedentes**: triagem na admissão, com histórico profissional, de crédito e criminal.
 
@@ -981,11 +984,11 @@ O **NAC** (*Network Access Control*) **aplica as políticas da organização às
 - verificar, **antes** de liberar o acesso, se o dispositivo cumpre as políticas conforme o tipo de usuário, o tipo de dispositivo e o sistema operacional;
 - bloquear, isolar ou corrigir dispositivos fora das regras.
 
-O BYOD (uso de aparelhos pessoais no trabalho, visto no item 4.4) e a IoT ampliam muito a **superfície de ataque**, o conjunto de pontos por onde um atacante pode entrar. Sem a automação do NAC, seria impossível avaliar os milhares de dispositivos que tentam entrar, e ele é parte importante da confiança zero.
+O BYOD (uso de aparelhos pessoais no trabalho, visto no item 2.4) e a IoT ampliam muito a **superfície de ataque**, o conjunto de pontos por onde um atacante pode entrar. Sem a automação do NAC, seria impossível avaliar os milhares de dispositivos que tentam entrar, e ele é parte importante da confiança zero.
 
-## 11. Gerenciamento de Contas e Protocolos de Autenticação
+## 11. Contas e Permissões
 
-O **gerenciamento de contas** garante que **cada usuário tenha a conta adequada à sua função** e só acesse o necessário. Os **protocolos de autenticação** definem como a identidade é comprovada pela rede.
+O **gerenciamento de contas** garante que **cada usuário tenha a conta adequada à sua função** e só acesse o necessário, aplicando na prática o privilégio mínimo (ver item 10.2). Este módulo trata das contas e das permissões no próprio computador ou servidor; a autenticação centralizada pela rede fica para o próximo.
 
 ### 11.1 Tipos de Contas
 
@@ -1079,41 +1082,11 @@ O **gerenciamento de autenticação** busca **garantir uma entrada segura sem co
 | Cofre de senhas | Guarda as credenciais sob uma única senha forte |
 | KBA (*Knowledge-Based Authentication*) | Redefine a senha esquecida com informações pessoais ou uma série de perguntas |
 
-### 11.7 Protocolos de Autenticação
+## 12. AAA na Rede: Servidores e Protocolos de Autenticação
 
-Um **protocolo de autenticação** autentica os dados entre duas **entidades** (qualquer dispositivo ou sistema da empresa) e define **o que elas trocam para se autenticar**.
+O **AAA** (ver item 9.2) define as três perguntas do controle de acesso: quem é você, o que pode fazer e o que fez. Este módulo mostra **como ele é implementado na rede**: onde ficam as contas (no próprio equipamento ou em um servidor central), quais protocolos comprovam a identidade, como os servidores RADIUS e TACACS+ se comparam e como a contabilidade registra o uso.
 
-| Protocolo | Como funciona | Segurança |
-| --- | --- | --- |
-| PAP (*Password Authentication Protocol*) | Envia usuário e senha a um servidor de acesso remoto (o equipamento que recebe as conexões de quem está fora) em **texto claro**, ou seja, sem criptografia; aceito pela maioria dos servidores | Fraca |
-| CHAP (*Challenge-Handshake Authentication Protocol*) | Desafio e resposta: o servidor manda um número aleatório (o desafio), o cliente calcula um hash juntando esse número e a senha e devolve o resultado; o servidor faz a mesma conta e compara. A senha nunca viaja pela rede. A identidade é conferida de novo de tempos em tempos | Melhor que o PAP |
-| EAP (*Extensible Authentication Protocol*) | Não é um método único, e sim uma estrutura que aceita vários métodos (por isso "extensível"); em geral, a senha vai protegida até o servidor de autenticação, que apresenta um certificado (o cliente não precisa ter um); comum no Wi-Fi corporativo | Depende do método |
-| 802.1X | Padrão de controle de acesso por porta: o switch ou o ponto de acesso Wi-Fi só libera a conexão depois que o dispositivo se autentica com a credencial ou com um certificado, confirmado por um servidor RADIUS | Alta |
-| RADIUS (*Remote Authentication Dial-In User Service*) | Servidor central que confere usuário e senha para vários equipamentos; criptografa só a senha, e o resto vai em texto claro; precisa de proteção contra **ataques de repetição** (o atacante grava uma autenticação válida e a reenvia depois) | Média |
-| TACACS+ (*Terminal Access Controller Access-Control System Plus*) | Servidor central semelhante ao RADIUS, criado pela Cisco; usa o TCP (o protocolo de transporte que confirma a entrega) e criptografa tudo; permite ACLs, filtros e privilégios; melhor para redes corporativas que exigem controle da autorização | Alta |
-| Kerberos | Autenticação mútua com tíquetes (ver item 11.7.1); é o método usado nos domínios Windows | Alta |
-
-#### 11.7.1 Kerberos
-
-O **Kerberos** usa criptografia forte e faz **autenticação mútua**: o cliente prova a identidade ao servidor, e o servidor se autentica ao cliente, com base em **tíquetes**. O tíquete funciona como uma pulseira de evento: depois de provar a identidade na entrada, o usuário a mostra em cada área sem precisar se identificar de novo. O servidor Kerberos guarda a identificação (ID) e o hash da senha de cada usuário, além de chaves secretas compartilhadas com os servidores para os quais emite tíquetes.
-
-1. o cliente se autentica e recebe um **TGT** (*Ticket-Granting Ticket*, tíquete de concessão de tíquete);
-2. apresenta o TGT e pede acesso a um serviço;
-3. recebe um **tíquete de serviço** e acessa o serviço.
-
-![No Kerberos, o cliente se autentica uma vez e depois usa tíquetes para acessar os serviços](img/defesa/def_kerberos.png){width=6in}
-
-Como toda a sessão pode ser criptografada, as senhas não trafegam de forma insegura. Os tíquetes têm **carimbo de hora e prazo de validade**, o que impede reutilizar um tíquete antigo.
-
-## 12. Implementação do AAA
-
-A rede deve ser projetada para controlar **quem pode se conectar e o que pode fazer** depois de conectado. Esses requisitos ficam na **política de segurança de rede**, que define como administradores, usuários corporativos e remotos, parceiros e clientes acessam os recursos. Ela também pode exigir um sistema de contabilidade que registre **quem entrou, quando e o que fez**, e alguns regulamentos exigem guardar esses logs por um período definido.
-
-O **AAA** (ver item 9.2) é a estrutura que permite essa segurança de acesso de forma **escalável**, com três funções independentes:
-
-- **autenticação**: por usuário e senha, desafio e resposta (como no CHAP, item 11.7), tokens e outros métodos; o AAA a centraliza;
-- **autorização**: define os recursos e as operações permitidas; exemplo: "o usuário 'aluno' pode acessar o servidor XYZ só por SSH";
-- **contabilidade** (*accounting*): registra como os recursos são usados; exemplo: "o usuário 'aluno' acessou o servidor XYZ por SSH durante 15 minutos".
+A rede deve ser projetada para controlar **quem pode se conectar e o que pode fazer** depois de conectado. Esses requisitos ficam na **política de segurança de rede**, e alguns regulamentos exigem guardar os registros de contabilidade por um período definido.
 
 ### 12.1 AAA Local e AAA Baseado em Servidor
 
@@ -1129,9 +1102,21 @@ No **AAA local**, também chamado de **autenticação autônoma**, o cliente rem
 
 O AAA centralizado é **mais escalável e mais fácil de gerenciar** e, por isso, é a implementação preferida. Ele pode usar o Active Directory ou o **LDAP** (protocolo de consulta a serviços de diretório) para autenticar e saber os grupos do usuário, mantendo os próprios bancos de autorização e contabilidade.
 
-### 12.2 TACACS+ e RADIUS
+### 12.2 Protocolos de Autenticação
 
-Os dispositivos falam com o servidor AAA pelo **TACACS+** ou pelo **RADIUS**:
+Um **protocolo de autenticação** autentica os dados entre duas **entidades** (qualquer dispositivo ou sistema da empresa) e define **o que elas trocam para se autenticar**. Os protocolos abaixo comprovam a identidade; os servidores centrais que guardam as credenciais, o RADIUS e o TACACS+, são comparados no item 12.3.
+
+| Protocolo | Como funciona | Segurança |
+| --- | --- | --- |
+| PAP (*Password Authentication Protocol*) | Envia usuário e senha a um servidor de acesso remoto (o equipamento que recebe as conexões de quem está fora) em **texto claro**, ou seja, sem criptografia; aceito pela maioria dos servidores | Fraca |
+| CHAP (*Challenge-Handshake Authentication Protocol*) | Desafio e resposta: o servidor manda um número aleatório (o desafio), o cliente calcula um hash juntando esse número e a senha e devolve o resultado; o servidor faz a mesma conta e compara. A senha nunca viaja pela rede. A identidade é conferida de novo de tempos em tempos | Melhor que o PAP |
+| EAP (*Extensible Authentication Protocol*) | Não é um método único, e sim uma estrutura que aceita vários métodos (por isso "extensível"); em geral, a senha vai protegida até o servidor de autenticação, que apresenta um certificado (o cliente não precisa ter um); comum no Wi-Fi corporativo | Depende do método |
+| 802.1X | Padrão de controle de acesso por porta: o switch ou o ponto de acesso Wi-Fi só libera a conexão depois que o dispositivo se autentica com a credencial ou com um certificado, confirmado por um servidor RADIUS | Alta |
+| Kerberos | Autenticação mútua com tíquetes (ver item 12.4); é o método usado nos domínios Windows | Alta |
+
+### 12.3 Servidores RADIUS e TACACS+
+
+Os dispositivos falam com o servidor AAA central por um de dois protocolos: o **RADIUS** (*Remote Authentication Dial-In User Service*), padrão aberto, e o **TACACS+** (*Terminal Access Controller Access-Control System Plus*), criado pela Cisco. O RADIUS ainda precisa de proteção contra **ataques de repetição** (o atacante grava uma autenticação válida e a reenvia depois).
 
 | Característica | TACACS+ | RADIUS |
 | --- | --- | --- |
@@ -1145,9 +1130,21 @@ Os dispositivos falam com o servidor AAA pelo **TACACS+** ou pelo **RADIUS**:
 
 **Importante:** o **RADIUS criptografa só a senha**; o **TACACS+ criptografa todo o corpo do pacote**.
 
-O TACACS+ é a melhor escolha quando se precisa controlar os comandos de cada administrador. O RADIUS é muito usado com 802.1X (ver item 11.7) e acesso remoto.
+O TACACS+ é a melhor escolha quando se precisa controlar os comandos de cada administrador. O RADIUS é muito usado com 802.1X (ver item 12.2) e acesso remoto.
 
-### 12.3 Contabilidade do AAA
+### 12.4 Kerberos
+
+O **Kerberos** usa criptografia forte e faz **autenticação mútua**: o cliente prova a identidade ao servidor, e o servidor se autentica ao cliente, com base em **tíquetes**. O tíquete funciona como uma pulseira de evento: depois de provar a identidade na entrada, o usuário a mostra em cada área sem precisar se identificar de novo. O servidor Kerberos guarda a identificação (ID) e o hash da senha de cada usuário, além de chaves secretas compartilhadas com os servidores para os quais emite tíquetes.
+
+1. o cliente se autentica e recebe um **TGT** (*Ticket-Granting Ticket*, tíquete de concessão de tíquete);
+2. apresenta o TGT e pede acesso a um serviço;
+3. recebe um **tíquete de serviço** e acessa o serviço.
+
+![No Kerberos, o cliente se autentica uma vez e depois usa tíquetes para acessar os serviços](img/defesa/def_kerberos.png){width=6in}
+
+Como toda a sessão pode ser criptografada, as senhas não trafegam de forma insegura. Os tíquetes têm **carimbo de hora e prazo de validade**, o que impede reutilizar um tíquete antigo.
+
+### 12.5 Contabilidade do AAA
 
 Com o AAA centralizado, os registros de todos os dispositivos vão para um só lugar, o que **facilita a auditoria das ações dos usuários**. Eles incluem horários de início e fim da conexão, comandos executados, número de pacotes e de bytes, e servem para auditorias de segurança e como prova contra ações mal-intencionadas.
 
@@ -1251,118 +1248,38 @@ As principais medidas são:
 
 Nas instalações de alta segurança, os guardas controlam o acesso às áreas confidenciais, porque se adaptam melhor que os sistemas automáticos.
 
-## 14. Segurança de Aplicações
+## 14. Fortalecimento de Dispositivos e Serviços de Rede
 
-A **segurança de aplicações** protege os programas, sites e serviços que a organização desenvolve e usa. Ela deve ser **prioridade em todas as etapas: desenvolvimento, testes e implantação**.
+O **fortalecimento** (*hardening*) consiste em **deixar exposto só o necessário**: configurar os equipamentos de forma segura e proteger os serviços que a rede usa. Os invasores entram por serviços, protocolos e portas abertas e por configurações padrão. Este módulo começa pelo controle das configurações e pelo reforço do sistema operacional e depois passa pelos serviços de rede, um por um: o que cada um faz, como é atacado e como protegê-lo.
 
-### 14.1 Etapas do Desenvolvimento de Aplicações
+### 14.1 Gerenciamento de Configuração
 
-O desenvolvimento usa ambientes separados:
+O **gerenciamento de configuração** é a **identificação, o controle e a auditoria da implantação de um sistema e de qualquer alteração feita na sua linha de base**.
 
-Desenvolvimento e teste → Preparação → Produção
+A **linha de base** (*baseline*) é o conjunto de configurações que serve de **modelo para todos os sistemas semelhantes**. Exemplo: quem implanta as estações Windows instala os aplicativos necessários e define as configurações conforme um padrão documentado.
 
-| Ambiente | O que acontece |
-| --- | --- |
-| Desenvolvimento e teste | O software é escrito, testado e depurado; o ambiente é menos restritivo e tem segurança mais baixa que o real; nos testes, a equipe de garantia de qualidade (QA, *Quality Assurance*) analisa como o código interage com o ambiente e encontra falhas, que são **muito mais fáceis de corrigir nessa fase** |
-| Preparação (*staging*) | Ambiente que deve corresponder ao de produção, para confirmar que o software roda com as configurações de segurança necessárias |
-| Produção | Depois dos testes de segurança, o software entra em uso real, atendendo usuários e clientes de verdade |
+Devem ser documentados, entre outros:
 
-O software de **controle de versão** (como o Git) rastreia e gerencia as alterações no código, guardando cada versão, e o **sandbox** ("caixa de areia") é um ambiente isolado em que o desenvolvedor trabalha sem afetar o sistema real e sem que seu código seja sobrescrito por outros.
+- mapas de rede, diagramas de cabeamento e especificações de configuração dos aplicativos;
+- convenções de nomes dos computadores;
+- esquema de endereçamento IP, para rastrear os endereços (o endereço IP é o número que identifica cada equipamento na rede, como 192.168.1.10).
 
-O **provisionamento** é a criação ou atualização do software; o **desprovisionamento**, a remoção. Um **portal de autoatendimento** pode automatizar os dois.
+### 14.2 Reforço do Sistema Operacional
 
-### 14.2 Técnicas de Codificação Segura
+O **reforço** (*hardening*) do sistema operacional consiste em **configurá-lo de forma segura, reduzindo as brechas que um atacante poderia usar**. As principais medidas são:
 
-| Técnica | O que faz |
-| --- | --- |
-| Normalização | Organiza os dados no banco e mantém a integridade; converte cada entrada para a forma mais simples, com uma representação binária única, o que ajuda a achar entradas maliciosas |
-| Procedimento armazenado | Grupo de comandos em SQL (*Structured Query Language*, a linguagem usada para consultar e alterar bancos de dados) já preparados e guardados no próprio banco, que executam uma tarefa; o aplicativo só chama o procedimento, sem montar comandos com o que o usuário digitou, o que reduz o tráfego, dá resultados mais rápidos e dificulta ataques de injeção de SQL |
-| Ofuscação | Esconde os dados originais com caracteres aleatórios |
-| Camuflagem | Troca dados confidenciais por dados fictícios realistas |
-| Reutilização de código e SDKs | Aproveitam código pronto para desenvolver mais rápido e mais barato |
+- configurar logs (registros de eventos, explicados no próximo item) e auditoria;
+- trocar nomes de conta e senhas padrão (as que vêm de fábrica, como admin/admin, que qualquer atacante conhece);
+- aplicar políticas de conta, como tamanho mínimo da senha e bloqueio depois de várias tentativas erradas;
+- controlar o acesso aos arquivos.
 
-A ofuscação e a camuflagem dificultam a **engenharia reversa**, a tentativa de descobrir como o programa funciona.
+### 14.3 Varredura de Portas
 
-Na reutilização de código e nos **SDKs** (*Software Development Kits* — kits de desenvolvimento de software, pacotes de código pronto oferecidos por fabricantes), **uma vulnerabilidade no código reaproveitado passa para todos os aplicativos que o usam**.
-
-### 14.3 Validação de Entrada
-
-**Controlar o que entra no banco de dados é essencial para manter a integridade dos dados.** Os criminosos miram as informações confidenciais dos bancos de dados, e muitos ataques enviam dados malformados para confundir, travar o aplicativo ou fazê-lo revelar informações.
-
-Exemplo: os usuários assinam uma newsletter (boletim enviado por e-mail) por um formulário web, e o sistema envia um e-mail com um link de confirmação. O atacante altera o link, mudando o nome, o e-mail ou o status da assinatura. Se o servidor não conferir cada endereço com os dados da assinatura, recebe informações falsas. O ataque pode ser automatizado para encher o banco com milhares de assinantes inválidos.
-
-A **regra de validação** confere se os dados estão **dentro dos parâmetros definidos pelo projetista do banco de dados**:
-
-| Critério | O que verifica | Exemplo |
-| --- | --- | --- |
-| Tamanho | Número de caracteres | CEP com 8 dígitos |
-| Formato | Formato definido | Data DD/MM/AAAA |
-| Consistência | Dados que combinam entre si | Cidade compatível com o estado |
-| Intervalo | Valor entre um mínimo e um máximo | Idade entre 0 e 120 |
-| Dígito verificador | Cálculo extra para detectar erros de digitação | Último dígito do ISBN (o número que identifica cada livro) ou os dois últimos do CPF |
-
-#### 14.3.1 Exemplo Resolvido: Dígito Verificador do ISBN-10
-
-O ISBN-10 tem 10 dígitos, e o último é o verificador. Para os nove primeiros dígitos 1 5 8 7 1 4 3 7 3:
-
-1. multiplica-se o primeiro dígito por 10, o segundo por 9, e assim por diante, até o nono por 2;
-2. somam-se os resultados;
-3. o dígito verificador é o que falta para chegar a um múltiplo de 11.
-
-| Dígito | 1 | 5 | 8 | 7 | 1 | 4 | 3 | 7 | 3 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Peso | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 |
-| Produto | 10 | 45 | 64 | 49 | 6 | 20 | 12 | 21 | 6 |
-
-Soma: 233. O múltiplo de 11 seguinte é 242, e 242 − 233 = 9. O **dígito verificador é 9**.
-
-### 14.4 Integridade dos Dados no Aplicativo
-
-Dados comprometidos ameaçam os dispositivos e sistemas. A **verificação de integridade** mede a consistência dos dados de um arquivo, imagem ou registro: uma função hash tira um **instantâneo** dos dados, que depois confirma que eles não mudaram.
-
-- **checksum** (soma de verificação): confere arquivos ou textos antes e depois da transferência; converte cada conjunto de informações em um valor e soma tudo; o receptor repete a conta, e somas iguais indicam dados válidos;
-- **funções hash** (MD5, SHA-1, SHA-256, SHA-512): depois de baixar um arquivo, compara-se o hash da fonte com o calculado por uma calculadora de hash;
-- **controle de versão**: evita alterações acidentais; duas pessoas não alteram o mesmo arquivo, registro ou transação ao mesmo tempo; a primeira que abre o documento pode alterá-lo, e a segunda recebe uma versão somente leitura;
-- **backups precisos**: recuperam dados corrompidos; a integridade do backup deve ser conferida antes de qualquer perda;
-- **autorização**: controles de acesso e permissões garantem que só certos usuários modifiquem os dados; um arquivo somente leitura não aceita alterações.
-
-### 14.5 Outras Práticas de Segurança de Aplicativos
-
-Duas práticas garantem que o software é autêntico e que a navegação é segura:
-
-- **assinatura de código**: o executável é assinado digitalmente para validar a identidade do autor e garantir que o código não mudou desde a assinatura;
-- **cookies seguros**: o **cookie** é um pequeno arquivo que o site pede ao navegador para guardar, com dados como o login e o carrinho de compras, e que o navegador devolve ao site a cada novo acesso; por isso, quem rouba um cookie pode se passar pelo usuário. Os desenvolvedores devem marcar os cookies para trafegar **só por HTTPS** (a versão criptografada do HTTP, o protocolo das páginas web), nunca por HTTP sem criptografia.
-
-### 14.6 Controle de Ameaças a Aplicativos
-
-| Ameaça | Medidas |
-| --- | --- |
-| Acesso não autorizado a data centers, salas de computadores e armários de cabos | Políticas, padrões e procedimentos para funcionários e visitantes |
-| Sistema fora do ar | Plano de continuidade de negócios para os aplicativos essenciais e plano de recuperação de desastres para aplicativos e dados |
-| Vulnerabilidade no sistema operacional de rede | Política de atualizações de aplicativos e do sistema; correções (*patches*) instaladas regularmente |
-| Acesso não autorizado aos sistemas | MFA e monitoramento dos logs |
-| Perda de dados | Padrões de classificação de dados e procedimentos de backup |
-| Vulnerabilidades no desenvolvimento | Testes antes do lançamento |
-
-Além disso, a empresa deve seguir as boas práticas de segurança de rede, que protegem os sistemas contra ameaças e acessos não autorizados.
-
-### 14.7 OWASP Top 10
-
-A **OWASP** (*Open Web Application Security Project*) é uma organização sem fins lucrativos que publica a cada três anos o **OWASP Top 10**, a lista das **dez principais preocupações de segurança web** das empresas. Suas páginas da comunidade reúnem os ataques e as vulnerabilidades relatados pelos colaboradores.
-
-## 15. Fortalecimento de Serviços e Protocolos de Rede
-
-O **fortalecimento da rede** (*network hardening*) consiste em **proteger os serviços e protocolos para que só o necessário fique exposto**, trocando os protocolos inseguros por versões seguras. Os invasores entram na infraestrutura por serviços, protocolos e portas abertas, e protocolos antigos deixam a rede vulnerável.
-
-### 15.1 Varredura de Portas
-
-Um **scanner de portas** envia uma mensagem a cada porta de um dispositivo e espera a resposta, para saber quais estão abertas e como são usadas. A **porta** é o número que identifica um serviço; exemplo: a 80 é do HTTP.
+O primeiro passo para proteger os serviços é saber quais estão expostos. Um **scanner de portas** envia uma mensagem a cada porta de um dispositivo e espera a resposta, para saber quais estão abertas e como são usadas. A **porta** é o número que identifica um serviço; exemplo: a 80 é do HTTP.
 
 O administrador usa o scanner para achar serviços desprotegidos, e o atacante também. Por isso, o ideal é que **apenas as portas necessárias fiquem abertas**.
 
-### 15.2 Serviços de Rede e de Roteamento
-
-#### 15.2.1 DHCP
+### 14.4 DHCP
 
 O **DHCP** (*Dynamic Host Configuration Protocol*) usa um servidor para **atribuir automaticamente endereço IP** e outras configurações aos dispositivos; é o que permite conectar o celular ao Wi-Fi sem configurar nada; na prática, o dispositivo ganha do servidor a permissão para usar a rede. O atacante pode mirar o servidor DHCP para negar o acesso à rede ou criar um servidor falso, que entrega configurações erradas e faz o tráfego das vítimas passar pela máquina dele.
 
@@ -1376,7 +1293,7 @@ O **DHCP snooping** (rastreamento de DHCP) **impede que servidores DHCP falsos e
 - desinstalar serviços e aplicativos não usados;
 - fechar as portas não usadas.
 
-#### 15.2.2 DNS
+### 14.5 DNS
 
 O **DNS** (*Domain Name System* — sistema de nomes de domínio) **converte nomes, como www.cisco.com, em endereços IP**, funcionando como a agenda de contatos da internet. Atacando o DNS, o criminoso pode negar o acesso aos recursos ou **redirecionar o tráfego para sites falsos**.
 
@@ -1391,57 +1308,23 @@ As **DNSSEC** (*DNS Security Extensions*) usam **assinaturas digitais** para for
 - ativar e analisar os logs;
 - usar DNSSEC e assinar as zonas (zona é o conjunto de registros de um domínio, como todos os nomes de exemplo.com.br).
 
-#### 15.2.3 ICMP
+### 14.6 ICMP
 
 O **ICMP** (*Internet Control Message Protocol*) **envia mensagens de erro e de controle**, como serviço indisponível ou host (computador) inalcançável. O comando **ping** usa o ICMP para testar se um host responde. Os atacantes o usam como **canal secreto** (escondendo dados dentro de mensagens de ping, que parecem inofensivas), para reconhecimento da rede (descobrir quais máquinas estão ligadas) e para ataques de negação de serviço (**DoS**, *Denial of Service*, que tiram um serviço do ar). Por isso, muitas redes filtram o ICMP.
 
-#### 15.2.4 RIP
+### 14.7 RIP
 
 O **RIP** (*Routing Information Protocol*) é um protocolo de roteamento, isto é, uma linguagem com que os roteadores trocam informações sobre as redes que cada um alcança. Ele escolhe a rota pela contagem de **saltos** (cada roteador atravessado no caminho conta um salto), com **máximo de 15 saltos**. Ataques ao roteamento afetam o desempenho e a disponibilidade e podem até redirecionar o tráfego. A proteção é usar **serviços seguros com autenticação** e aplicar correções e atualizações.
 
-#### 15.2.5 NTP
+### 14.8 NTP
 
-O **NTP** (*Network Time Protocol*) **sincroniza os relógios dos dispositivos** com um servidor NTP. Carimbos de hora corretos são essenciais para rastrear eventos como violações, interpretar os logs syslog (o padrão de envio de logs pela rede, visto na seção 29) e validar certificados, que têm data de validade. Os criminosos atacam os servidores de tempo para interromper a comunicação que depende de certificados e esconder os carimbos de hora do ataque. A proteção é a **autenticação NTP**.
+O **NTP** (*Network Time Protocol*) **sincroniza os relógios dos dispositivos** com um servidor NTP. Carimbos de hora corretos são essenciais para rastrear eventos como violações, interpretar os logs syslog (o padrão de envio de logs pela rede, explicado na seção 25) e validar certificados, que têm data de validade. Os criminosos atacam os servidores de tempo para interromper a comunicação que depende de certificados e esconder os carimbos de hora do ataque. A proteção é a **autenticação NTP**.
 
-### 15.3 Telnet, SSH e SCP
+## 15. Segmentação de Rede
 
-O **Telnet** e o **SSH** (*Secure Shell*) dão acesso remoto, por linha de comando, a dispositivos como roteadores:
+A **segmentação** é a **divisão de uma rede em partes menores para melhorar o desempenho e a segurança**. Quem invade um segmento não alcança automaticamente os outros. Ela é a base técnica da confiança zero (ver item 10.3): cada passagem entre segmentos vira um ponto de controle, feito pelas ACLs e pelos firewalls dos próximos módulos.
 
-| Característica | Telnet | SSH |
-| --- | --- | --- |
-| Criptografia | Nenhuma | Tudo criptografado |
-| Porta | TCP 23 | TCP 22 |
-| O que um sniffer (como o Wireshark) vê | Usuário e senha do administrador em texto claro | Apenas os endereços IP; usuário e senha vão criptografados |
-| Recomendação | Evitar | Usar sempre |
-
-O **SCP** (*Secure Copy*) **transfere arquivos entre dois sistemas remotos usando o SSH**, inclusive na autenticação, o que garante a autenticidade e a confidencialidade dos dados em trânsito.
-
-### 15.4 Protocolos Seguros
-
-Os principais protocolos têm versões seguras:
-
-- **SNMPv3**: o **SNMP** (*Simple Network Management Protocol*) coleta estatísticas dos dispositivos, como uso de processador e de tráfego, para monitorar a rede; a versão 3, padrão atual, usa criptografia contra espionagem e alteração dos dados;
-- **SSL e TLS**: o HTTP (porta 80) tem segurança limitada e pode ser monitorado; o SSL criptografa a sessão com um *handshake* (a "apresentação" inicial em que os dois lados combinam os algoritmos e as chaves) no início, e o **TLS** é o **substituto atualizado e mais seguro do SSL**; com eles, o navegador mostra **HTTPS**;
-- **FTPS**: no **FTP** (*File Transfer Protocol*, protocolo de transferência de arquivos), o cliente se conecta com usuário e senha em texto claro; o FTPS acrescenta TLS e SSL contra interceptação, alteração e falsificação;
-- **e-mail**: o **POP** (*Post Office Protocol*, porta 110), que baixa as mensagens para o computador, e o **IMAP** (*Internet Message Access Protocol*, porta 143), que as mantém no servidor e sincroniza vários aparelhos, recebem as mensagens; o **MIME** (*Multipurpose Internet Mail Extensions*) permite anexar dados que não são texto, como imagens e vídeos; POP e IMAP devem usar SSL/TLS, e o **S/MIME** envia e-mails **assinados e criptografados**, com autenticação, integridade e não repúdio.
-
-### 15.5 Resumo de Protocolos Inseguros e Seguros
-
-| Função | Protocolo inseguro | Alternativa segura |
-| --- | --- | --- |
-| Acesso remoto | Telnet (TCP 23) | SSH (TCP 22) |
-| Cópia de arquivos | FTP | FTPS ou SCP |
-| Navegação web | HTTP (porta 80) | HTTPS (porta 443) |
-| Gerenciamento | SNMPv1 e SNMPv2 | SNMPv3 |
-| E-mail | POP (110) e IMAP (143) sem criptografia | POP e IMAP com SSL/TLS; S/MIME |
-| Resolução de nomes | DNS sem autenticação | DNSSEC |
-| Tempo | NTP sem autenticação | NTP com autenticação |
-
-## 16. Segmentação de Rede
-
-A **segmentação** é a **divisão de uma rede em partes menores para melhorar o desempenho e a segurança**. Quem invade um segmento não alcança automaticamente os outros.
-
-### 16.1 VLANs
+### 15.1 VLANs
 
 Uma **VLAN** (*Virtual Local Area Network* — rede local virtual) **agrupa dispositivos de forma lógica**, em uma LAN e em switches individuais, não importa onde estejam ligados. Cada porta do switch (o equipamento que liga os computadores de uma rede local) pode ser atribuída a uma VLAN.
 
@@ -1453,7 +1336,7 @@ Os administradores segmentam a rede por **função, equipe ou aplicativo**. Os d
 
 Para proteger a VLAN: monitorar o desempenho, usar configurações avançadas e instalar correções e atualizações regularmente.
 
-### 16.2 Zona Desmilitarizada (DMZ)
+### 15.2 Zona Desmilitarizada (DMZ)
 
 A **DMZ** (*Demilitarized Zone* — zona desmilitarizada) é uma **pequena rede entre a rede privada confiável e a internet**. Nela ficam os servidores acessados de fora, como os **servidores web e de e-mail**, para que os usuários usem uma rede não confiável, como a internet, sem comprometer a rede interna.
 
@@ -1468,367 +1351,17 @@ A maioria das redes tem de **duas a quatro zonas de risco**:
 
 Os firewalls controlam o tráfego **leste-oeste** (que circula dentro da rede, entre servidores do data center) e **norte-sul** (que entra e sai da rede). Os nomes vêm do desenho tradicional das redes, com a internet no alto e os servidores lado a lado.
 
-### 16.3 Segmentação e Confiança Zero
-
-A segmentação é a base técnica da confiança zero (ver item 10.3): cada passagem entre segmentos vira um ponto de controle. A rede de confiança zero **monitora constantemente todos os usuários**, qualquer que seja o status ou a função.
-
 | Característica | VLAN | DMZ |
 | --- | --- | --- |
 | O que separa | Setores dentro da rede interna | Servidores públicos da rede interna |
 | Onde fica | Dentro da LAN | Entre a LAN e a internet |
 | Exemplo | VLAN do RH | Servidor web da empresa |
 
-## 17. Segurança Sem Fio e de Dispositivos Móveis
+## 16. Listas de Controle de Acesso (ACLs)
 
-Os dispositivos sem fio e móveis, de celulares e computadores a roteadores e câmeras IP, são hoje a **maioria dos dispositivos nas redes**. Eles trazem mobilidade e conveniência, mas estão sujeitos a roubo, invasão e acesso remoto não autorizado, interceptação do tráfego (*sniffing*), ataques *man-in-the-middle* (o atacante se coloca no meio da conversa e lê ou altera o que passa) e ataques ao desempenho e à disponibilidade. A melhor proteção combina **autenticação e criptografia**.
+Um condomínio fechado tem um porteiro que só abre o portão para quem está na lista. Na rede, esse porteiro é a **ACL**, que decide quais pacotes passam por um roteador. Este módulo reúne tudo sobre ACLs, em ordem: o que são e como processam os pacotes, as máscaras curinga, a configuração, onde aplicá-las, como usá-las contra ataques e as ACLs do IPv6.
 
-### 17.1 Padrões de Segurança Sem Fio
-
-Os padrões de segurança do Wi-Fi definem como a rede sem fio autentica os aparelhos e criptografa o que trafega pelo ar. Eles evoluíram nesta ordem:
-
-WEP → WPA → WPA2 → WPA3
-
-| Padrão | Características | Situação |
-| --- | --- | --- |
-| WEP (*Wired Equivalent Privacy*) | Primeiro padrão; chaves de 64 e 128 bits; quebrado em poucos minutos com ferramentas gratuitas | Fraco, não usar |
-| WPA (*Wi-Fi Protected Access*) | Resposta às fraquezas do WEP; chaves de 256 bits; **MIC** (*Message Integrity Check*), que detecta dados capturados e alterados entre o roteador Wi-Fi (o ponto de acesso, ou AP) e o aparelho do usuário; **TKIP** (*Temporal Key Integrity Protocol*), que trata, protege e troca melhor as chaves | Substituiu o WEP |
-| WPA2 (2006) | **AES** (a cifra simétrica do item 5.3) obrigatório, com melhor gerenciamento de chaves; **CCMP** (o modo de uso do AES no Wi-Fi) no lugar do TKIP | Seguro |
-| WPA3 | Acrescenta ao WPA2 algoritmos criptográficos robustos e uma troca de chaves melhor | O mais atual |
-
-Em casa, o mais comum é o **WPA-PSK** (*Pre-Shared Key* — chave pré-compartilhada), em que todos usam a mesma senha do Wi-Fi. Nas empresas, usa-se o modo **Enterprise**, em que cada pessoa entra com o próprio usuário e senha, conferidos por um servidor (o EAP, no item 17.2).
-
-O **WPS** (*Wi-Fi Protected Setup*) facilita configurar a rede de casa e conectar dispositivos IoT, mas o **PIN pode ser descoberto por força bruta** (testando todas as combinações possíveis, o que no WPS leva poucas horas). Por isso, não deve ser usado e deve ser **desativado**.
-
-### 17.2 Autenticação em Redes Sem Fio
-
-O **802.11** é o nome técnico do padrão Wi-Fi. Na versão original, ele tem **dois tipos de autenticação**:
-
-- **sistema aberto**: qualquer dispositivo se conecta; só para situações em que a segurança não importa;
-- **chave compartilhada**: autentica e criptografa entre o cliente e o ponto de acesso.
-
-O **ponto de acesso** (*access point*, AP) é o equipamento que liga os aparelhos sem fio à rede cabeada.
-
-O **EAP** (*Extensible Authentication Protocol*) é a estrutura de autenticação usada nas redes sem fio:
-
-1. o usuário pede a conexão ao AP;
-2. o AP pede a identificação (nome de usuário) e a envia ao servidor de autenticação;
-3. o servidor pede a prova de que a identidade é válida;
-4. o AP pede a senha ao usuário, que a fornece, e o AP a repassa ao servidor;
-5. o servidor confirma que usuário e senha estão corretos e avisa o AP e o usuário;
-6. o usuário se conecta à rede sem fio.
-
-Quatro protocolos são usados com o EAP:
-
-| Método | Certificado no cliente | Certificado no servidor | Implantação | Segurança |
-| --- | --- | --- | --- | --- |
-| EAP-TLS (usa o TLS do item 5.4) | Sim | Sim | Difícil | Alta |
-| PEAP (*Protected EAP*: cria primeiro um túnel TLS e depois envia usuário e senha dentro dele) | Não | Sim | Moderada | Média |
-| EAP-TTLS (*Tunneled TLS*: ideia parecida com a do PEAP) | Não | Sim | Moderada | Média |
-| EAP-FAST (criado pela Cisco; usa uma credencial própria em vez de certificado) | Não | Não | Fácil | Média |
-
-O **EAP-TLS é o mais seguro e o mais difícil de implantar**, porque exige certificado nas duas pontas.
-
-### 17.3 Pontos de Acesso Não Autorizados e Autenticação Mútua
-
-Qualquer dispositivo com interface sem fio e cabeada ligado à rede pode agir como **ponto de acesso não autorizado** (*rogue AP*). Ele **imita um ponto de acesso legítimo** para que as vítimas se conectem; o impostor então pede e copia dados dos dispositivos. Esse ataque man-in-the-middle é **muito difícil de detectar** e pode roubar credenciais de login e dados.
-
-A proteção é a **autenticação mútua** (de duas vias): **as duas pontas se autenticam antes de se conectar**, e o cliente percebe quando o ponto de acesso é falso.
-
-Para a internet, os celulares também usam as redes de telefonia móvel da operadora, como o **LTE** (*Long Term Evolution*, o 4G) e o **5G**.
-
-### 17.4 Comunicação dos Dispositivos Móveis
-
-| Método | Como funciona | Exemplo |
-| --- | --- | --- |
-| Wi-Fi e Bluetooth | Sinais sem fio, configurados no menu do aparelho | Fone de ouvido; som do carro |
-| NFC (*Near-Field Communication*) | Comunicação sem contato por campos eletromagnéticos | Pagamento por aproximação |
-| Infravermelho (IR) | Curto alcance, com um receptor de IR | Controlar a TV pelo celular |
-| USB | O único com fio | Armazenamento e áudio; celular compartilhando a internet com o computador (como um modem); ligar o aparelho a equipamentos de **aquisição forense** (que copiam o conteúdo do aparelho como prova) em uma investigação |
-
-### 17.5 Gerenciamento de Dispositivos Móveis
-
-No **COPE** (*Corporate-Owned, Personally Enabled*), o aparelho é da empresa e o uso pessoal é permitido, por isso guarda dados pessoais e da organização; no BYOD (ver item 4.4), o aparelho é do funcionário. Nos dois casos, valem as políticas de segurança e proteção de dados quando há informação confidencial no aparelho.
-
-As principais formas de gerenciamento são:
-
-- **segmentação do armazenamento e conteinerização**: cria uma área autenticada e criptografada que **separa os dados da empresa dos dados pessoais**; permite isolar os aplicativos, controlar as funções deles, apagar o contêiner e bloquear ou limpar o aparelho à distância;
-- **gerenciamento de conteúdo**: avalia o risco de aplicativos que compartilham dados, como Dropbox, Box, Google Drive e iCloud; um sistema de gerenciamento de identidades controla o que cada usuário acessa;
-- **gerenciamento de aplicativos**: a **lista de permissões** (*whitelisting*) assina digitalmente os aplicativos autorizados, para garantir que venham de fontes confiáveis; os aplicativos que pedem credenciais devem usar senhas fortes.
-
-### 17.6 Ameaças e Proteções dos Dispositivos Móveis
-
-Seja da empresa ou pessoal, o aparelho precisa de proteção contra roubo, perda, acesso não autorizado e riscos do sistema operacional, dos aplicativos e da rede. Alguns usuários **contornam as limitações do aparelho** para rodar aplicativos não autorizados ou fora da loja:
-
-| Técnica | Plataforma | O que faz | Risco |
-| --- | --- | --- | --- |
-| Jailbreak | Apple | Remove a restrição de só rodar aplicativos autorizados pela Apple | Alto |
-| Root | Android | Ignora a arquitetura de segurança e dá acesso administrativo total | Alto |
-| Sideloading | Ambas | Contorna as configurações para instalar aplicativos não aprovados, como os de lojas de terceiros, não avaliados | Menor, mas ainda é um risco |
-
-Há soluções que detectam aparelhos com jailbreak ou root: eles são marcados como **não conformes** e removidos da rede ou bloqueados nos aplicativos da organização.
-
-As proteções são:
-
-- bloqueio de tela, com senha, PIN ou padrão;
-- biometria: impressão digital, rosto, íris ou voz;
-- **autenticação com reconhecimento de contexto**, que usa aprendizado de máquina (programas que aprendem padrões a partir de dados) para liberar o acesso conforme o comportamento normal do usuário, como o local e o horário de costume;
-- **limpeza remota**, se o aparelho for perdido ou roubado;
-- criptografia completa do dispositivo.
-
-### 17.7 Rastreamento por GPS
-
-O **GPS** (*Global Positioning System*) usa satélites e computadores para localizar o aparelho em tempo real, com precisão de cerca de **5 metros**. Muitos aplicativos rastreiam o celular; o Facebook, por exemplo, permite fazer **check-in** em um local, visível para os contatos. Alguns aplicativos usam a **delimitação geográfica** ou a geolocalização para definir uma área.
-
-As **notificações push** (mensagens que aparecem sem abrir o aplicativo) também usam a localização, e comércios locais enviam propagandas conforme as configurações do usuário.
-
-Criminosos também usam **notificações push para capturar dados** dos usuários.
-
-## 18. Resiliência e Alta Disponibilidade
-
-A **resiliência** torna um sistema **tolerante a falhas**: ele continua funcionando quando algo dá errado, inclusive durante um ataque. O objetivo é **reduzir ao mínimo o tempo de inatividade**. A disponibilidade contínua é essencial não só para as empresas, mas para a vida moderna, que depende cada vez mais dos sistemas de informação.
-
-### 18.1 Alta Disponibilidade
-
-A **alta disponibilidade** descreve **sistemas concebidos para evitar períodos de inatividade**, com acesso ininterrupto aos dados e serviços. Eles seguem três princípios:
-
-1. **eliminar ou reduzir os pontos únicos de falha** (definidos logo abaixo), com dispositivos em espera ativa (*hot standby*, ligados e prontos para assumir), componentes redundantes (duplicados) e várias conexões ou caminhos;
-2. **garantir uma transição confiável**, com fontes de alimentação redundantes e sistemas de energia e de comunicação de reserva;
-3. **detectar as falhas assim que ocorrem**, com monitoramento ativo, que pode até acionar o sistema de reserva.
-
-O **ponto único de falha** (*Single Point of Failure*, SPOF) é o elo fraco: **qualquer parte cuja falha derruba o sistema inteiro**. Pode ser um equipamento (roteadores ou switches centrais), um processo, um dado, um serviço de rede, um utilitário essencial ou até uma equipe de TI altamente qualificada. A solução é mudar a operação crítica para que não dependa de um único elemento, ou criar componentes redundantes que assumam o processo.
-
-Em um **cluster de alta disponibilidade**, vários computadores com acesso ao mesmo armazenamento e configurações de rede idênticas processam o mesmo serviço ao mesmo tempo; se um falha, os outros continuam.
-
-- **tolerância a falhas**: o sistema segue funcionando se um ou mais componentes falharem; exemplo: com o espelhamento de dados, se o controlador de disco falha, o sistema espelhado entrega os dados sem interrupção aparente;
-- **resiliência do sistema**: manter os dados e o processamento disponíveis mesmo sob ataque ou interrupção, com energia e processamento redundantes; vai além de blindar os dispositivos.
-
-### 18.2 Os Cinco Noves
-
-Toda empresa quer operar sem parar, mesmo em condições extremas, como um ataque. Uma das práticas mais conhecidas são os **cinco noves**: **99,999% de disponibilidade**, ou **menos de 5,26 minutos de inatividade por ano**.
-
-#### 18.2.1 Exemplo Resolvido: Tempo de Inatividade nos Cinco Noves
-
-| Etapa | Cálculo | Resultado |
-| --- | --- | --- |
-| Minutos no ano | 365 × 24 × 60 | 525.600 min |
-| Fração de inatividade | 100% − 99,999% = 0,001% | 0,00001 |
-| Inatividade máxima | 525.600 × 0,00001 | 5,256 ≈ 5,26 min |
-
-Para chegar aos cinco noves, usam-se:
-
-- **sistemas padronizados**: com os mesmos componentes, o estoque de peças é mais fácil de manter e é possível trocar componentes em uma emergência;
-- **clustering**: vários dispositivos agrupados parecem uma única entidade para o usuário;
-- **sistemas de componentes compartilhados**: um sistema completo pode substituir o que falhou.
-
-### 18.3 Redundância N+1
-
-Na **redundância N+1**, os componentes necessários (N) têm **pelo menos um componente de reserva (+1)**, em espera e pronto para entrar em ação, como os quatro pneus e o estepe de um carro. Em um data center, isso significa ter um servidor, uma fonte de alimentação, um switch e um roteador de reserva.
-
-**Observação:** o N+1 tem equipamento redundante, mas **não é totalmente redundante**: suporta a perda de um componente, não de todos.
-
-### 18.4 RAID
-
-O **RAID** (*Redundant Array of Independent Disks*) **distribui os dados entre vários discos**. Se um disco é perdido, os dados são recuperados dos outros, e a leitura fica mais rápida, porque vários discos trabalham juntos. Pode ser feito por software ou por hardware, com um controlador especializado. Combina três técnicas:
-
-| Técnica | Como funciona | Protege contra falha de disco? |
-| --- | --- | --- |
-| Espelhamento | Grava os dados duplicados em outro disco | Sim |
-| Distribuição (*striping*) | Espalha os dados por vários discos | Não, sozinha |
-| Paridade | Depois da distribuição, gera somas de verificação, guardadas em uma terceira unidade, para conferir e reconstruir os dados | Sim |
-
-**Importante:** o **RAID 0 usa apenas distribuição e não tem redundância**. Quem protege contra falha de disco são o RAID 1 (espelhamento) e o RAID 5 (paridade).
-
-### 18.5 Spanning Tree Protocol (STP)
-
-A redundância protege a rede de pontos únicos de falha, como um cabo ou um switch. Mas cabos redundantes entre switches criam **loops** (caminhos em círculo) e **quadros duplicados** (o quadro é o nome do bloco de dados na rede local): os quadros circulam sem parar, multiplicando-se, e derrubam a rede comutada (a rede formada por switches).
-
-O **STP** (*Spanning Tree Protocol*) **bloqueia de propósito os caminhos redundantes**, deixando um só caminho lógico entre todos os destinos. Os caminhos físicos continuam existindo para dar redundância. Se um cabo ou switch falha, o STP recalcula os caminhos e desbloqueia as portas necessárias.
-
-#### 18.5.1 Exemplo Resolvido: o STP Diante de uma Falha
-
-Três switches, S1, S2 e S3, estão ligados em triângulo. Para evitar o loop, o STP deixa bloqueada a porta de S2 que leva a S3 (o Tronco2), e o tráfego de S2 vai direto a S1.
-
-1. o tronco entre S2 e S1 falha e interrompe o caminho original;
-2. S2 desbloqueia a porta do Tronco2, e o tráfego segue pelo caminho alternativo, S2 → S3 → S1;
-3. quando o link entre S2 e S1 volta, o STP bloqueia de novo o link entre S2 e S3.
-
-### 18.6 Redundância de Roteador
-
-O **gateway padrão** é o roteador que dá acesso às outras redes. Sozinho, ele é um ponto único de falha.
-
-Com um roteador de reserva (*standby*), os dois usam um **protocolo de redundância** para decidir qual fica ativo e compartilham um **endereço IP virtual**; os dispositivos usam esse **IP virtual como gateway padrão**. Pelos IPs físicos, os dois trocam mensagens periódicas para confirmar que estão on-line. Se o de reserva deixa de receber essas mensagens, assume o encaminhamento. Os computadores continuam falando com o IP virtual (por exemplo, 192.0.2.100) e permanecem on-line.
-
-Essa recuperação automática é a **redundância de primeiro salto** (o gateway é o primeiro roteador no caminho do computador). Protocolos que a oferecem: **HSRP** (*Hot Standby Router Protocol*, da Cisco), **VRRP** (*Virtual Router Redundancy Protocol*, padrão aberto) e **GLBP** (*Gateway Load Balancing Protocol*, da Cisco, que também divide a carga entre os roteadores).
-
-### 18.7 Redundância de Local
-
-Conforme as necessidades, a empresa pode precisar de redundância de local:
-
-| Replicação | Sincronização | Largura de banda | Distância entre locais |
-| --- | --- | --- | --- |
-| Síncrona | Em tempo real | Alta | Pequena, para reduzir a latência (o atraso da comunicação) |
-| Assíncrona | Quase em tempo real | Menor | Maior, porque a latência pesa menos |
-| Ponto no tempo | Atualiza periodicamente o local de backup | A menor, sem conexão constante | Qualquer |
-
-O equilíbrio entre custo e disponibilidade define a melhor escolha.
-
-### 18.8 Design Resiliente
-
-O **design resiliente** é **mais do que adicionar redundância**: é entender as necessidades do negócio e incorporar a redundância de modo que a recuperação seja rápida. Exemplos:
-
-- o STP dá um caminho alternativo, mas a transição pode não ser imediata se a configuração não for ideal;
-- os protocolos de roteamento dão resiliência, e o ajuste fino deixa a transição imperceptível;
-- o administrador deve testar configurações não padrão em uma rede de testes para melhorar o tempo de recuperação.
-
-A **resiliência de aplicativos** é a capacidade de o aplicativo reagir a problemas em um componente sem parar de funcionar. Ela evita perder clientes, funcionários ou negócios por falha de aplicativo, lembrando que o administrador às vezes precisa desligar aplicativos para correções, atualizações ou novas funções.
-
-Na resiliência de aplicativos, **quanto maior a disponibilidade, maiores a complexidade e o custo**:
-
-| Solução | Complexidade e custo |
-| --- | --- |
-| Hardware tolerante a falhas: vários componentes essenciais no mesmo computador | Os maiores |
-| Arquitetura de cluster: servidores que funcionam como um único sistema | Intermediários |
-| Backup e restauração: cópias dos arquivos para restaurar se houver perda | Os menores |
-
-Nos roteadores e switches Cisco, a **configuração resiliente do IOS** acelera a recuperação se alguém, de propósito ou não, formatar a memória flash (onde fica o sistema) ou apagar a configuração de inicialização. Ela guarda uma cópia protegida do arquivo do sistema IOS e da configuração em uso, o **bootset primário**, que o usuário não consegue apagar (comandos `secure boot-image` e `secure boot-config`).
-
-### 18.9 Backups
-
-Os dados podem ser perdidos por roubo, falha de equipamento, desastre ou erro. O **backup** guarda uma cópia das informações em uma mídia, de preferência removível e guardada em local seguro, e é **uma das formas mais eficazes de proteger contra a perda de dados**. Uma boa política de segurança exige backups regulares, normalmente guardados em outro local. Ao planejá-lo, considera-se:
-
-- **frequência**: é comum fazer um backup completo mensal ou semanal e backups parciais frequentes do que mudou desde então; muitos backups parciais aumentam o tempo de restauração;
-- **armazenamento**: levar as cópias a um local externo aprovado, em rodízio diário, semanal ou mensal, conforme a política;
-- **segurança**: proteger os backups com senha, digitada antes de restaurar;
-- **validação**: conferir sempre os backups, para garantir a integridade dos dados.
-
-### 18.10 Energia
-
-O fornecimento contínuo de energia é crítico. As regras gerais são:
-
-- o data center fica em uma fonte de alimentação separada do resto do prédio;
-- fontes redundantes: duas ou mais alimentações vindas de duas ou mais subestações;
-- condicionamento da energia (equipamentos que filtram oscilações e entregam tensão estável);
-- sistemas de energia de reserva, muitas vezes necessários;
-- **nobreak** (UPS, *Uninterruptible Power Supply*) para desligar os sistemas normalmente.
-
-| Categoria | Evento | O que é |
-| --- | --- | --- |
-| Excesso | Pico (*spike*) | Alta tensão momentânea |
-| Excesso | Sobretensão (*surge*) | Alta tensão prolongada |
-| Perda | Falha (*fault*) | Perda momentânea |
-| Perda | Blecaute | Perda completa |
-| Degradação | Afundamento (*sag*) | Baixa tensão momentânea |
-| Degradação | Subtensão (*brownout*) | Baixa tensão prolongada |
-| Degradação | Corrente de partida (*inrush*) | Sobrecarga inicial de energia |
-
-**Importante:** **pico** e **afundamento** são **momentâneos**; **sobretensão** e **subtensão** são **prolongadas**.
-
-### 18.11 Climatização (HVAC)
-
-O **HVAC** (*Heating, Ventilation and Air Conditioning*) controla **temperatura, umidade e circulação do ar** e é crítico para a segurança das pessoas e dos equipamentos. Ele deve ser planejado junto com o hardware, o cabeamento, o armazenamento, a proteção contra incêndio, a segurança física e a energia.
-
-Quase todo equipamento vem com **requisitos ambientais**, faixas aceitáveis de temperatura e umidade, no documento de especificações ou no guia de planejamento físico. Respeitá-los evita falhas e prolonga a vida dos sistemas.
-
-Os sistemas modernos de HVAC ficam conectados à internet para monitoramento remoto e são acessados por fornecedores e terceiros. Como os técnicos precisam achar informações rápido, as credenciais ficam espalhadas e acessíveis a muita gente, inclusive a funcionários das empreiteiras. Quanto mais gente tem acesso, menos seguro é o sistema, e sua interrupção é um risco considerável para a empresa.
-
-## 19. Sistemas Embarcados, IoT e Tecnologias de Dissimulação
-
-As redes ligam hoje **máquinas industriais, sensores, carros e equipamentos médicos**. Esses sistemas têm fragilidades próprias e ampliam a superfície de ataque.
-
-### 19.1 Infraestruturas Críticas e SCADA
-
-Setores como manufatura, energia, comunicação e transporte mantêm a infraestrutura de que o país depende, e protegê-los é fundamental para a economia.
-
-O **SCADA** (*Supervisory Control and Data Acquisition* — controle de supervisão e aquisição de dados) serve para **controlar e monitorar processos industriais**. Ele faz parte dos **ICS** (*Industrial Control Systems* — sistemas de controle industrial), usados na manufatura, na produção, na energia e na comunicação.
-
-O **Stuxnet**, um vírus descoberto em 2010 que danificou centrífugas de enriquecimento de urânio no Irã, mirou sistemas SCADA e mostrou que um ataque digital pode **destruir ou interromper infraestruturas essenciais**, como telecomunicações, transportes e usinas de energia, e até o setor financeiro.
-
-Os sistemas SCADA são vulneráveis porque **foram projetados sem conexão com a rede corporativa e a internet**, e a segurança não foi pensada no desenvolvimento. Hoje, as empresas querem coletar dados para melhorar as operações e reduzir custos e ligam o SCADA à rede da empresa, o que aumenta o risco.
-
-A principal proteção é **separar as redes internas das externas e a rede SCADA da rede local da empresa**.
-
-### 19.2 Internet das Coisas (IoT)
-
-A **IoT** (*Internet of Things* — Internet das Coisas) é o conjunto de tecnologias que **conectam objetos variados à internet**: bilhões de carros, máquinas industriais, robôs, fechaduras, motores e aparelhos de entretenimento. Como os usuários precisam acessá-los à distância, ficam on-line e **aumentam o número de pontos de entrada na rede**.
-
-A IoT, a virtualização e o armazenamento na nuvem (assuntos das seções 25 e 26) fizeram os dados crescerem de forma exponencial, o que criou a área de **Big Data**, que estuda como guardar e analisar volumes enormes de dados. Há muito mais dados a gerenciar e proteger.
-
-Os dispositivos IoT expandem muito a superfície de ataque: milhares de aparelhos precisam de acesso à rede para enviar dados e ser gerenciados. Aparelhos inteligentes infectados já foram usados em alguns dos maiores ataques **DDoS** (*Distributed Denial of Service*, em que muitos aparelhos atacam um alvo ao mesmo tempo) da história. Por isso:
-
-- verificar se o dispositivo aceita atualizações de **firmware** (o software gravado no próprio aparelho, que o faz funcionar) com correções, de preferência pela rede sem fio;
-- **trocar sempre as credenciais padrão de administrador**, que são públicas.
-
-Empresas e consumidores usam a IoT para automatizar processos, monitorar o ambiente e alertar sobre condições adversas. A maioria se conecta **sem fio**: câmeras, fechaduras, sensores de proximidade, luzes e outros sensores. Fabricantes avisam quando é preciso trocar peças ou repor suprimentos, e as empresas controlam estoque, veículos e pessoal. Com **sensores geoespaciais**, dá para localizar e controlar à distância temperatura, umidade e iluminação.
-
-Muitos dispositivos IoT usam um **RTOS** (*Real-Time Operating System* — sistema operacional de tempo real), um sistema pequeno que troca de tarefa rapidamente e prioriza o tempo exato, não o volume, com alta confiabilidade. Ele está em vestíveis (relógios e pulseiras inteligentes), equipamentos médicos, carros e automação residencial e é vulnerável a **injeção de código** (o atacante insere comandos próprios no sistema), **negação de serviço** e **inversão de prioridade** (uma tarefa de prioridade baixa passa na frente de uma de prioridade alta).
-
-O **Shodan** é um buscador que mostra dispositivos IoT expostos e vulneráveis na internet. A IoT se comunica por métodos de curto, médio ou longo alcance, como celular (4G, 5G), rádio e **Zigbee**, um conjunto de protocolos sem fio de baixo consumo para **WPANs** (*Wireless Personal Area Networks*, redes pessoais de curto alcance, como as de lâmpadas e sensores de uma casa).
-
-Para proteger os dispositivos IoT:
-
-- proteger a rede sem fio;
-- saber exatamente quais dispositivos se comunicam na rede e o que cada um faz;
-- instalar software de segurança sempre que possível;
-- proteger os celulares e aplicativos usados para controlá-los.
-
-### 19.3 Sistemas Embarcados
-
-Os **sistemas embarcados** são computadores dedicados a uma função dentro de outro equipamento, como TVs inteligentes e carros. Eles capturam, guardam e acessam dados e trazem desafios próprios por serem muito usados por empresas e consumidores.
-
-Os ataques exploram falhas de software e de hardware. Eles sofrem **ataques de tempo**: o atacante mede **quanto tempo o sistema leva para responder** a entradas diferentes para descobrir fraquezas. É um **ataque de canal lateral**, baseado em informações da implementação do sistema, e não em falhas do software.
-
-Uma técnica de proteção é o **SoC** (*System on Chip*), um módulo de hardware de formato reduzido, como o **Raspberry Pi** e o **Arduino**. São computadores de placa única, que podem usar um **FPGA** (*Field-Programmable Gate Array*), circuito que pode ser reprogramado depois de instalado. Têm bom processamento em pouco espaço, gastam menos energia, custam menos e rendem mais que componentes maiores. O SoC reúne em um só chip o microcontrolador, o processador e periféricos como a GPU (*Graphics Processing Unit*, o processador de vídeo), o Wi-Fi ou um coprocessador, e pode rodar Windows, Linux ou Android.
-
-Muitos dispositivos SoC têm **autenticação fraca e não podem ser atualizados ou corrigidos**. Como não existe programa formal para verificar seus controles de segurança, é preciso ter neles uma **confiança implícita**.
-
-### 19.4 Voz sobre IP (VoIP)
-
-O **VoIP** (*Voice over IP* — voz sobre IP) **usa redes de dados para fazer ligações telefônicas**. Precisa de uma conexão com a internet e de um destes:
-
-- telefone tradicional com adaptador, que liga o aparelho analógico à linha digital VoIP;
-- telefone próprio para VoIP;
-- software VoIP no computador.
-
-O VoIP doméstico usa a internet, mas muitas organizações usam redes privadas, mais seguras e com melhor qualidade. Sua segurança **depende da segurança da rede por baixo dele**: quando a rede cai, a voz cai junto. Os criminosos o atacam para usar o telefone de graça, espionar ligações ou afetar o desempenho e a disponibilidade.
-
-As medidas de proteção são:
-
-- criptografar os pacotes de voz contra espionagem;
-- usar SSH (ver item 15.3) para administrar os gateways de voz (que ligam a rede VoIP à telefonia comum) e os switches;
-- trocar todas as senhas padrão;
-- usar um sistema de detecção de intrusão contra ataques como o **envenenamento ARP** (o atacante engana os aparelhos da rede local para que enviem a ele o tráfego destinado a outro equipamento);
-- usar autenticação forte contra o **spoofing de registro** (o criminoso desvia para si as chamadas da vítima), a **representação de proxy** (a vítima fala com um proxy falso) e o **sequestro de chamadas** (a chamada é interceptada e desviada);
-- usar firewalls que reconheçam o VoIP, monitorem os fluxos e filtrem sinais anormais.
-
-### 19.5 Sistemas de Finalidade Específica
-
-| Setor | Exemplos | Riscos | Proteções |
-| --- | --- | --- | --- |
-| Saúde | Marca-passos, bombas de insulina, implantes e desfibriladores, com conexão sem fio, monitoramento remoto e NFC (a comunicação por aproximação, item 17.4) | Segurança do paciente, vazamento de prontuários e porta de entrada para a rede | — |
-| Automotivo | Sistemas que guardam dados de operação, manutenção e emergência; muitos registram velocidade, localização e frenagem e os enviam à seguradora | Rastreamento não autorizado, interferência sem fio e falsificação | Software projetado com segurança, criptografia entre os controladores e firewall |
-| Aviação | Controle de voo e comunicação | Credenciais fixas no código, protocolos inseguros e *backdoors* | — |
-| Drones (UAV, *Unmanned Aerial Vehicle*, veículo aéreo não tripulado) | Uso militar, agrícola e de cartografia; foto aérea, vigilância e topografia | Sequestro, ataques de Wi-Fi, falsificação de GPS, bloqueio e ataques de autenticação | — |
-
-Um **backdoor** (porta dos fundos) é um acesso escondido que contorna a autenticação.
-
-### 19.6 Tecnologias de Dissimulação
-
-As **tecnologias de dissimulação** (*deception*) acrescentam **uma camada falsa à infraestrutura**. Elas distraem o atacante das redes de produção, ensinam os métodos dele e alertam sobre possíveis ataques.
-
-| Tecnologia | O que é |
-| --- | --- |
-| Honeypot | Sistema-isca que imita um servidor da empresa, exposto de propósito; registra e monitora as ações do atacante para análise |
-| Honeynet | Conjunto de honeypots que imita a rede da empresa |
-| Honey files | Arquivos falsos, que atraem o atacante mas não têm informação real |
-| DNS sinkhole ("ralo" de DNS) | O servidor DNS responde com um endereço falso e inofensivo quando alguém tenta acessar um site malicioso conhecido; assim, o usuário (ou o malware instalado na máquina) não chega ao destino |
-
-O objetivo do honeypot é **desviar o atacante dos recursos reais e revelar como ele age**.
-
-## 20. Listas de Controle de Acesso (ACLs) e Máscaras Curinga
-
-Um condomínio fechado tem um porteiro que só abre o portão para quem está na lista. Na rede, esse porteiro é a **ACL**, que decide quais pacotes passam por um roteador.
-
-### 20.1 O que é uma ACL
+### 16.1 O que é uma ACL
 
 O roteador decide o caminho de cada pacote pelo cabeçalho: compara o IP de destino com as rotas da **tabela de roteamento** (a lista de redes que ele conhece e de por onde chegar a cada uma) e encaminha pela melhor correspondência.
 
@@ -1845,7 +1378,7 @@ Usos comuns:
 - liberar serviços só para certos grupos, como o acesso por FTP ou HTTP;
 - dar prioridade a certas classes de tráfego, como a voz, junto com a **QoS** (qualidade de serviço).
 
-### 20.2 Tipos de ACL
+### 16.2 Tipos de ACL
 
 Os roteadores Cisco têm dois tipos de ACL IPv4:
 
@@ -1866,7 +1399,7 @@ As **ACLs nomeadas** são o **método preferido** e são criadas com o comando `
 | Portas e protocolo | Não | Sim |
 | Números | 1–99 e 1300–1999 | 100–199 e 2000–2699 |
 
-### 20.3 Como a ACL Processa os Pacotes
+### 16.3 Como a ACL Processa os Pacotes
 
 As ACLs controlam os pacotes que chegam às interfaces, os que passam pelo roteador e os que saem dele. Elas podem filtrar em dois sentidos:
 
@@ -1888,7 +1421,7 @@ Toda ACL termina com uma **negação implícita**, que **nega tudo o que não fo
 
 **Observação:** as ACLs não filtram os pacotes criados pelo próprio roteador.
 
-### 20.4 Máscaras Curinga
+### 16.4 Máscaras Curinga
 
 A **máscara curinga** (*wildcard mask*) **indica quais bits do endereço devem ser verificados**. Ela também é usada pelo protocolo de roteamento OSPF. Tem 32 bits, como a máscara de sub-rede, mas combina os 0 e os 1 de outra forma.
 
@@ -1913,7 +1446,7 @@ Exemplos:
 - uma sub-rede: `access-list 10 permit 192.168.1.0 0.0.0.255`, que vale para os hosts de 192.168.1.1 a 192.168.1.254;
 - um intervalo: `access-list 10 permit 192.168.16.0 0.0.15.255`, que vale para os hosts de 192.168.16.1 a 192.168.31.254.
 
-### 20.5 Exemplo Resolvido: Cálculo de Máscaras Curinga
+### 16.5 Exemplo Resolvido: Cálculo de Máscaras Curinga
 
 O atalho é **subtrair a máscara de sub-rede de 255.255.255.255**, octeto por octeto. A notação /24, /28 etc. (o prefixo) indica quantos bits da máscara de sub-rede valem 1: /24 equivale a 255.255.255.0.
 
@@ -1937,20 +1470,16 @@ Portanto, `192.168.3.32 0.0.0.15` vale para **192.168.3.32 a 192.168.3.47**.
 
 **Observação:** no curso, os comandos dos dois últimos casos estão errados; os corretos são os da tabela.
 
-### 20.6 Palavras-chave host e any
+### 16.6 Palavras-chave host e any
 
 Escrever as máscaras em decimal pode ser cansativo. O Cisco IOS tem duas palavras-chave para os casos mais comuns, que reduzem a digitação e, principalmente, **facilitam a leitura** da ACE:
 
 - **host** → equivale à máscara **0.0.0.0**: **um único endereço**. Exemplo: `access-list 10 permit host 192.168.10.10`, em vez de `192.168.10.10 0.0.0.0`;
 - **any** → **qualquer endereço**, o mesmo que `0.0.0.0 255.255.255.255`. Exemplo: `access-list 11 permit any`.
 
-## 21. Configuração e Aplicação de ACLs
+### 16.7 Planejamento
 
-Com a lógica da ACL (ver item 20.1) e das máscaras curinga entendida, falta escrever a lista no roteador, aplicá-la no lugar certo e corrigi-la quando preciso.
-
-### 21.1 Planejamento
-
-A ACL deve ser preparada antes de ser digitada:
+Com a lógica da ACL e das máscaras curinga entendida, falta escrever a lista no roteador, aplicá-la no lugar certo e corrigi-la quando preciso. A ACL deve ser preparada antes de ser digitada:
 
 1. escrever em um editor de texto o que a política deve fazer;
 2. acrescentar os comandos de configuração do IOS (o sistema dos equipamentos Cisco) e comentários (*remarks*);
@@ -1959,7 +1488,7 @@ A ACL deve ser preparada antes de ser digitada:
 
 Assim, a ACL é criada sem afetar o tráfego da rede.
 
-### 21.2 ACL Padrão
+### 16.8 ACL Padrão
 
 A ACL padrão numerada é criada com:
 
@@ -1980,7 +1509,7 @@ Para remover a ACL numerada, usa-se `no access-list número`.
 
 A ACL padrão nomeada é criada com `ip access-list standard NOME`. O *prompt* (o texto que aparece antes do cursor na linha de comando) muda para o modo de configuração da ACL nomeada, e as ACEs são digitadas em seguida, **sem repetir o comando para cada ACE**. Os nomes têm letras e números, diferenciam maiúsculas de minúsculas e precisam ser únicos. Não é obrigatório usar MAIÚSCULAS, mas elas destacam a ACL na **running-config** (a configuração em uso no roteador, exibida com `show running-config`) e evitam criar, sem querer, duas ACLs com o mesmo nome escrito de formas diferentes. Exemplo: `ip access-list standard NO-ACCESS`. Para removê-la: `no ip access-list standard NOME`.
 
-### 21.3 ACL Estendida
+### 16.9 ACL Estendida
 
 A ACL estendida numerada é criada com:
 
@@ -1991,7 +1520,7 @@ Os passos são os mesmos da ACL padrão, mas a sintaxe é mais complexa; não é
 - **protocolo**: nome ou número de um protocolo; os mais usados são **ip** (todos os protocolos IP), **tcp**, **udp** e **icmp**; o `?` mostra a ajuda;
 - **destino**: como a origem, com **host**, só o endereço ou **any**, seguido da curinga;
 - **operador e porta**: comparam as portas de origem ou de destino; os operadores são **eq** (igual), **neq** (diferente), **lt** (menor) e **gt** (maior), e a porta pode ser o número ou o nome;
-- **established**: só para TCP; deixa passar apenas respostas de conexões já abertas (ver item 21.4); é um recurso de firewall de primeira geração.
+- **established**: só para TCP; deixa passar apenas respostas de conexões já abertas (ver item 16.10); é um recurso de firewall de primeira geração.
 
 O protocolo escolhido define as opções de porta: tcp mostra as portas TCP; udp, as UDP; icmp, os tipos de mensagem. Os **nomes das portas facilitam entender a finalidade** da ACE; `eq 23` e `eq telnet` dão o mesmo resultado.
 
@@ -2014,7 +1543,7 @@ ip access-list extended SURFING
  permit tcp 192.168.10.0 0.0.0.255 any eq 443
 ```
 
-### 21.4 A Palavra-chave established
+### 16.10 A Palavra-chave established
 
 A palavra-chave **established** deixa o tráfego interno sair e **apenas as respostas a esse tráfego voltem**.
 
@@ -2030,7 +1559,7 @@ interface g0/0/0
  ip access-group BROWSING out
 ```
 
-### 21.5 Aplicação nas Interfaces e nas Linhas VTY
+### 16.11 Aplicação nas Interfaces e nas Linhas VTY
 
 A ACL só funciona depois de **aplicada**. Na interface:
 
@@ -2048,9 +1577,9 @@ line vty 0 4
 
 O comando `show access-lists` mostra as ACLs e quantas vezes cada ACE foi usada.
 
-Para tirar a ACL da interface, usa-se `no ip access-group`; ela continua configurada no roteador até o comando `no access-list`. As ACLs também fazem parte de outras configurações de segurança, como o NAT (a tradução de endereços privados em públicos), os firewalls baseados em zona (ver seção 24) e as VPNs.
+Para tirar a ACL da interface, usa-se `no ip access-group`; ela continua configurada no roteador até o comando `no access-list`. As ACLs também fazem parte de outras configurações de segurança, como o NAT (a tradução de endereços privados em públicos), os firewalls baseados em zona (ver seção 17) e as VPNs.
 
-### 21.6 Modificação de ACLs
+### 16.12 Modificação de ACLs
 
 ACLs com várias ACEs são complexas, e às vezes uma ACE não produz o efeito esperado; no começo, pode ser preciso um pouco de tentativa e erro. Há dois métodos para corrigir uma ACL:
 
@@ -2059,7 +1588,7 @@ ACLs com várias ACEs são complexas, e às vezes uma ACE não produz o efeito e
 
 Exemplo: a primeira ACE deveria negar o host 192.168.10.10, mas foi digitada errada com o número 10; apaga-se a 10 e digita-se a correta.
 
-### 21.7 Diretrizes e Posicionamento
+### 16.13 Diretrizes e Posicionamento
 
 As diretrizes principais são:
 
@@ -2085,7 +1614,7 @@ Outros fatores também pesam:
 | Largura de banda | Filtrar na origem evita transmitir tráfego indesejado que consome banda |
 | Facilidade de configuração | No destino é mais fácil, mas desperdiça banda; na origem economiza banda, mas exige ACLs estendidas em vários roteadores |
 
-#### 21.7.1 Exemplo Resolvido: Onde Colocar Cada ACL
+#### 16.13.1 Exemplo Resolvido: Onde Colocar Cada ACL
 
 A rede 192.168.10.0/24 não pode alcançar 192.168.30.0/24 (ACL padrão no R3):
 
@@ -2099,7 +1628,7 @@ A rede 192.168.11.0/24 não pode usar Telnet com 192.168.30.0/24 (ACL estendida)
 - na saída da S0/1/0 do R1, processaria todos os pacotes que saem do R1, inclusive os da rede .10;
 - na **entrada da G0/0/1 do R1**, só os pacotes da rede .11 passam pela ACL; **é a melhor escolha**.
 
-### 21.8 Resumo dos Comandos de ACL
+### 16.14 Resumo dos Comandos de ACL
 
 | Comando | Função |
 | --- | --- |
@@ -2111,13 +1640,9 @@ A rede 192.168.11.0/24 não pode usar Telnet com 192.168.30.0/24 (ACL estendida)
 | `access-class ... in` | Aplica nas linhas VTY |
 | `show access-lists` | Mostra as ACLs e os contadores |
 
-## 22. Mitigação de Ataques com ACLs e ACLs IPv6
+### 16.15 Bloqueio de Endereços Falsificados
 
-As ACLs também são ferramentas de defesa: bloqueiam endereços falsificados, limitam os serviços expostos e controlam o ICMP.
-
-### 22.1 Bloqueio de Endereços Falsificados
-
-A maioria dos ataques usa algum tipo de falsificação. Na **falsificação de IP** (*IP spoofing*), o atacante foge do processo normal de criação dos pacotes e **coloca um cabeçalho IP com um endereço de origem falso**, o que esconde sua identidade.
+Além de controlar o acesso, as ACLs são ferramentas de defesa: bloqueiam endereços falsificados, limitam os serviços expostos e controlam o ICMP. A maioria dos ataques usa algum tipo de falsificação. Na **falsificação de IP** (*IP spoofing*), o atacante foge do processo normal de criação dos pacotes e **coloca um cabeçalho IP com um endereço de origem falso**, o que esconde sua identidade.
 
 A interface voltada para a internet **nunca deve aceitar pacotes com estes endereços de origem**:
 
@@ -2145,9 +1670,9 @@ access-list 150 permit ip any any
 
 A interface da rede local **só deve aceitar pacotes cuja origem seja a própria rede local**. Exemplo: `access-list 105 permit ip 192.168.1.0 0.0.0.255 any`.
 
-### 22.2 Liberação Apenas dos Serviços Necessários
+### 16.16 Liberação Apenas dos Serviços Necessários
 
-Uma estratégia eficaz é **permitir explicitamente só alguns tipos de tráfego** pelo firewall, aqueles dos serviços que realmente são usados: DNS, **SMTP** (*Simple Mail Transfer Protocol*, o envio de e-mails) e FTP para os servidores públicos. Também é comum liberar o acesso remoto dos administradores, e o roteador pode precisar de SSH, syslog (envio de registros de eventos a um servidor) e SNMP (ver item 15.4). Esses serviços são úteis, mas **precisam ser controlados e monitorados**, porque sua exploração abre vulnerabilidades.
+Uma estratégia eficaz é **permitir explicitamente só alguns tipos de tráfego** pelo firewall, aqueles dos serviços que realmente são usados: DNS, **SMTP** (*Simple Mail Transfer Protocol*, o envio de e-mails) e FTP para os servidores públicos. Também é comum liberar o acesso remoto dos administradores, e o roteador pode precisar de SSH, syslog (envio de registros de eventos a um servidor) e SNMP (ver item 7.2). Esses serviços são úteis, mas **precisam ser controlados e monitorados**, porque sua exploração abre vulnerabilidades.
 
 ```
 access-list 180 permit udp any host 192.168.20.2 eq domain
@@ -2156,7 +1681,7 @@ access-list 180 permit tcp any host 192.168.20.2 eq ftp
 access-list 180 permit tcp host 200.5.5.5 host 10.0.1.1 eq 22
 ```
 
-### 22.3 Controle do ICMP
+### 16.17 Controle do ICMP
 
 O **ICMP** envia mensagens de erro e de teste, como as do ping. Os atacantes usam o **echo** (a mensagem enviada pelo ping) para descobrir hosts e para inundações (enviar tantos pings que o alvo não dá conta), e o **redirect** (mensagem que manda o host usar outro roteador) para alterar a tabela de roteamento dos hosts. Por isso, **echo e redirect devem ser bloqueados na entrada**.
 
@@ -2182,11 +1707,11 @@ access-list 112 deny icmp any any
 access-list 112 permit ip any any
 ```
 
-### 22.4 Proteção do SNMP
+### 16.18 Proteção do SNMP
 
 O **SNMP** e outros protocolos de gerenciamento são úteis para monitorar e gerenciar os equipamentos à distância. Se ele for necessário, ACLs nas interfaces filtram os pacotes SNMP de sistemas não autorizados, mas um pacote com endereço falsificado e permitido pela ACL ainda passa. O mais eficaz é **desativar o SNMP quando ele não for necessário**, com `no snmp-server`.
 
-### 22.5 Riscos da Transição para o IPv6
+### 16.19 Riscos da Transição para o IPv6
 
 Muitas redes estão migrando para o **IPv6**, a versão nova do protocolo IP, com endereços de 128 bits escritos em hexadecimal (como 2001:db8::1), em parte porque os endereços IPv4 se esgotaram e pelas fraquezas do IPv4, e os ataques ao IPv6 crescem junto. O IPv4 não vai sumir de uma hora para outra: os dois vão coexistir até o IPv6 substituí-lo aos poucos, e essa convivência abre brechas de segurança.
 
@@ -2200,7 +1725,7 @@ Um exemplo de ataque usa o **Teredo**, técnica que dá IPv6 a hosts atrás de u
 
 É preciso uma estratégia contra os ataques à infraestrutura e aos protocolos IPv6, que inclua **filtrar na borda** com técnicas como as ACLs IPv6.
 
-### 22.6 ACLs IPv6
+### 16.20 ACLs IPv6
 
 As ACLs IPv6 têm diferenças importantes:
 
@@ -2232,13 +1757,13 @@ Elas terminam com três entradas implícitas: `permit icmp any any nd-na`, `perm
 | Aplicação | `ip access-group` | `ipv6 traffic-filter` |
 | Final implícito | Nega tudo | Permite nd-na e nd-ns e nega o resto |
 
-## 23. Tecnologias de Firewall
+## 17. Firewalls
 
-A ACL filtra pacote por pacote. O **firewall** vai além: é um sistema ou grupo de sistemas que **aplica uma política de controle de acesso entre redes** com níveis de confiança diferentes.
+A ACL filtra pacote por pacote. O **firewall** vai além: é um sistema ou grupo de sistemas que **aplica uma política de controle de acesso entre redes** com níveis de confiança diferentes. Este módulo reúne tudo sobre firewalls: características, tipos, uso no projeto da rede (inclusive com a DMZ, vista no item 15.2), defesa em camadas e, no fim, o firewall de política baseada em zona (ZPF) dos roteadores Cisco.
 
-Exemplo de operação: o firewall deixa chegar da internet o tráfego para os servidores web, FTP, SMTP e IMAP, mas nega o tráfego de entrada com endereços iguais aos internos (sinal de falsificação, item 22.1), o *echo request* do ICMP (o ping), as consultas ao Active Directory e ao SQL Server (o banco de dados da Microsoft) e as mensagens de broadcast da rede Windows interna, que só devem circular dentro da empresa.
+Exemplo de operação: o firewall deixa chegar da internet o tráfego para os servidores web, FTP, SMTP e IMAP, mas nega o tráfego de entrada com endereços iguais aos internos (sinal de falsificação, item 16.15), o *echo request* do ICMP (o ping), as consultas ao Active Directory e ao SQL Server (o banco de dados da Microsoft) e as mensagens de broadcast da rede Windows interna, que só devem circular dentro da empresa.
 
-### 23.1 Características do Firewall
+### 17.1 Características do Firewall
 
 Todo firewall:
 
@@ -2255,7 +1780,7 @@ Seus benefícios são:
 
 Suas limitações são:
 
-- mal configurado, tem consequências graves, como virar um **ponto único de falha** (ver item 18.1);
+- mal configurado, tem consequências graves, como virar um **ponto único de falha** (ver item 6.7);
 - os dados de muitos aplicativos não passam por ele com segurança;
 - usuários podem procurar formas de contorná-lo para receber material bloqueado, o que expõe a rede;
 - pode reduzir o desempenho;
@@ -2263,7 +1788,7 @@ Suas limitações são:
 
 Conhecer os tipos e as capacidades de cada um permite usar o firewall certo em cada situação.
 
-### 23.2 Tipos de Firewall
+### 17.2 Tipos de Firewall
 
 Os firewalls se dividem em quatro tipos principais:
 
@@ -2281,7 +1806,7 @@ Também existem o firewall **baseado em host**, um PC ou servidor com software d
 | Gateway de aplicação | 3, 4, 5 e 7 | Intermedia a conexão |
 | NGFW | Até a 7 | Estado + aplicativos + prevenção de intrusão |
 
-### 23.3 Firewall de Filtragem de Pacotes
+### 17.3 Firewall de Filtragem de Pacotes
 
 Vantagens:
 
@@ -2301,7 +1826,7 @@ Desvantagens:
 - não filtra bem serviços com **negociação dinâmica de portas** (aplicativos, como o FTP e as chamadas de vídeo, que combinam na hora uma porta nova para cada conexão) sem abrir toda uma faixa de portas;
 - **não guarda estado**: analisa cada pacote isoladamente, sem o contexto da conexão.
 
-### 23.4 Firewall com Estado
+### 17.4 Firewall com Estado
 
 | Benefícios | Limitações |
 | --- | --- |
@@ -2311,9 +1836,9 @@ Desvantagens:
 | **Defende contra falsificação e DoS**, conferindo se o pacote pertence a uma conexão existente | Não autentica usuários |
 | Logs mais ricos |  |
 
-### 23.5 Firewalls no Projeto de Rede
+### 17.5 Firewalls no Projeto de Rede
 
-As arquiteturas de segurança definem os limites do tráfego que entra e sai. Três projetos são comuns: privado e público, DMZ (ver item 16.2) e firewall de política baseada em zona (ZPF), visto na próxima seção.
+As arquiteturas de segurança definem os limites do tráfego que entra e sai. Três projetos são comuns: privado e público, DMZ (ver item 15.2) e firewall de política baseada em zona (ZPF), visto na próxima seção.
 
 Com **duas interfaces**, o firewall separa a rede privada, confiável, da pública, não confiável:
 
@@ -2332,7 +1857,7 @@ Com a DMZ, o firewall passa a ter **três interfaces**:
 
 ![Com a DMZ, o firewall tem três interfaces e trata de forma diferente cada sentido do tráfego](img/defesa/def_dmz.png){width=6in}
 
-### 23.6 Defesa em Camadas com Firewalls
+### 17.6 Defesa em Camadas com Firewalls
 
 A defesa em camadas combina **tipos diferentes de firewall** para dar profundidade à segurança. Ela cobre quatro áreas:
 
@@ -2347,7 +1872,7 @@ Internet → Roteador de borda → Firewall ou host bastião → Roteador intern
 
 Primeiro, encontra o filtro de pacotes do roteador de borda; se permitido, vai ao firewall ou ao **host bastião**, que aplica mais regras e descarta pacotes suspeitos; depois, passa pelo roteador interno. Só chega ao host interno quem passa por todos os pontos. O host bastião é um computador **reforçado para resistir a ataques**, normalmente na DMZ.
 
-### 23.7 Limites e Boas Práticas
+### 17.7 Limites e Boas Práticas
 
 A defesa em camadas sozinha não basta. O firewall:
 
@@ -2365,16 +1890,14 @@ As boas práticas, ponto de partida para a política de firewall, são:
 - fazer gerenciamento de mudanças na configuração (toda alteração é registrada, aprovada e testada antes de entrar em vigor);
 - lembrar que o firewall protege principalmente contra ataques técnicos vindos de fora.
 
-## 24. Firewall de Política Baseada em Zona (ZPF)
+### 17.8 Firewall de Política Baseada em Zona (ZPF) e Zonas de Segurança
 
-Os roteadores Cisco também funcionam como firewall com estado (ver item 23.2), em dois modelos:
+Os roteadores Cisco também funcionam como firewall com estado (ver item 17.2), em dois modelos:
 
 - **clássico**: a política é aplicada em cada interface, com o comando `ip inspect`;
 - **ZPF** (*Zone-Based Policy Firewall*): as interfaces formam zonas de segurança, e a política é aplicada **ao tráfego que passa de uma zona para outra**; é o substituto flexível e poderoso do clássico.
 
 As principais motivações para migrar ao ZPF são a **estrutura**, útil para documentar e comunicar, e a **facilidade de uso**, que aproxima a segurança de mais profissionais.
-
-### 24.1 Zonas de Segurança
 
 Uma **zona** é um **grupo de uma ou mais interfaces com funções e necessidades de segurança semelhantes**, como privada, pública e DMZ.
 
@@ -2396,7 +1919,7 @@ A **zona self** é **o próprio roteador**, com todos os endereços IP das suas 
 | Outra zona | Zona self | Sim | Não | Passa |
 | Outra zona | Zona self | Sim | Sim | Inspeciona |
 
-### 24.2 Benefícios do ZPF
+### 17.9 Benefícios do ZPF
 
 Seus benefícios são:
 
@@ -2408,7 +1931,7 @@ Seus benefícios são:
 
 Os dois modelos podem estar ativos no mesmo roteador, mas **não na mesma interface**: uma interface não pode ser membro de zona e ter a inspeção do modelo clássico (`ip inspect`) ao mesmo tempo.
 
-### 24.3 Projeto do ZPF
+### 17.10 Projeto do ZPF
 
 1. **determinar as zonas**: separar a rede em zonas, que são as **fronteiras de segurança**; ao cruzar para outra zona, o tráfego passa pelas restrições da política; exemplo: a rede pública é uma zona, e a interna, outra;
 2. **estabelecer as políticas entre as zonas**: para cada **par de zonas** (*zone pair*), origem → destino, definir as sessões que os clientes da origem podem pedir aos servidores do destino, em geral TCP e UDP, mas também ICMP, como o echo; para tráfego sem sessão, definir os fluxos de ida e de volta; as políticas são unidirecionais;
@@ -2417,7 +1940,7 @@ Os dois modelos podem estar ativos no mesmo roteador, mas **não na mesma interf
 
 Exemplos de projeto: LAN para a internet, firewall com servidores públicos, firewalls redundantes e firewall complexo.
 
-### 24.4 Ações do ZPF
+### 17.11 Ações do ZPF
 
 As políticas definidas pelo usuário agem sobre o tráfego que vai de uma zona de origem a uma de destino:
 
@@ -2427,7 +1950,7 @@ As políticas definidas pelo usuário agem sobre o tráfego que vai de uma zona 
 
 O Drop descarta em silêncio, **sem enviar a mensagem ICMP de destino inalcançável**, diferentemente da ACL.
 
-### 24.5 Regras para o Tráfego que Atravessa o Roteador
+### 17.12 Regras para o Tráfego que Atravessa o Roteador
 
 | Interface de origem em zona? | Interface de destino em zona? | Situação | Resultado |
 | --- | --- | --- | --- |
@@ -2442,13 +1965,13 @@ O Drop descarta em silêncio, **sem enviar a mensagem ICMP de destino inalcanç�
 
 **Importante:** o tráfego **nunca flui entre uma interface que está em zona e outra que não está**.
 
-### 24.6 Configuração do ZPF
+### 17.13 Configuração do ZPF
 
 A configuração tem cinco etapas. A sequência não é obrigatória, mas algumas dependem de outras: o class-map vem antes do policy-map, e o policy-map antes do zone-pair:
 
 Zonas → class-map → policy-map → zone-pair → Interfaces nas zonas
 
-#### 24.6.1 Exemplo Resolvido: Rede Privada Acessando a Web
+#### 17.13.1 Exemplo Resolvido: Rede Privada Acessando a Web
 
 A interface GigabitEthernet0/0 fica na zona privada e a Serial0/0/0, na pública.
 
@@ -2494,7 +2017,7 @@ interface Serial0/0/0
 
 Resultado: o tráfego web da zona privada é inspecionado, e da pública **só entram as respostas das sessões abertas pela zona privada**.
 
-### 24.7 Verificação e Cuidados
+### 17.14 Verificação e Cuidados
 
 Ao final de todo policy-map, o IOS aplica um **drop explícito** na `class class-default`, como a negação implícita das ACLs; outros class-maps também podem descartar tráfego indesejado.
 
@@ -2518,11 +2041,456 @@ Cuidados:
 | Depende de ACLs | Sim | Não |
 | Interface nova | Precisa de configuração | Herda as regras da zona |
 
-## 25. Virtualização e Computação em Nuvem
+## 18. Segurança Sem Fio e de Dispositivos Móveis
+
+Os dispositivos sem fio e móveis, de celulares e computadores a roteadores e câmeras IP, são hoje a **maioria dos dispositivos nas redes**. Eles trazem mobilidade e conveniência, mas estão sujeitos a roubo, invasão e acesso remoto não autorizado, interceptação do tráfego (*sniffing*), ataques *man-in-the-middle* (o atacante se coloca no meio da conversa e lê ou altera o que passa) e ataques ao desempenho e à disponibilidade. A melhor proteção combina **autenticação e criptografia**.
+
+### 18.1 Padrões de Segurança Sem Fio
+
+Os padrões de segurança do Wi-Fi definem como a rede sem fio autentica os aparelhos e criptografa o que trafega pelo ar. Eles evoluíram nesta ordem:
+
+WEP → WPA → WPA2 → WPA3
+
+| Padrão | Características | Situação |
+| --- | --- | --- |
+| WEP (*Wired Equivalent Privacy*) | Primeiro padrão; chaves de 64 e 128 bits; quebrado em poucos minutos com ferramentas gratuitas | Fraco, não usar |
+| WPA (*Wi-Fi Protected Access*) | Resposta às fraquezas do WEP; chaves de 256 bits; **MIC** (*Message Integrity Check*), que detecta dados capturados e alterados entre o roteador Wi-Fi (o ponto de acesso, ou AP) e o aparelho do usuário; **TKIP** (*Temporal Key Integrity Protocol*), que trata, protege e troca melhor as chaves | Substituiu o WEP |
+| WPA2 (2006) | **AES** (a cifra simétrica do item 4.3) obrigatório, com melhor gerenciamento de chaves; **CCMP** (o modo de uso do AES no Wi-Fi) no lugar do TKIP | Seguro |
+| WPA3 | Acrescenta ao WPA2 algoritmos criptográficos robustos e uma troca de chaves melhor | O mais atual |
+
+Em casa, o mais comum é o **WPA-PSK** (*Pre-Shared Key* — chave pré-compartilhada), em que todos usam a mesma senha do Wi-Fi. Nas empresas, usa-se o modo **Enterprise**, em que cada pessoa entra com o próprio usuário e senha, conferidos por um servidor (o EAP, no item 18.2).
+
+O **WPS** (*Wi-Fi Protected Setup*) facilita configurar a rede de casa e conectar dispositivos IoT, mas o **PIN pode ser descoberto por força bruta** (testando todas as combinações possíveis, o que no WPS leva poucas horas). Por isso, não deve ser usado e deve ser **desativado**.
+
+### 18.2 Autenticação em Redes Sem Fio
+
+O **802.11** é o nome técnico do padrão Wi-Fi. Na versão original, ele tem **dois tipos de autenticação**:
+
+- **sistema aberto**: qualquer dispositivo se conecta; só para situações em que a segurança não importa;
+- **chave compartilhada**: autentica e criptografa entre o cliente e o ponto de acesso.
+
+O **ponto de acesso** (*access point*, AP) é o equipamento que liga os aparelhos sem fio à rede cabeada.
+
+O **EAP** (*Extensible Authentication Protocol*) é a estrutura de autenticação usada nas redes sem fio:
+
+1. o usuário pede a conexão ao AP;
+2. o AP pede a identificação (nome de usuário) e a envia ao servidor de autenticação;
+3. o servidor pede a prova de que a identidade é válida;
+4. o AP pede a senha ao usuário, que a fornece, e o AP a repassa ao servidor;
+5. o servidor confirma que usuário e senha estão corretos e avisa o AP e o usuário;
+6. o usuário se conecta à rede sem fio.
+
+Quatro protocolos são usados com o EAP:
+
+| Método | Certificado no cliente | Certificado no servidor | Implantação | Segurança |
+| --- | --- | --- | --- | --- |
+| EAP-TLS (usa o TLS do item 4.4) | Sim | Sim | Difícil | Alta |
+| PEAP (*Protected EAP*: cria primeiro um túnel TLS e depois envia usuário e senha dentro dele) | Não | Sim | Moderada | Média |
+| EAP-TTLS (*Tunneled TLS*: ideia parecida com a do PEAP) | Não | Sim | Moderada | Média |
+| EAP-FAST (criado pela Cisco; usa uma credencial própria em vez de certificado) | Não | Não | Fácil | Média |
+
+O **EAP-TLS é o mais seguro e o mais difícil de implantar**, porque exige certificado nas duas pontas.
+
+### 18.3 Pontos de Acesso Não Autorizados e Autenticação Mútua
+
+Qualquer dispositivo com interface sem fio e cabeada ligado à rede pode agir como **ponto de acesso não autorizado** (*rogue AP*). Ele **imita um ponto de acesso legítimo** para que as vítimas se conectem; o impostor então pede e copia dados dos dispositivos. Esse ataque man-in-the-middle é **muito difícil de detectar** e pode roubar credenciais de login e dados.
+
+A proteção é a **autenticação mútua** (de duas vias): **as duas pontas se autenticam antes de se conectar**, e o cliente percebe quando o ponto de acesso é falso.
+
+Para a internet, os celulares também usam as redes de telefonia móvel da operadora, como o **LTE** (*Long Term Evolution*, o 4G) e o **5G**.
+
+### 18.4 Comunicação dos Dispositivos Móveis
+
+| Método | Como funciona | Exemplo |
+| --- | --- | --- |
+| Wi-Fi e Bluetooth | Sinais sem fio, configurados no menu do aparelho | Fone de ouvido; som do carro |
+| NFC (*Near-Field Communication*) | Comunicação sem contato por campos eletromagnéticos | Pagamento por aproximação |
+| Infravermelho (IR) | Curto alcance, com um receptor de IR | Controlar a TV pelo celular |
+| USB | O único com fio | Armazenamento e áudio; celular compartilhando a internet com o computador (como um modem); ligar o aparelho a equipamentos de **aquisição forense** (que copiam o conteúdo do aparelho como prova) em uma investigação |
+
+### 18.5 Gerenciamento de Dispositivos Móveis
+
+No **COPE** (*Corporate-Owned, Personally Enabled*), o aparelho é da empresa e o uso pessoal é permitido, por isso guarda dados pessoais e da organização; no BYOD (ver item 2.4), o aparelho é do funcionário. Nos dois casos, valem as políticas de segurança e proteção de dados quando há informação confidencial no aparelho.
+
+As principais formas de gerenciamento são:
+
+- **segmentação do armazenamento e conteinerização**: cria uma área autenticada e criptografada que **separa os dados da empresa dos dados pessoais**; permite isolar os aplicativos, controlar as funções deles, apagar o contêiner e bloquear ou limpar o aparelho à distância;
+- **gerenciamento de conteúdo**: avalia o risco de aplicativos que compartilham dados, como Dropbox, Box, Google Drive e iCloud; um sistema de gerenciamento de identidades controla o que cada usuário acessa;
+- **gerenciamento de aplicativos**: a **lista de permissões** (*whitelisting*) assina digitalmente os aplicativos autorizados, para garantir que venham de fontes confiáveis; os aplicativos que pedem credenciais devem usar senhas fortes.
+
+### 18.6 Ameaças e Proteções dos Dispositivos Móveis
+
+Seja da empresa ou pessoal, o aparelho precisa de proteção contra roubo, perda, acesso não autorizado e riscos do sistema operacional, dos aplicativos e da rede. Alguns usuários **contornam as limitações do aparelho** para rodar aplicativos não autorizados ou fora da loja:
+
+| Técnica | Plataforma | O que faz | Risco |
+| --- | --- | --- | --- |
+| Jailbreak | Apple | Remove a restrição de só rodar aplicativos autorizados pela Apple | Alto |
+| Root | Android | Ignora a arquitetura de segurança e dá acesso administrativo total | Alto |
+| Sideloading | Ambas | Contorna as configurações para instalar aplicativos não aprovados, como os de lojas de terceiros, não avaliados | Menor, mas ainda é um risco |
+
+Há soluções que detectam aparelhos com jailbreak ou root: eles são marcados como **não conformes** e removidos da rede ou bloqueados nos aplicativos da organização.
+
+As proteções são:
+
+- bloqueio de tela, com senha, PIN ou padrão;
+- biometria: impressão digital, rosto, íris ou voz;
+- **autenticação com reconhecimento de contexto**, que usa aprendizado de máquina (programas que aprendem padrões a partir de dados) para liberar o acesso conforme o comportamento normal do usuário, como o local e o horário de costume;
+- **limpeza remota**, se o aparelho for perdido ou roubado;
+- criptografia completa do dispositivo.
+
+### 18.7 Rastreamento por GPS
+
+O **GPS** (*Global Positioning System*) usa satélites e computadores para localizar o aparelho em tempo real, com precisão de cerca de **5 metros**. Muitos aplicativos rastreiam o celular; o Facebook, por exemplo, permite fazer **check-in** em um local, visível para os contatos. Alguns aplicativos usam a **delimitação geográfica** ou a geolocalização para definir uma área.
+
+As **notificações push** (mensagens que aparecem sem abrir o aplicativo) também usam a localização, e comércios locais enviam propagandas conforme as configurações do usuário.
+
+Criminosos também usam **notificações push para capturar dados** dos usuários.
+
+## 19. Resiliência e Alta Disponibilidade
+
+A **resiliência** torna um sistema **tolerante a falhas**: ele continua funcionando quando algo dá errado, inclusive durante um ataque. O objetivo é **reduzir ao mínimo o tempo de inatividade**. A disponibilidade contínua é essencial não só para as empresas, mas para a vida moderna, que depende cada vez mais dos sistemas de informação.
+
+### 19.1 Alta Disponibilidade
+
+A **alta disponibilidade** descreve **sistemas concebidos para evitar períodos de inatividade**, com acesso ininterrupto aos dados e serviços. Eles seguem três princípios:
+
+1. **eliminar ou reduzir os pontos únicos de falha** (definidos logo abaixo), com dispositivos em espera ativa (*hot standby*, ligados e prontos para assumir), componentes redundantes (duplicados) e várias conexões ou caminhos;
+2. **garantir uma transição confiável**, com fontes de alimentação redundantes e sistemas de energia e de comunicação de reserva;
+3. **detectar as falhas assim que ocorrem**, com monitoramento ativo, que pode até acionar o sistema de reserva.
+
+O **ponto único de falha** (*Single Point of Failure*, SPOF) é o elo fraco: **qualquer parte cuja falha derruba o sistema inteiro**. Pode ser um equipamento (roteadores ou switches centrais), um processo, um dado, um serviço de rede, um utilitário essencial ou até uma equipe de TI altamente qualificada. A solução é mudar a operação crítica para que não dependa de um único elemento, ou criar componentes redundantes que assumam o processo.
+
+Em um **cluster de alta disponibilidade**, vários computadores com acesso ao mesmo armazenamento e configurações de rede idênticas processam o mesmo serviço ao mesmo tempo; se um falha, os outros continuam.
+
+- **tolerância a falhas**: o sistema segue funcionando se um ou mais componentes falharem; exemplo: com o espelhamento de dados, se o controlador de disco falha, o sistema espelhado entrega os dados sem interrupção aparente;
+- **resiliência do sistema**: manter os dados e o processamento disponíveis mesmo sob ataque ou interrupção, com energia e processamento redundantes; vai além de blindar os dispositivos.
+
+### 19.2 Os Cinco Noves
+
+Toda empresa quer operar sem parar, mesmo em condições extremas, como um ataque. Uma das práticas mais conhecidas são os **cinco noves**: **99,999% de disponibilidade**, ou **menos de 5,26 minutos de inatividade por ano**.
+
+#### 19.2.1 Exemplo Resolvido: Tempo de Inatividade nos Cinco Noves
+
+| Etapa | Cálculo | Resultado |
+| --- | --- | --- |
+| Minutos no ano | 365 × 24 × 60 | 525.600 min |
+| Fração de inatividade | 100% − 99,999% = 0,001% | 0,00001 |
+| Inatividade máxima | 525.600 × 0,00001 | 5,256 ≈ 5,26 min |
+
+Para chegar aos cinco noves, usam-se:
+
+- **sistemas padronizados**: com os mesmos componentes, o estoque de peças é mais fácil de manter e é possível trocar componentes em uma emergência;
+- **clustering**: vários dispositivos agrupados parecem uma única entidade para o usuário;
+- **sistemas de componentes compartilhados**: um sistema completo pode substituir o que falhou.
+
+### 19.3 Redundância N+1
+
+Na **redundância N+1**, os componentes necessários (N) têm **pelo menos um componente de reserva (+1)**, em espera e pronto para entrar em ação, como os quatro pneus e o estepe de um carro. Em um data center, isso significa ter um servidor, uma fonte de alimentação, um switch e um roteador de reserva.
+
+**Observação:** o N+1 tem equipamento redundante, mas **não é totalmente redundante**: suporta a perda de um componente, não de todos.
+
+### 19.4 RAID
+
+O **RAID** (*Redundant Array of Independent Disks*) **distribui os dados entre vários discos**. Se um disco é perdido, os dados são recuperados dos outros, e a leitura fica mais rápida, porque vários discos trabalham juntos. Pode ser feito por software ou por hardware, com um controlador especializado. Combina três técnicas:
+
+| Técnica | Como funciona | Protege contra falha de disco? |
+| --- | --- | --- |
+| Espelhamento | Grava os dados duplicados em outro disco | Sim |
+| Distribuição (*striping*) | Espalha os dados por vários discos | Não, sozinha |
+| Paridade | Depois da distribuição, gera somas de verificação, guardadas em uma terceira unidade, para conferir e reconstruir os dados | Sim |
+
+**Importante:** o **RAID 0 usa apenas distribuição e não tem redundância**. Quem protege contra falha de disco são o RAID 1 (espelhamento) e o RAID 5 (paridade).
+
+### 19.5 Spanning Tree Protocol (STP)
+
+A redundância protege a rede de pontos únicos de falha, como um cabo ou um switch. Mas cabos redundantes entre switches criam **loops** (caminhos em círculo) e **quadros duplicados** (o quadro é o nome do bloco de dados na rede local): os quadros circulam sem parar, multiplicando-se, e derrubam a rede comutada (a rede formada por switches).
+
+O **STP** (*Spanning Tree Protocol*) **bloqueia de propósito os caminhos redundantes**, deixando um só caminho lógico entre todos os destinos. Os caminhos físicos continuam existindo para dar redundância. Se um cabo ou switch falha, o STP recalcula os caminhos e desbloqueia as portas necessárias.
+
+#### 19.5.1 Exemplo Resolvido: o STP Diante de uma Falha
+
+Três switches, S1, S2 e S3, estão ligados em triângulo. Para evitar o loop, o STP deixa bloqueada a porta de S2 que leva a S3 (o Tronco2), e o tráfego de S2 vai direto a S1.
+
+1. o tronco entre S2 e S1 falha e interrompe o caminho original;
+2. S2 desbloqueia a porta do Tronco2, e o tráfego segue pelo caminho alternativo, S2 → S3 → S1;
+3. quando o link entre S2 e S1 volta, o STP bloqueia de novo o link entre S2 e S3.
+
+### 19.6 Redundância de Roteador
+
+O **gateway padrão** é o roteador que dá acesso às outras redes. Sozinho, ele é um ponto único de falha.
+
+Com um roteador de reserva (*standby*), os dois usam um **protocolo de redundância** para decidir qual fica ativo e compartilham um **endereço IP virtual**; os dispositivos usam esse **IP virtual como gateway padrão**. Pelos IPs físicos, os dois trocam mensagens periódicas para confirmar que estão on-line. Se o de reserva deixa de receber essas mensagens, assume o encaminhamento. Os computadores continuam falando com o IP virtual (por exemplo, 192.0.2.100) e permanecem on-line.
+
+Essa recuperação automática é a **redundância de primeiro salto** (o gateway é o primeiro roteador no caminho do computador). Protocolos que a oferecem: **HSRP** (*Hot Standby Router Protocol*, da Cisco), **VRRP** (*Virtual Router Redundancy Protocol*, padrão aberto) e **GLBP** (*Gateway Load Balancing Protocol*, da Cisco, que também divide a carga entre os roteadores).
+
+### 19.7 Redundância de Local
+
+Conforme as necessidades, a empresa pode precisar de redundância de local:
+
+| Replicação | Sincronização | Largura de banda | Distância entre locais |
+| --- | --- | --- | --- |
+| Síncrona | Em tempo real | Alta | Pequena, para reduzir a latência (o atraso da comunicação) |
+| Assíncrona | Quase em tempo real | Menor | Maior, porque a latência pesa menos |
+| Ponto no tempo | Atualiza periodicamente o local de backup | A menor, sem conexão constante | Qualquer |
+
+O equilíbrio entre custo e disponibilidade define a melhor escolha.
+
+### 19.8 Design Resiliente
+
+O **design resiliente** é **mais do que adicionar redundância**: é entender as necessidades do negócio e incorporar a redundância de modo que a recuperação seja rápida. Exemplos:
+
+- o STP dá um caminho alternativo, mas a transição pode não ser imediata se a configuração não for ideal;
+- os protocolos de roteamento dão resiliência, e o ajuste fino deixa a transição imperceptível;
+- o administrador deve testar configurações não padrão em uma rede de testes para melhorar o tempo de recuperação.
+
+A **resiliência de aplicativos** é a capacidade de o aplicativo reagir a problemas em um componente sem parar de funcionar. Ela evita perder clientes, funcionários ou negócios por falha de aplicativo, lembrando que o administrador às vezes precisa desligar aplicativos para correções, atualizações ou novas funções.
+
+Na resiliência de aplicativos, **quanto maior a disponibilidade, maiores a complexidade e o custo**:
+
+| Solução | Complexidade e custo |
+| --- | --- |
+| Hardware tolerante a falhas: vários componentes essenciais no mesmo computador | Os maiores |
+| Arquitetura de cluster: servidores que funcionam como um único sistema | Intermediários |
+| Backup e restauração: cópias dos arquivos para restaurar se houver perda | Os menores |
+
+Nos roteadores e switches Cisco, a **configuração resiliente do IOS** acelera a recuperação se alguém, de propósito ou não, formatar a memória flash (onde fica o sistema) ou apagar a configuração de inicialização. Ela guarda uma cópia protegida do arquivo do sistema IOS e da configuração em uso, o **bootset primário**, que o usuário não consegue apagar (comandos `secure boot-image` e `secure boot-config`).
+
+### 19.9 Backups
+
+Os dados podem ser perdidos por roubo, falha de equipamento, desastre ou erro. O **backup** guarda uma cópia das informações em uma mídia, de preferência removível e guardada em local seguro, e é **uma das formas mais eficazes de proteger contra a perda de dados**. Uma boa política de segurança exige backups regulares, normalmente guardados em outro local. Ao planejá-lo, considera-se:
+
+- **frequência**: é comum fazer um backup completo mensal ou semanal e backups parciais frequentes do que mudou desde então; muitos backups parciais aumentam o tempo de restauração;
+- **armazenamento**: levar as cópias a um local externo aprovado, em rodízio diário, semanal ou mensal, conforme a política;
+- **segurança**: proteger os backups com senha, digitada antes de restaurar;
+- **validação**: conferir sempre os backups, para garantir a integridade dos dados.
+
+### 19.10 Energia
+
+O fornecimento contínuo de energia é crítico. As regras gerais são:
+
+- o data center fica em uma fonte de alimentação separada do resto do prédio;
+- fontes redundantes: duas ou mais alimentações vindas de duas ou mais subestações;
+- condicionamento da energia (equipamentos que filtram oscilações e entregam tensão estável);
+- sistemas de energia de reserva, muitas vezes necessários;
+- **nobreak** (UPS, *Uninterruptible Power Supply*) para desligar os sistemas normalmente.
+
+| Categoria | Evento | O que é |
+| --- | --- | --- |
+| Excesso | Pico (*spike*) | Alta tensão momentânea |
+| Excesso | Sobretensão (*surge*) | Alta tensão prolongada |
+| Perda | Falha (*fault*) | Perda momentânea |
+| Perda | Blecaute | Perda completa |
+| Degradação | Afundamento (*sag*) | Baixa tensão momentânea |
+| Degradação | Subtensão (*brownout*) | Baixa tensão prolongada |
+| Degradação | Corrente de partida (*inrush*) | Sobrecarga inicial de energia |
+
+**Importante:** **pico** e **afundamento** são **momentâneos**; **sobretensão** e **subtensão** são **prolongadas**.
+
+### 19.11 Climatização (HVAC)
+
+O **HVAC** (*Heating, Ventilation and Air Conditioning*) controla **temperatura, umidade e circulação do ar** e é crítico para a segurança das pessoas e dos equipamentos. Ele deve ser planejado junto com o hardware, o cabeamento, o armazenamento, a proteção contra incêndio, a segurança física e a energia.
+
+Quase todo equipamento vem com **requisitos ambientais**, faixas aceitáveis de temperatura e umidade, no documento de especificações ou no guia de planejamento físico. Respeitá-los evita falhas e prolonga a vida dos sistemas.
+
+Os sistemas modernos de HVAC ficam conectados à internet para monitoramento remoto e são acessados por fornecedores e terceiros. Como os técnicos precisam achar informações rápido, as credenciais ficam espalhadas e acessíveis a muita gente, inclusive a funcionários das empreiteiras. Quanto mais gente tem acesso, menos seguro é o sistema, e sua interrupção é um risco considerável para a empresa.
+
+## 20. Segurança de Aplicações
+
+A **segurança de aplicações** protege os programas, sites e serviços que a organização desenvolve e usa. Ela deve ser **prioridade em todas as etapas: desenvolvimento, testes e implantação**.
+
+### 20.1 Etapas do Desenvolvimento de Aplicações
+
+O desenvolvimento usa ambientes separados:
+
+Desenvolvimento e teste → Preparação → Produção
+
+| Ambiente | O que acontece |
+| --- | --- |
+| Desenvolvimento e teste | O software é escrito, testado e depurado; o ambiente é menos restritivo e tem segurança mais baixa que o real; nos testes, a equipe de garantia de qualidade (QA, *Quality Assurance*) analisa como o código interage com o ambiente e encontra falhas, que são **muito mais fáceis de corrigir nessa fase** |
+| Preparação (*staging*) | Ambiente que deve corresponder ao de produção, para confirmar que o software roda com as configurações de segurança necessárias |
+| Produção | Depois dos testes de segurança, o software entra em uso real, atendendo usuários e clientes de verdade |
+
+O software de **controle de versão** (como o Git) rastreia e gerencia as alterações no código, guardando cada versão, e o **sandbox** ("caixa de areia") é um ambiente isolado em que o desenvolvedor trabalha sem afetar o sistema real e sem que seu código seja sobrescrito por outros.
+
+O **provisionamento** é a criação ou atualização do software; o **desprovisionamento**, a remoção. Um **portal de autoatendimento** pode automatizar os dois.
+
+### 20.2 Técnicas de Codificação Segura
+
+| Técnica | O que faz |
+| --- | --- |
+| Normalização | Organiza os dados no banco e mantém a integridade; converte cada entrada para a forma mais simples, com uma representação binária única, o que ajuda a achar entradas maliciosas |
+| Procedimento armazenado | Grupo de comandos em SQL (*Structured Query Language*, a linguagem usada para consultar e alterar bancos de dados) já preparados e guardados no próprio banco, que executam uma tarefa; o aplicativo só chama o procedimento, sem montar comandos com o que o usuário digitou, o que reduz o tráfego, dá resultados mais rápidos e dificulta ataques de injeção de SQL |
+| Ofuscação | Esconde os dados originais com caracteres aleatórios |
+| Camuflagem | Troca dados confidenciais por dados fictícios realistas |
+| Reutilização de código e SDKs | Aproveitam código pronto para desenvolver mais rápido e mais barato |
+
+A ofuscação e a camuflagem dificultam a **engenharia reversa**, a tentativa de descobrir como o programa funciona.
+
+Na reutilização de código e nos **SDKs** (*Software Development Kits* — kits de desenvolvimento de software, pacotes de código pronto oferecidos por fabricantes), **uma vulnerabilidade no código reaproveitado passa para todos os aplicativos que o usam**.
+
+### 20.3 Validação de Entrada
+
+**Controlar o que entra no banco de dados é essencial para manter a integridade dos dados.** Os criminosos miram as informações confidenciais dos bancos de dados, e muitos ataques enviam dados malformados para confundir, travar o aplicativo ou fazê-lo revelar informações.
+
+Exemplo: os usuários assinam uma newsletter (boletim enviado por e-mail) por um formulário web, e o sistema envia um e-mail com um link de confirmação. O atacante altera o link, mudando o nome, o e-mail ou o status da assinatura. Se o servidor não conferir cada endereço com os dados da assinatura, recebe informações falsas. O ataque pode ser automatizado para encher o banco com milhares de assinantes inválidos.
+
+A **regra de validação** confere se os dados estão **dentro dos parâmetros definidos pelo projetista do banco de dados**:
+
+| Critério | O que verifica | Exemplo |
+| --- | --- | --- |
+| Tamanho | Número de caracteres | CEP com 8 dígitos |
+| Formato | Formato definido | Data DD/MM/AAAA |
+| Consistência | Dados que combinam entre si | Cidade compatível com o estado |
+| Intervalo | Valor entre um mínimo e um máximo | Idade entre 0 e 120 |
+| Dígito verificador | Cálculo extra para detectar erros de digitação | Último dígito do ISBN (o número que identifica cada livro) ou os dois últimos do CPF |
+
+#### 20.3.1 Exemplo Resolvido: Dígito Verificador do ISBN-10
+
+O ISBN-10 tem 10 dígitos, e o último é o verificador. Para os nove primeiros dígitos 1 5 8 7 1 4 3 7 3:
+
+1. multiplica-se o primeiro dígito por 10, o segundo por 9, e assim por diante, até o nono por 2;
+2. somam-se os resultados;
+3. o dígito verificador é o que falta para chegar a um múltiplo de 11.
+
+| Dígito | 1 | 5 | 8 | 7 | 1 | 4 | 3 | 7 | 3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Peso | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 |
+| Produto | 10 | 45 | 64 | 49 | 6 | 20 | 12 | 21 | 6 |
+
+Soma: 233. O múltiplo de 11 seguinte é 242, e 242 − 233 = 9. O **dígito verificador é 9**.
+
+### 20.4 Integridade dos Dados no Aplicativo
+
+Dados comprometidos ameaçam os dispositivos e sistemas. A **verificação de integridade** mede a consistência dos dados de um arquivo, imagem ou registro: uma função hash tira um **instantâneo** dos dados, que depois confirma que eles não mudaram.
+
+- **checksum** (soma de verificação): confere arquivos ou textos antes e depois da transferência; converte cada conjunto de informações em um valor e soma tudo; o receptor repete a conta, e somas iguais indicam dados válidos;
+- **funções hash** (MD5, SHA-1, SHA-256, SHA-512): depois de baixar um arquivo, compara-se o hash da fonte com o calculado por uma calculadora de hash;
+- **controle de versão**: evita alterações acidentais; duas pessoas não alteram o mesmo arquivo, registro ou transação ao mesmo tempo; a primeira que abre o documento pode alterá-lo, e a segunda recebe uma versão somente leitura;
+- **backups precisos**: recuperam dados corrompidos; a integridade do backup deve ser conferida antes de qualquer perda;
+- **autorização**: controles de acesso e permissões garantem que só certos usuários modifiquem os dados; um arquivo somente leitura não aceita alterações.
+
+### 20.5 Outras Práticas de Segurança de Aplicativos
+
+Duas práticas garantem que o software é autêntico e que a navegação é segura:
+
+- **assinatura de código**: o executável é assinado digitalmente para validar a identidade do autor e garantir que o código não mudou desde a assinatura;
+- **cookies seguros**: o **cookie** é um pequeno arquivo que o site pede ao navegador para guardar, com dados como o login e o carrinho de compras, e que o navegador devolve ao site a cada novo acesso; por isso, quem rouba um cookie pode se passar pelo usuário. Os desenvolvedores devem marcar os cookies para trafegar **só por HTTPS** (a versão criptografada do HTTP, o protocolo das páginas web), nunca por HTTP sem criptografia.
+
+### 20.6 Controle de Ameaças a Aplicativos
+
+| Ameaça | Medidas |
+| --- | --- |
+| Acesso não autorizado a data centers, salas de computadores e armários de cabos | Políticas, padrões e procedimentos para funcionários e visitantes |
+| Sistema fora do ar | Plano de continuidade de negócios para os aplicativos essenciais e plano de recuperação de desastres para aplicativos e dados |
+| Vulnerabilidade no sistema operacional de rede | Política de atualizações de aplicativos e do sistema; correções (*patches*) instaladas regularmente |
+| Acesso não autorizado aos sistemas | MFA e monitoramento dos logs |
+| Perda de dados | Padrões de classificação de dados e procedimentos de backup |
+| Vulnerabilidades no desenvolvimento | Testes antes do lançamento |
+
+Além disso, a empresa deve seguir as boas práticas de segurança de rede, que protegem os sistemas contra ameaças e acessos não autorizados.
+
+### 20.7 OWASP Top 10
+
+A **OWASP** (*Open Web Application Security Project*) é uma organização sem fins lucrativos que publica a cada três anos o **OWASP Top 10**, a lista das **dez principais preocupações de segurança web** das empresas. Suas páginas da comunidade reúnem os ataques e as vulnerabilidades relatados pelos colaboradores.
+
+## 21. Sistemas Embarcados, IoT e Tecnologias de Dissimulação
+
+As redes ligam hoje **máquinas industriais, sensores, carros e equipamentos médicos**. Esses sistemas têm fragilidades próprias e ampliam a superfície de ataque.
+
+### 21.1 Infraestruturas Críticas e SCADA
+
+Setores como manufatura, energia, comunicação e transporte mantêm a infraestrutura de que o país depende, e protegê-los é fundamental para a economia.
+
+O **SCADA** (*Supervisory Control and Data Acquisition* — controle de supervisão e aquisição de dados) serve para **controlar e monitorar processos industriais**. Ele faz parte dos **ICS** (*Industrial Control Systems* — sistemas de controle industrial), usados na manufatura, na produção, na energia e na comunicação.
+
+O **Stuxnet**, um vírus descoberto em 2010 que danificou centrífugas de enriquecimento de urânio no Irã, mirou sistemas SCADA e mostrou que um ataque digital pode **destruir ou interromper infraestruturas essenciais**, como telecomunicações, transportes e usinas de energia, e até o setor financeiro.
+
+Os sistemas SCADA são vulneráveis porque **foram projetados sem conexão com a rede corporativa e a internet**, e a segurança não foi pensada no desenvolvimento. Hoje, as empresas querem coletar dados para melhorar as operações e reduzir custos e ligam o SCADA à rede da empresa, o que aumenta o risco.
+
+A principal proteção é **separar as redes internas das externas e a rede SCADA da rede local da empresa**.
+
+### 21.2 Internet das Coisas (IoT)
+
+A **IoT** (*Internet of Things* — Internet das Coisas) é o conjunto de tecnologias que **conectam objetos variados à internet**: bilhões de carros, máquinas industriais, robôs, fechaduras, motores e aparelhos de entretenimento. Como os usuários precisam acessá-los à distância, ficam on-line e **aumentam o número de pontos de entrada na rede**.
+
+A IoT, a virtualização e o armazenamento na nuvem (assuntos das seções 22 e 23) fizeram os dados crescerem de forma exponencial, o que criou a área de **Big Data**, que estuda como guardar e analisar volumes enormes de dados. Há muito mais dados a gerenciar e proteger.
+
+Os dispositivos IoT expandem muito a superfície de ataque: milhares de aparelhos precisam de acesso à rede para enviar dados e ser gerenciados. Aparelhos inteligentes infectados já foram usados em alguns dos maiores ataques **DDoS** (*Distributed Denial of Service*, em que muitos aparelhos atacam um alvo ao mesmo tempo) da história. Por isso:
+
+- verificar se o dispositivo aceita atualizações de **firmware** (o software gravado no próprio aparelho, que o faz funcionar) com correções, de preferência pela rede sem fio;
+- **trocar sempre as credenciais padrão de administrador**, que são públicas.
+
+Empresas e consumidores usam a IoT para automatizar processos, monitorar o ambiente e alertar sobre condições adversas. A maioria se conecta **sem fio**: câmeras, fechaduras, sensores de proximidade, luzes e outros sensores. Fabricantes avisam quando é preciso trocar peças ou repor suprimentos, e as empresas controlam estoque, veículos e pessoal. Com **sensores geoespaciais**, dá para localizar e controlar à distância temperatura, umidade e iluminação.
+
+Muitos dispositivos IoT usam um **RTOS** (*Real-Time Operating System* — sistema operacional de tempo real), um sistema pequeno que troca de tarefa rapidamente e prioriza o tempo exato, não o volume, com alta confiabilidade. Ele está em vestíveis (relógios e pulseiras inteligentes), equipamentos médicos, carros e automação residencial e é vulnerável a **injeção de código** (o atacante insere comandos próprios no sistema), **negação de serviço** e **inversão de prioridade** (uma tarefa de prioridade baixa passa na frente de uma de prioridade alta).
+
+O **Shodan** é um buscador que mostra dispositivos IoT expostos e vulneráveis na internet. A IoT se comunica por métodos de curto, médio ou longo alcance, como celular (4G, 5G), rádio e **Zigbee**, um conjunto de protocolos sem fio de baixo consumo para **WPANs** (*Wireless Personal Area Networks*, redes pessoais de curto alcance, como as de lâmpadas e sensores de uma casa).
+
+Para proteger os dispositivos IoT:
+
+- proteger a rede sem fio;
+- saber exatamente quais dispositivos se comunicam na rede e o que cada um faz;
+- instalar software de segurança sempre que possível;
+- proteger os celulares e aplicativos usados para controlá-los.
+
+### 21.3 Sistemas Embarcados
+
+Os **sistemas embarcados** são computadores dedicados a uma função dentro de outro equipamento, como TVs inteligentes e carros. Eles capturam, guardam e acessam dados e trazem desafios próprios por serem muito usados por empresas e consumidores.
+
+Os ataques exploram falhas de software e de hardware. Eles sofrem **ataques de tempo**: o atacante mede **quanto tempo o sistema leva para responder** a entradas diferentes para descobrir fraquezas. É um **ataque de canal lateral**, baseado em informações da implementação do sistema, e não em falhas do software.
+
+Uma técnica de proteção é o **SoC** (*System on Chip*), um módulo de hardware de formato reduzido, como o **Raspberry Pi** e o **Arduino**. São computadores de placa única, que podem usar um **FPGA** (*Field-Programmable Gate Array*), circuito que pode ser reprogramado depois de instalado. Têm bom processamento em pouco espaço, gastam menos energia, custam menos e rendem mais que componentes maiores. O SoC reúne em um só chip o microcontrolador, o processador e periféricos como a GPU (*Graphics Processing Unit*, o processador de vídeo), o Wi-Fi ou um coprocessador, e pode rodar Windows, Linux ou Android.
+
+Muitos dispositivos SoC têm **autenticação fraca e não podem ser atualizados ou corrigidos**. Como não existe programa formal para verificar seus controles de segurança, é preciso ter neles uma **confiança implícita**.
+
+### 21.4 Voz sobre IP (VoIP)
+
+O **VoIP** (*Voice over IP* — voz sobre IP) **usa redes de dados para fazer ligações telefônicas**. Precisa de uma conexão com a internet e de um destes:
+
+- telefone tradicional com adaptador, que liga o aparelho analógico à linha digital VoIP;
+- telefone próprio para VoIP;
+- software VoIP no computador.
+
+O VoIP doméstico usa a internet, mas muitas organizações usam redes privadas, mais seguras e com melhor qualidade. Sua segurança **depende da segurança da rede por baixo dele**: quando a rede cai, a voz cai junto. Os criminosos o atacam para usar o telefone de graça, espionar ligações ou afetar o desempenho e a disponibilidade.
+
+As medidas de proteção são:
+
+- criptografar os pacotes de voz contra espionagem;
+- usar SSH (ver item 7.1) para administrar os gateways de voz (que ligam a rede VoIP à telefonia comum) e os switches;
+- trocar todas as senhas padrão;
+- usar um sistema de detecção de intrusão contra ataques como o **envenenamento ARP** (o atacante engana os aparelhos da rede local para que enviem a ele o tráfego destinado a outro equipamento);
+- usar autenticação forte contra o **spoofing de registro** (o criminoso desvia para si as chamadas da vítima), a **representação de proxy** (a vítima fala com um proxy falso) e o **sequestro de chamadas** (a chamada é interceptada e desviada);
+- usar firewalls que reconheçam o VoIP, monitorem os fluxos e filtrem sinais anormais.
+
+### 21.5 Sistemas de Finalidade Específica
+
+| Setor | Exemplos | Riscos | Proteções |
+| --- | --- | --- | --- |
+| Saúde | Marca-passos, bombas de insulina, implantes e desfibriladores, com conexão sem fio, monitoramento remoto e NFC (a comunicação por aproximação, item 18.4) | Segurança do paciente, vazamento de prontuários e porta de entrada para a rede | — |
+| Automotivo | Sistemas que guardam dados de operação, manutenção e emergência; muitos registram velocidade, localização e frenagem e os enviam à seguradora | Rastreamento não autorizado, interferência sem fio e falsificação | Software projetado com segurança, criptografia entre os controladores e firewall |
+| Aviação | Controle de voo e comunicação | Credenciais fixas no código, protocolos inseguros e *backdoors* | — |
+| Drones (UAV, *Unmanned Aerial Vehicle*, veículo aéreo não tripulado) | Uso militar, agrícola e de cartografia; foto aérea, vigilância e topografia | Sequestro, ataques de Wi-Fi, falsificação de GPS, bloqueio e ataques de autenticação | — |
+
+Um **backdoor** (porta dos fundos) é um acesso escondido que contorna a autenticação.
+
+### 21.6 Tecnologias de Dissimulação
+
+As **tecnologias de dissimulação** (*deception*) acrescentam **uma camada falsa à infraestrutura**. Elas distraem o atacante das redes de produção, ensinam os métodos dele e alertam sobre possíveis ataques.
+
+| Tecnologia | O que é |
+| --- | --- |
+| Honeypot | Sistema-isca que imita um servidor da empresa, exposto de propósito; registra e monitora as ações do atacante para análise |
+| Honeynet | Conjunto de honeypots que imita a rede da empresa |
+| Honey files | Arquivos falsos, que atraem o atacante mas não têm informação real |
+| DNS sinkhole ("ralo" de DNS) | O servidor DNS responde com um endereço falso e inofensivo quando alguém tenta acessar um site malicioso conhecido; assim, o usuário (ou o malware instalado na máquina) não chega ao destino |
+
+O objetivo do honeypot é **desviar o atacante dos recursos reais e revelar como ele age**.
+
+## 22. Virtualização e Computação em Nuvem
 
 Boa parte dos servidores das empresas hoje é virtual ou fica na nuvem. Para proteger esse ambiente, é preciso entender como ele funciona.
 
-### 25.1 Virtualização e Hypervisor
+### 22.1 Virtualização e Hypervisor
 
 A **virtualização** permite **executar vários computadores virtuais em uma única máquina física**. Cada um é uma **máquina virtual** (**VM**, *Virtual Machine*), com o próprio sistema operacional. Ela reduz o número de máquinas físicas, servidores e estações, necessárias na TI.
 
@@ -2533,7 +2501,7 @@ O **hypervisor** é o software ou hardware que permite executar vários sistemas
 
 A VM **precisa de atualizações e correções como um computador físico**, porque usa um sistema operacional. As VMs compartilham o hardware e rodam com **privilégios muito altos**: comprometer uma VM pode levar a comprometer o host.
 
-### 25.2 Contêineres e Desktops Virtuais
+### 22.2 Contêineres e Desktops Virtuais
 
 O **contêiner** leva **só o aplicativo e as dependências** (bibliotecas e arquivos de que ele precisa) e, em vez de ter um sistema operacional próprio, **compartilha o núcleo do host**. O núcleo (*kernel*) é a parte central do sistema operacional, que controla o hardware. O **Docker** é uma plataforma aberta que distribui software em contêineres, fáceis de mover, e o **Kubernetes** gerencia muitos ao mesmo tempo. Se um usuário ou aplicativo tiver privilégios elevados no contêiner, o sistema do host pode ser comprometido.
 
@@ -2545,12 +2513,12 @@ A **VDI** (*Virtual Desktop Infrastructure*) guarda **o ambiente de trabalho do 
 | Núcleo do sistema | Próprio | Compartilhado com o host |
 | Peso | Maior | Menor |
 
-### 25.3 Riscos da Virtualização
+### 22.3 Riscos da Virtualização
 
 - **expansão de VMs** (*VM sprawl*): acúmulo de **VMs esquecidas ou subutilizadas**, sem atualização, que consomem mais recursos e espaço do que o trabalho exige;
 - **fuga de VM** (*VM escape*): a VM **rompe o isolamento e passa a interagir com o sistema operacional do host**.
 
-### 25.4 Modelos de Serviço em Nuvem
+### 22.4 Modelos de Serviço em Nuvem
 
 A **computação em nuvem** oferece **computação, armazenamento, software e servidores pela internet** e leva a parte tecnológica da organização para o provedor. Os modelos de serviço formam o **XaaS** (*Anything as a Service*):
 
@@ -2558,7 +2526,7 @@ A **computação em nuvem** oferece **computação, armazenamento, software e se
 - **PaaS** (*Platform as a Service* — plataforma como serviço): acesso remoto, por assinatura, às ferramentas e serviços para **desenvolver e publicar aplicativos**;
 - **IaaS** (*Infrastructure as a Service* — infraestrutura como serviço): **recursos de computação virtualizados**, como VMs e discos alugados; o provedor hospeda hardware, software, servidores e armazenamento, e o usuário paga uma assinatura.
 
-### 25.5 Modelos de Implantação
+### 22.5 Modelos de Implantação
 
 | Modelo | Quem usa | Característica principal |
 | --- | --- | --- |
@@ -2569,14 +2537,14 @@ A **computação em nuvem** oferece **computação, armazenamento, software e se
 
 As classificações da nuvem se baseiam na forma de implantação.
 
-### 25.6 Computação em Neblina e de Borda
+### 22.6 Computação em Neblina e de Borda
 
 A explosão da IoT levou às computações em neblina e de borda. Quando milissegundos importam, como em carros autônomos, companhias aéreas e manufatura, o processamento fica perto dos dados:
 
 - **neblina** (*fog*): distribui a computação entre o dispositivo e o data center; os dados são processados em um equipamento intermediário na rede local, o **fog node** (nó de neblina), que recebe os dados dos sensores antes de enviá-los à nuvem;
 - **borda** (*edge*): **no próprio dispositivo ou sensor**, sem ir ao data center.
 
-## 26. Segurança na Nuvem
+## 23. Segurança na Nuvem
 
 A nuvem sofre as mesmas ameaças das redes físicas e ainda tem ameaças próprias. Com um recurso de nuvem comprometido, o atacante pode:
 
@@ -2584,7 +2552,7 @@ A nuvem sofre as mesmas ameaças das redes físicas e ainda tem ameaças própri
 - hospedar malware em um provedor respeitado, o que faz o conteúdo parecer inofensivo ou legítimo;
 - abusar dos serviços para lançar ataques DDoS, hospedar conteúdo pirata, enviar spam (e-mails em massa não solicitados) e fazer campanhas de phishing (mensagens falsas que tentam roubar senhas e dados).
 
-### 26.1 Principais Ameaças
+### 23.1 Principais Ameaças
 
 As principais ameaças são:
 
@@ -2598,7 +2566,7 @@ As principais ameaças são:
 
 Uma **API** (*Application Programming Interface*) é o conjunto de comandos pelo qual programas se comunicam com o serviço.
 
-### 26.2 Responsabilidade Compartilhada
+### 23.2 Responsabilidade Compartilhada
 
 Na nuvem pública, a segurança é **dividida entre o cliente e o provedor** (**CSP**, *Cloud Service Provider*). O CSP responde pelos serviços que presta, e o cliente, pelo resto; a divisão varia com o modelo. Quanto mais pronto o serviço, mais responsabilidade fica com o provedor:
 
@@ -2614,7 +2582,7 @@ Na nuvem pública, a segurança é **dividida entre o cliente e o provedor** (**
 
 **Importante:** em todos os modelos, **os dados continuam sendo responsabilidade do cliente**.
 
-### 26.3 Domínios da Segurança em Nuvem (CSA)
+### 23.3 Domínios da Segurança em Nuvem (CSA)
 
 A **CSA** (*Cloud Security Alliance*) publica o **Guia de Segurança para Áreas de Foco Essenciais na Computação em Nuvem v4**, com boas práticas organizadas em **14 domínios**:
 
@@ -2637,7 +2605,7 @@ A **CSA** (*Cloud Security Alliance*) publica o **Guia de Segurança para Áreas
 
 Para a CSA, a **criptografia é um dos controles mais importantes** dos dados.
 
-### 26.4 Segurança da Infraestrutura em Nuvem
+### 23.4 Segurança da Infraestrutura em Nuvem
 
 A infraestrutura é a base sobre a qual os recursos virtualizados (computação, rede e armazenamento) são construídos. Ela tem duas camadas:
 
@@ -2651,7 +2619,7 @@ A **SDN** (*Software-Defined Networking* — rede definida por software) traz no
 - **isolamento fácil**, sem as restrições do hardware, porque **as redes são criadas e separadas por software**;
 - firewalls de SDN, chamados de **grupos de segurança**, aplicados com critérios mais flexíveis que os firewalls de hardware.
 
-Os recursos de nuvem formam quatro camadas, **hardware, infraestrutura, plataforma e aplicações**, e cada uma pode receber defesa em profundidade (ver item 2.3). As proteções mais usadas são:
+Os recursos de nuvem formam quatro camadas, **hardware, infraestrutura, plataforma e aplicações**, e cada uma pode receber defesa em profundidade (ver item 3.3). As proteções mais usadas são:
 
 - **segurança integrada** à plataforma; alguns CSPs, por exemplo, já trazem proteção contra DDoS;
 - **VPC** (*Virtual Private Cloud* — nuvem privada virtual): sub-redes privadas **isoladas logicamente da internet**;
@@ -2664,11 +2632,11 @@ A **microssegmentação** (ou hipersegregação) usa redes virtuais para criar *
 
 A **TI invisível** (*shadow IT*) são aplicativos baixados e usados sem autorização. Eles aumentam a produtividade, mas criam brechas e pontos cegos. A resposta são **políticas de segurança claras e conscientização** dos usuários.
 
-### 26.5 Proteção dos Dados na Nuvem
+### 23.5 Proteção dos Dados na Nuvem
 
-Os dados do cliente precisam de proteção nos três estados: em repouso, em trânsito e em processamento. Os controles mais importantes são a **criptografia** (AES, simétrica, usada pelo governo dos EUA; RSA, Diffie-Hellman (ver item 5.6), ElGamal e ECC, assimétricas) para a confidencialidade e o **hash** (família SHA-2: SHA-224, SHA-256, SHA-384 e SHA-512) para a integridade e a autenticação.
+Os dados do cliente precisam de proteção nos três estados: em repouso, em trânsito e em processamento. Os controles mais importantes são a **criptografia** (AES, simétrica, usada pelo governo dos EUA; RSA, Diffie-Hellman (ver item 4.6), ElGamal e ECC, assimétricas) para a confidencialidade e o **hash** (família SHA-2: SHA-224, SHA-256, SHA-384 e SHA-512) para a integridade e a autenticação.
 
-### 26.6 Proteção das Máquinas Virtuais
+### 23.6 Proteção das Máquinas Virtuais
 
 As VMs, ou instâncias, precisam de correções, atualizações e antimalware como um computador físico, e a nuvem oferece opções extras conforme a plataforma. As medidas principais são:
 
@@ -2682,127 +2650,41 @@ Os dois últimos podem ser feitos pelo sistema da VM ou contratados como serviç
 
 Criar instâncias na nuvem é fácil, e é comum criar várias no início de um projeto para testar opções. Sem acompanhamento, elas ficam desatualizadas e vulneráveis, a **expansão de VMs**, e ainda **consomem serviços pagos**, como instâncias, armazenamento e IPs públicos não usados. Por isso, os recursos precisam ser **registrados, monitorados e auditados**.
 
-## 27. Protocolos e Tecnologias no Monitoramento de Segurança
+## 24. IDS, IPS e Tipos de Dados de Segurança
 
-O **monitoramento de segurança** observa o tráfego e os registros da rede para **identificar ataques e comportamentos suspeitos**. Vários protocolos comuns têm recursos que interessam especialmente ao monitoramento, e eles também podem ser mal usados.
+As proteções dos módulos anteriores não impedem todos os ataques: muitos só são percebidos durante ou depois. Por isso, a rede precisa ser **monitorada**. Este módulo começa pelos sistemas que detectam e bloqueiam intrusões, o IDS e o IPS, e depois apresenta os **tipos de dados** com que o analista trabalha, do mais resumido ao mais detalhado. Muitos desses dados são reunidos pelo **Security Onion**, um conjunto gratuito de ferramentas de **NSM** (*Network Security Monitoring* — monitoramento de segurança de rede), detalhado no item 27.3.
 
-### 27.1 Syslog e NTP
+### 24.1 IDS e IPS
 
-O **syslog** é o padrão para **registrar mensagens de eventos** dos equipamentos e enviá-las a um servidor central, na **porta UDP 514**:
+Um **IDS** (*Intrusion Detection System* — sistema de detecção de intrusão) **analisa o tráfego e gera um alerta** quando encontra sinais de ataque. Ele fica **fora do caminho** dos pacotes, recebendo uma cópia do tráfego; por isso, **não atrasa a rede, mas não impede** o pacote que disparou o alerta.
 
-Dispositivos → Mensagens de evento → Servidor syslog → Estação de monitoramento
+Um **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusão) faz a mesma análise, mas fica **no caminho** dos pacotes (em linha) e por isso **pode bloquear** o ataque na hora. Em troca, acrescenta atraso e, se falhar ou ficar sobrecarregado, afeta a rede.
 
-Por ser tão importante, o servidor syslog é alvo dos atacantes. Algumas explorações, como a **retirada de dados** (também chamada de exfiltração: copiar dados da empresa para fora, às escondidas), levam muito tempo, porque o roubo secreto é lento. Para esconder que ela está acontecendo, o atacante ataca o servidor syslog: **adultera ou destrói os logs** ou o software que cria e envia as mensagens. O **syslog-ng** (próxima geração) traz melhorias que evitam algumas dessas explorações.
+| Característica | IDS | IPS |
+| --- | --- | --- |
+| Posição | Fora do caminho, com uma cópia do tráfego | No caminho dos pacotes (em linha) |
+| Ação | Alerta | Alerta e bloqueia |
+| Efeito na rede | Nenhum | Atraso; uma falha afeta o tráfego |
 
-O **NTP (ver item 15.2.5)** (porta UDP 123) mantém os relógios iguais. Como um ataque deixa rastros em todos os equipamentos do caminho até o alvo, os carimbos de hora são essenciais: só assim é possível **juntar os rastros de um mesmo ataque registrados em equipamentos diferentes**. O atacante pode corromper a hora para esconder os vestígios. Os sistemas NTP também já foram usados para **direcionar ataques DDoS**, explorando falhas de clientes e servidores, o que pode derrubar a disponibilidade da rede.
+Os dois detectam ataques de duas formas principais:
 
-### 27.2 DNS
+- **por assinatura**: comparam o tráfego com regras que descrevem ataques conhecidos; são precisos, mas não reconhecem ataques novos;
+- **por anomalia**: comparam o tráfego com o comportamento normal da rede, a linha de base; percebem ataques novos, mas geram mais alarmes falsos.
 
-O DNS é usado por milhões de pessoas todos os dias, e por isso muitas organizações o protegem menos que outros serviços. Os atacantes aproveitam isso para **esconder outros protocolos dentro do DNS** e escapar dos dispositivos de segurança, falar com o servidor de **comando e controle** (**C&C** ou CnC, o computador que dá ordens ao malware) e retirar dados disfarçados de consultas normais.
+Conforme o lugar onde ficam, podem ser:
 
-Na retirada de dados pelo DNS:
+- **de rede** (**NIDS**/**NIPS**): analisam o tráfego de um segmento inteiro; exemplos: Snort, Suricata e Zeek;
+- **de host** (**HIDS**/**HIPS**): instalados no próprio computador, observam arquivos, processos e logs; exemplos: OSSEC e Wazuh.
 
-1. o malware codifica os dados roubados, isto é, reescreve-os com outro conjunto de caracteres, em **Base64** (letras, números e alguns símbolos), binário de 8 bits ou hexadecimal, para escapar do **DLP** (*Data Loss Prevention* — prevenção de perda de dados, ferramenta que procura dados confidenciais saindo da rede);
-2. coloca os dados no lugar do **subdomínio** (a parte que vem antes do nome principal, como o "www" em www.example.com) de uma consulta a um domínio cujo servidor DNS o atacante controla, como em "dados-codificados.example.com";
-3. a consulta chega ao servidor DNS do atacante, que grava o subdomínio e reúne os dados.
+O **NGFW** (ver item 17.2) já traz um IPS integrado.
 
-O sinal mais claro são **subdomínios muito mais longos que o normal** ou aleatórios, como AW4GCGXHy2UGDG8GCHJVDGVJDC.example.com, principalmente se aumentarem muito na rede. O analista pode montar um modelo matemático do comprimento normal dos subdomínios e comparar com o que observa. Os **logs de proxy DNS** (registros de todas as consultas DNS feitas pela rede) revelam essas consultas, e serviços como o **Cisco Umbrella**, que guarda o histórico das respostas DNS da internet (o DNS passivo), bloqueiam domínios de comando e controle e de exploração.
+### 24.2 Dados de Alerta
 
-### 27.3 HTTP e HTTPS
-
-O **HTTP** é o protocolo base da web e trafega **em texto claro**, sem proteção contra alteração ou interceptação, o que ameaça a privacidade, a identidade e a segurança; toda navegação deve ser considerada em risco.
-
-Um ataque comum é a **injeção de iFrame** (quadro em linha). O **iFrame** é um recurso do HTML (a linguagem das páginas web) que exibe uma página dentro de outra, como uma janela. A maioria das ameaças web são scripts (pequenos programas) de malware plantados em servidores, que fazem os navegadores carregar quadros de servidores infectados. O atacante invade um site muito visitado e planta um **quadro invisível**; ao carregar, ele baixa malware, muitas vezes de outro endereço. A filtragem de reputação web da Cisco detecta quando um site tenta entregar conteúdo de um site não confiável, mesmo dentro de um iFrame.
-
-Por isso, muitas empresas adotaram o **HTTPS** ou políticas só de HTTPS. Ele acrescenta a criptografia **SSL/TLS**, que deixa os dados ilegíveis do computador de origem até o servidor. Usando a chave pública, a chave simétrica e o certificado, a conexão ocorre assim:
-
-1. o navegador pede a página com https://;
-2. o servidor envia sua chave pública junto com o certificado;
-3. o navegador confere se o certificado não venceu, não foi revogado e foi emitido por uma parte confiável;
-4. o navegador cria uma chave simétrica e a envia ao servidor, que a descriptografa com a própria chave privada;
-5. o servidor criptografa a página com a chave simétrica, e o navegador a descriptografa e mostra ao usuário.
-
-![No HTTPS, a criptografia assimétrica protege a troca da chave simétrica, que depois cifra a página](img/defesa/def_https.png){width=6in}
-
-O HTTPS **protege os dados apenas no caminho**, não o servidor. Para quem monitora, ele complica a inspeção: alguns equipamentos decifram e inspecionam o SSL, mas isso traz problemas de processamento e de privacidade, e as mensagens extras do estabelecimento da conexão complicam as capturas de pacotes.
-
-### 27.4 E-mail e ICMP
-
-- **SMTP** (envio, de um host ao servidor e entre servidores): pouco monitorado, já foi usado por malware para retirar dados; no ataque à **Sony Pictures** em 2014, uma das explorações enviou por SMTP dados de usuários para servidores de comando e controle; o monitoramento detecta esse tráfego pelas características das mensagens;
-- **POP3 e IMAP** (recebimento, do servidor ao computador): **trazem o malware até o computador** do usuário; o monitoramento identifica quando um anexo malicioso entrou e qual host foi infectado primeiro, a **análise retrospectiva** acompanha o comportamento do malware a partir daí, e os anexos podem ser recuperados para análise em uma caixa de proteção (*sandbox (ver item 14.1)*).
-
-O ICMP tem usos legítimos, mas também serve para identificar os hosts, a estrutura da rede e os sistemas operacionais. Como a preocupação maior é com o ICMP vindo de fora, o tráfego ICMP de dentro da rede às vezes é ignorado. No **tunelamento ICMP**, o malware **transfere arquivos escondidos em pacotes ICMP** criados de propósito (o pacote parece um ping comum, mas carrega dados); a exploração **LOKI** é um exemplo conhecido, e ferramentas como o Ping Tunnel criam esses túneis.
-
-### 27.5 ACLs, NAT e PAT
-
-Algumas tecnologias de segurança dificultam o próprio monitoramento. As ACLs podem dar uma **falsa sensação de segurança** se houver confiança demais nelas:
-
-- o atacante descobre quais IPs, protocolos e portas a ACL permite, por varredura de portas (ver item 15.1), testes de penetração (ataques simulados) ou outro reconhecimento;
-- cria pacotes com IP de origem falsificado;
-- os aplicativos podem abrir conexões em portas arbitrárias;
-- outros recursos do tráfego podem ser manipulados, como o sinalizador established do TCP;
-- uma ACL que deixa voltar mensagens ICMP também deixa passar um túnel ICMP.
-
-Como as regras não antecipam todas as técnicas novas de manipulação, é preciso reforço com análise de comportamento e de contexto, como a dos **firewalls de última geração**, do **AMP** e dos equipamentos de conteúdo de e-mail e web da Cisco.
-
-O **NAT** (*Network Address Translation*) e o **PAT** (*Port Address Translation*) fazem vários endereços internos saírem com um ou mais endereços públicos.
-
-Com o PAT, todos os dispositivos internos aparecem com o mesmo endereço, o que **dificulta saber qual dispositivo interno fez cada pedido**. O problema pesa no **NetFlow**, tecnologia da Cisco que registra os **fluxos** da rede (resumos de quem conversou com quem, por qual porta e quanto): os fluxos são unidirecionais e definidos pelos endereços e portas, e o NAT os **quebra** no gateway, deixando sem informação o que vem depois. A Cisco tem produtos que "costuram" os fluxos mesmo depois da troca de endereços.
-
-### 27.6 Criptografia e Tunelamento
-
-A **VPN** cria um túnel cifrado: um protocolo comum, como o IP, transporta o tráfego criptografado e forma uma conexão virtual ponto a ponto entre redes, ilegível para todos, menos para as pontas da VPN. O malware usa a mesma técnica: um túnel cifrado em um protocolo comum e confiável, entre um host interno e o atacante, para retirar dados, como no caso do DNS.
-
-O tráfego TLS não é inspecionado pelos meios normais e pode esconder malware e comando e controle. As medidas são:
-
-- **posicionar o IPS onde ele veja o tráfego já decifrado**, como depois do ponto em que termina uma VPN site a site (a VPN que liga duas redes, como matriz e filial);
-- criar regras que distingam o tráfego SSL do não SSL, e o HTTPS do não HTTPS;
-- validar os certificados dos servidores (CRL ou OCSP);
-- usar antimalware e filtragem de URL (o endereço de uma página, como https://www.exemplo.com/pagina) no conteúdo HTTPS;
-- usar equipamentos que decifram o tráfego e o enviam ao IPS, como o Cisco SSL Appliance.
-
-### 27.7 P2P e Tor
-
-Nas redes **P2P** (*peer-to-peer*), **cada computador atua ao mesmo tempo como cliente e como servidor**. Dar acesso a usuários desconhecidos é sempre uma preocupação. São três tipos:
-
-- **compartilhamento de arquivos**: os arquivos de cada participante ficam disponíveis aos outros; exemplos: Napster, Gnutella e BitTorrent;
-- **compartilhamento de processadores**: os participantes doam ciclos de processador para tarefas distribuídas, como pesquisa de câncer e de vida extraterrestre;
-- **mensagens instantâneas**: úteis para equipes distribuídas, de preferência em plataformas corporativas, como o Webex Teams, mais seguras que as públicas.
-
-O **Bitcoin** também é P2P: compartilha um banco de dados distribuído (o livro-razão) com os saldos e as transações.
-
-O **P2P de arquivos não deve ser permitido em redes corporativas**: contorna o firewall, conecta-se a vários IPs com portas dinâmicas e espalha malware, porque os arquivos costumam estar infectados e os atacantes colocam malware nos clientes P2P.
-
-O **Tor** é uma plataforma e uma rede de hosts P2P que funcionam como roteadores e permitem **navegar de forma anônima**, com um navegador especial. Ele monta um caminho criptografado em camadas: cada retransmissor "descasca" uma camada, como uma cebola (*onion routing*), e só lê o **próximo salto**. Assim, nenhum dispositivo conhece o caminho inteiro. O Tor é muito usado por criminosos na *dark net* e como canal de comando e controle. Como o destino fica oculto, o tráfego **escapa das listas negras** dos equipamentos de segurança.
-
-### 27.8 Balanceamento de Carga
-
-O **balanceamento de carga** distribui o tráfego entre vários servidores ou caminhos. Na internet, técnicas de DNS mandam o tráfego para recursos com o mesmo nome e vários IPs, às vezes em servidores espalhados geograficamente. Por isso, **uma única transação pode aparecer com vários IPs** nas capturas. Os gerenciadores de balanceamento (**LBM**, *Load Balancing Manager*) também enviam testes de desempenho e de disponibilidade dos caminhos e equipamentos, que podem parecer suspeitos para um analista que não os conheça.
-
-| Protocolo ou tecnologia | Mau uso ou dificuldade |
-| --- | --- |
-| Syslog e NTP | Logs apagados, hora corrompida e DDoS |
-| DNS | Retirada de dados e comando e controle |
-| HTTP | Injeção de iFrame |
-| HTTPS e VPN | Tráfego cifrado não inspecionado |
-| E-mail | Retirada de dados e entrada de malware |
-| ICMP | Reconhecimento e tunelamento |
-| ACLs | Falsa sensação de segurança |
-| NAT e PAT | Dispositivo interno escondido e fluxos quebrados |
-| P2P e Tor | Contorno do firewall e anonimato |
-| Balanceamento de carga | Vários IPs para a mesma transação |
-
-## 28. Tipos de Dados de Segurança
-
-O analista trabalha com dados do mais resumido ao mais detalhado. Muitos são reunidos pelo **Security Onion**, um conjunto gratuito de ferramentas de **NSM** (*Network Security Monitoring* — monitoramento de segurança de rede). Os dados são de cinco tipos.
-
-### 28.1 Dados de Alerta
-
-Os **dados de alerta** são **mensagens geradas por um IDS (ver item 26.6) ou IPS quando o tráfego viola uma regra** ou corresponde à assinatura de um ataque conhecido. Um IDS de rede (**NIDS**, *Network IDS*, que analisa o tráfego da rede inteira, e não de um só computador), como o **Snort**, vem configurado com regras para explorações conhecidas, e seus alertas podem ser lidos e pesquisados no **Sguil** e no **Squert**, ferramentas do Security Onion.
+Os **dados de alerta** são **mensagens geradas por um IDS ou IPS (ver item 24.1) quando o tráfego viola uma regra** ou corresponde à assinatura de um ataque conhecido. Um IDS de rede (**NIDS**, *Network IDS*, que analisa o tráfego da rede inteira, e não de um só computador), como o **Snort**, vem configurado com regras para explorações conhecidas, e seus alertas podem ser lidos e pesquisados no **Sguil** e no **Squert**, ferramentas do Security Onion.
 
 Exemplo: uma regra do Snort alerta quando qualquer IP da rede recebe de fora um conteúdo com o texto **uid=0 (root)**, a resposta típica de um acesso de administrador em um Linux (no Linux, o administrador se chama root e tem o número de usuário 0). O alerta traz a mensagem "GPL ATTACK\_RESPONSE id check returned root" e o ID da regra, 2100498.
 
-### 28.2 Dados de Sessão
+### 24.3 Dados de Sessão
 
 Os **dados de sessão** são o **registro de uma conversa entre dois endpoints**, normalmente um cliente e um servidor, dentro da rede ou na internet. Eles guardam **dados sobre a conversa, e não o conteúdo**: quem falou com quem, quanto e por quanto tempo.
 
@@ -2822,17 +2704,30 @@ O **Zeek** (antigo Bro) registra esses dados no log de conexões:
 | orig\_bytes / resp\_bytes | Bytes enviados pela origem e pelo destino |
 | orig\_packets / resp\_packets | Pacotes enviados pela origem e pelo destino |
 
-### 28.3 Dados de Transação
+### 24.4 Dados de Transação
 
 Os **dados de transação** são **as mensagens trocadas durante a sessão**, que aparecem nas transcrições das capturas de pacotes e nos logs dos servidores. Exemplo: no download de uma página, o pedido "GET /index.html" e a resposta "200 OK" ficam no log de acesso do servidor ou são registrados por um NIDS como o Zeek.
 
 **Importante:** a **sessão é todo o tráfego** da conversa; a **transação é o próprio pedido** e sua resposta.
 
-### 28.4 Capturas Completas de Pacotes
+### 24.5 Analisadores de Pacotes
 
-As **capturas completas de pacotes** guardam **o conteúdo real** do que trafegou: o texto dos e-mails, o HTML das páginas e os arquivos que entram ou saem da rede. O conteúdo extraído pode ser analisado em busca de malware ou de comportamento que viole as políticas. São as mais detalhadas e, por isso, **as que mais exigem armazenamento e recuperação**. Exemplos de ferramentas: **Wireshark** (o analisador de pacotes do item 3.4) e o módulo de análise de rede do **Cisco Prime**, ferramenta de gerenciamento de redes da Cisco.
+Para ver o conteúdo das conversas, e não só um resumo, o analista captura o próprio tráfego. Um **analisador de pacotes** (*sniffer*) **intercepta e registra o tráfego da rede**. Na rede, toda informação viaja dividida em pequenos blocos, os **pacotes**; o analisador captura cada pacote, mostra os valores dos campos (como os endereços de origem e de destino) e analisa o conteúdo, em redes com e sem fio. Exemplos: o Wireshark, com interface gráfica, e o tcpdump, usado pela linha de comando.
 
-### 28.5 Dados Estatísticos
+Ele serve para:
+
+- registrar o tráfego;
+- analisar problemas de rede;
+- detectar uso indevido e tentativas de invasão;
+- isolar um sistema explorado.
+
+A mesma ferramenta ajuda o atacante: com um sniffer, ele lê tudo o que trafega sem criptografia, inclusive senhas.
+
+### 24.6 Capturas Completas de Pacotes
+
+As **capturas completas de pacotes** guardam **o conteúdo real** do que trafegou: o texto dos e-mails, o HTML das páginas e os arquivos que entram ou saem da rede. O conteúdo extraído pode ser analisado em busca de malware ou de comportamento que viole as políticas. São as mais detalhadas e, por isso, **as que mais exigem armazenamento e recuperação**. Exemplos de ferramentas: **Wireshark** (o analisador de pacotes do item 24.5) e o módulo de análise de rede do **Cisco Prime**, ferramenta de gerenciamento de redes da Cisco.
+
+### 24.7 Dados Estatísticos
 
 Os **dados estatísticos** também tratam do tráfego, mas são **criados a partir da análise dos outros dados**. Deles saem conclusões que descrevem ou preveem o comportamento da rede. A técnica principal é a **linha de base**: as estatísticas definem a variação normal do tráfego, e **diferenças estatisticamente significativas** geram alarme e investigação imediata:
 
@@ -2850,11 +2745,24 @@ Um exemplo é o **Cisco Cognitive Threat Analytics**, serviço na nuvem com apre
 | Captura completa | Todo o conteúdo | Máximo |
 | Estatístico | Comportamento calculado | Derivado |
 
-## 29. Logs de Hosts, Servidores e Rede, SIEM e SOAR
+## 25. Fontes de Dados do Monitoramento: Logs e Fluxos
 
-Um **log** é um **registro dos eventos que acontecem em um dispositivo ou serviço**. O analista precisa ler os principais e reuni-los em um só lugar.
+Um **log** é o registro dos eventos que acontecem em um dispositivo ou serviço. Este módulo reúne **todas as fontes de dados do monitoramento** em um só lugar: os logs (o que são, os dos hosts, o formato do syslog e sua proteção, os dos servidores) e os registros de fluxos e dos equipamentos de rede.
 
-### 29.1 Logs dos Hosts
+### 25.1 Arquivos de Log
+
+Um **log** é o **registro dos eventos que ocorrem em um sistema**. Cada evento vira uma **entrada de log**, com todas as informações dele, e o conjunto delas forma o **arquivo de log**. Registros precisos e completos são essenciais. Exemplos: o log de auditoria, com as tentativas de autenticação, e o log de acesso, com os pedidos a arquivos.
+
+Pelos logs, descobre-se **como um ataque aconteceu e se as defesas funcionaram**. Como o número de logs cresce, a empresa precisa de um **processo de gerenciamento de logs**, com procedimentos para cada etapa:
+
+Gerar → Transmitir → Armazenar → Analisar → Descartar
+
+| Fonte | O que registra | Para que serve |
+| --- | --- | --- |
+| Sistema operacional | Pedidos dos clientes e respostas dos servidores (como logins bem-sucedidos) e informações de uso (número e tamanho das transações em um período) | Acompanhar a operação do sistema |
+| Software de segurança (de rede ou do sistema) | Atividades mal-intencionadas detectadas | Análise de auditoria, identificação de tendências e de problemas de longo prazo e comprovação documental da conformidade com as leis e os requisitos regulatórios |
+
+### 25.2 Logs dos Hosts
 
 Um **HIDS** (*Host-based Intrusion Detection System*) é um sistema de detecção de intrusão instalado no próprio computador. Ele detecta intrusões e, na forma de firewall de host, também as impede. Seus logs ficam no host, o que dificulta ver o que acontece na empresa; por isso, devem ir para **servidores centrais de gerenciamento de logs**, por meio de agentes, para serem pesquisados com as ferramentas de NSM. Exemplos: **OSSEC**, de código aberto, com coleta e análise robustas de logs, e **Tripwire**, para Linux. O Windows também tem métodos próprios de coleta, e todos funcionam em empresas grandes.
 
@@ -2880,9 +2788,9 @@ Os eventos do Windows são identificados por **números de ID** e descrições c
 | Sucesso na auditoria | Acesso de segurança auditado que deu certo | Logon realizado |
 | Falha na auditoria | Acesso de segurança auditado que falhou | Acesso negado a uma unidade de rede |
 
-### 29.2 Formato do Syslog
+### 25.3 Formato do Syslog
 
-O syslog (ver item 27.1) é um protocolo **cliente/servidor**, definido pela IETF (**RFC 5424**) e aceito por muitos equipamentos. O remetente envia uma mensagem de texto curta, **de menos de 1 KB** (cerca de mil caracteres), ao receptor, chamado de **syslogd**, *syslog daemon* (no Linux, *daemon* é o nome dos programas que rodam em segundo plano) ou servidor syslog, pela **porta UDP 514** ou TCP (normalmente 5000). Salvo quando se acrescenta uma camada de TLS, as mensagens trafegam **em texto claro**.
+O **syslog** é o padrão para **registrar mensagens de eventos** dos equipamentos e enviá-las a um servidor central. É um protocolo **cliente/servidor**, definido pela IETF (**RFC 5424**) e aceito por muitos equipamentos. O remetente envia uma mensagem de texto curta, **de menos de 1 KB** (cerca de mil caracteres), ao receptor, chamado de **syslogd**, *syslog daemon* (no Linux, *daemon* é o nome dos programas que rodam em segundo plano) ou servidor syslog, pela **porta UDP 514** ou TCP (normalmente 5000). Salvo quando se acrescenta uma camada de TLS, as mensagens trafegam **em texto claro**.
 
 Toda mensagem syslog tem três partes:
 
@@ -2914,7 +2822,7 @@ O **HEADER** traz a data e a hora no formato MMM DD HH:MM:SS e o nome ou IP do e
 
 A **MSG** traz o significado da mensagem. Ela varia entre fabricantes e pode ser personalizada, por isso é **a parte mais útil para o analista**.
 
-#### 29.2.1 Exemplo Resolvido: Cálculo da Prioridade do Syslog
+#### 25.3.1 Exemplo Resolvido: Cálculo da Prioridade do Syslog
 
 Um firewall envia uma mensagem com a facilidade local4 e gravidade 3 (erro):
 
@@ -2938,13 +2846,23 @@ Nos equipamentos Cisco, a palavra "facilidade" tem dois sentidos: o valor padrã
 
 Em um Cisco **ASA** (*Adaptive Security Appliance*, o firewall da Cisco), a mensagem `*Mar 19 11:22:07.289 EDT: %ASA-3-201008: Disallowing new connections` traz a facilidade ASA, a gravidade 3 e o ID 201008. A Cisco publica um dicionário das mensagens syslog do ASA.
 
-### 29.3 Logs dos Servidores
+### 25.4 Proteção do Syslog e da Hora (NTP)
+
+O syslog, visto no item anterior, leva as mensagens de eventos dos equipamentos a um servidor central:
+
+Dispositivos → Mensagens de evento → Servidor syslog → Estação de monitoramento
+
+Por ser tão importante, o servidor syslog é alvo dos atacantes. Algumas explorações, como a **retirada de dados** (também chamada de exfiltração: copiar dados da empresa para fora, às escondidas), levam muito tempo, porque o roubo secreto é lento. Para esconder que ela está acontecendo, o atacante ataca o servidor syslog: **adultera ou destrói os logs** ou o software que cria e envia as mensagens. O **syslog-ng** (próxima geração) traz melhorias que evitam algumas dessas explorações.
+
+O **NTP** (ver item 14.8), na porta UDP 123, mantém os relógios iguais. Como um ataque deixa rastros em todos os equipamentos do caminho até o alvo, os carimbos de hora são essenciais: só assim é possível **juntar os rastros de um mesmo ataque registrados em equipamentos diferentes**. O atacante pode corromper a hora para esconder os vestígios. Os sistemas NTP também já foram usados para **direcionar ataques DDoS**, explorando falhas de clientes e servidores, o que pode derrubar a disponibilidade da rede.
+
+### 25.5 Logs dos Servidores
 
 Os servidores de aplicativos, como os de e-mail e web, mantêm **logs de acesso e de erro**, essenciais para o monitoramento. Muitos servidores UNIX e Linux (o UNIX é o sistema que deu origem ao Linux) usam o syslog; outros têm registro próprio, e o conteúdo depende do tipo de servidor. Os **logs de proxy DNS**, que documentam todas as consultas e respostas, são especialmente importantes: mostram quem visitou sites perigosos, a retirada de dados pelo DNS e as conexões com comando e controle.
 
 Dois logs importantes são o de acesso do **Apache** (o servidor web gratuito mais usado no Linux) e o do **IIS** (*Internet Information Services*, o servidor web da Microsoft). Exemplo de log do Apache: `203.0.113.127 – dsmith [10/Oct/2016:10:26:57 -0500] "GET /logo_sm.gif HTTP/1.0" 200 2254`. Ele mostra o IP do cliente, o usuário, a data, o pedido, o código de resposta (200, sucesso) e o tamanho.
 
-### 29.4 Logs da Rede
+### 25.6 Logs da Rede
 
 As principais fontes de registro da rede são:
 
@@ -2962,7 +2880,7 @@ O NetFlow não foi criado para segurança, mas é muito útil na análise de inc
 
 Monitorar só pela porta dá pouca informação. O reconhecimento pelo aplicativo mostra **o que o usuário está realmente fazendo**.
 
-#### 29.4.1 Proxies Web e DNS
+#### 25.6.1 Proxies Web e DNS
 
 O **servidor proxy** é um intermediário: o cliente envia o pedido ao proxy, que busca o recurso e o devolve. Os logs dos proxies web e DNS são uma **fonte primária** do monitoramento e mostram:
 
@@ -3001,7 +2919,7 @@ O **Cisco Umbrella** oferece **listas negras, proteção contra phishing e outra
 | Domain | domain-visited.com. | Domínio pedido |
 | Categories | Chat, Photo Sharing, Social Networking | Categorias de segurança ou de conteúdo do destino |
 
-#### 29.4.2 Firewalls de Última Geração
+#### 25.6.2 Firewalls de Última Geração
 
 Os **NGFW** levam a segurança além dos IPs e das portas, até a camada de aplicação, e têm **painéis interativos** com relatórios por apontar e clicar, sem precisar de SIEM. A linha da Cisco usa os **Firepower Services**, que reúnem em uma plataforma controle de aplicativos, **NGIPS** (IPS de última geração), filtragem de URL por categoria e reputação e **AMP**, o que reduz custos e simplifica o gerenciamento. O monitoramento é feito no **Visualizador de Eventos**:
 
@@ -3013,7 +2931,103 @@ Os **NGFW** levam a segurança além dos IPs e das portas, até a camada de apli
 | Descoberta de rede | Mudanças detectadas na rede, conforme as políticas de descoberta |
 | Fluxo de rede | Novos eventos de hosts e servidores gerados a partir de registros NetFlow |
 
-### 29.5 SIEM
+## 26. Tecnologias que Dificultam o Monitoramento
+
+O **monitoramento de segurança** observa o tráfego e os registros da rede para **identificar ataques e comportamentos suspeitos**. Vários protocolos comuns têm recursos que interessam especialmente ao monitoramento, e eles também podem ser mal usados.
+
+### 26.1 DNS
+
+O DNS é usado por milhões de pessoas todos os dias, e por isso muitas organizações o protegem menos que outros serviços. Os atacantes aproveitam isso para **esconder outros protocolos dentro do DNS** e escapar dos dispositivos de segurança, falar com o servidor de **comando e controle** (**C&C** ou CnC, o computador que dá ordens ao malware) e retirar dados disfarçados de consultas normais.
+
+Na retirada de dados pelo DNS:
+
+1. o malware codifica os dados roubados, isto é, reescreve-os com outro conjunto de caracteres, em **Base64** (letras, números e alguns símbolos), binário de 8 bits ou hexadecimal, para escapar do **DLP** (*Data Loss Prevention* — prevenção de perda de dados, ferramenta que procura dados confidenciais saindo da rede);
+2. coloca os dados no lugar do **subdomínio** (a parte que vem antes do nome principal, como o "www" em www.example.com) de uma consulta a um domínio cujo servidor DNS o atacante controla, como em "dados-codificados.example.com";
+3. a consulta chega ao servidor DNS do atacante, que grava o subdomínio e reúne os dados.
+
+O sinal mais claro são **subdomínios muito mais longos que o normal** ou aleatórios, como AW4GCGXHy2UGDG8GCHJVDGVJDC.example.com, principalmente se aumentarem muito na rede. O analista pode montar um modelo matemático do comprimento normal dos subdomínios e comparar com o que observa. Os **logs de proxy DNS** (registros de todas as consultas DNS feitas pela rede) revelam essas consultas, e serviços como o **Cisco Umbrella**, que guarda o histórico das respostas DNS da internet (o DNS passivo), bloqueiam domínios de comando e controle e de exploração.
+
+### 26.2 HTTP e HTTPS
+
+Para o monitoramento, o **HTTP** traz dois problemas opostos. Por um lado, trafega **em texto claro**, sem proteção contra alteração ou interceptação, o que ameaça a privacidade, a identidade e a segurança; toda navegação deve ser considerada em risco.
+
+Um ataque comum é a **injeção de iFrame** (quadro em linha). O **iFrame** é um recurso do HTML (a linguagem das páginas web) que exibe uma página dentro de outra, como uma janela. A maioria das ameaças web são scripts (pequenos programas) de malware plantados em servidores, que fazem os navegadores carregar quadros de servidores infectados. O atacante invade um site muito visitado e planta um **quadro invisível**; ao carregar, ele baixa malware, muitas vezes de outro endereço. A filtragem de reputação web da Cisco detecta quando um site tenta entregar conteúdo de um site não confiável, mesmo dentro de um iFrame.
+
+Por isso, muitas empresas adotaram o **HTTPS** (ver item 7.3) ou políticas só de HTTPS. Para quem monitora, ele complica a inspeção: alguns equipamentos decifram e inspecionam o SSL, mas isso traz problemas de processamento e de privacidade, e as mensagens extras do estabelecimento da conexão complicam as capturas de pacotes.
+
+### 26.3 E-mail e ICMP
+
+- **SMTP** (envio, de um host ao servidor e entre servidores): pouco monitorado, já foi usado por malware para retirar dados; no ataque à **Sony Pictures** em 2014, uma das explorações enviou por SMTP dados de usuários para servidores de comando e controle; o monitoramento detecta esse tráfego pelas características das mensagens;
+- **POP3 e IMAP** (recebimento, do servidor ao computador): **trazem o malware até o computador** do usuário; o monitoramento identifica quando um anexo malicioso entrou e qual host foi infectado primeiro, a **análise retrospectiva** acompanha o comportamento do malware a partir daí, e os anexos podem ser recuperados para análise em uma caixa de proteção (*sandbox (ver item 20.1)*).
+
+O ICMP tem usos legítimos, mas também serve para identificar os hosts, a estrutura da rede e os sistemas operacionais. Como a preocupação maior é com o ICMP vindo de fora, o tráfego ICMP de dentro da rede às vezes é ignorado. No **tunelamento ICMP**, o malware **transfere arquivos escondidos em pacotes ICMP** criados de propósito (o pacote parece um ping comum, mas carrega dados); a exploração **LOKI** é um exemplo conhecido, e ferramentas como o Ping Tunnel criam esses túneis.
+
+### 26.4 ACLs, NAT e PAT
+
+Algumas tecnologias de segurança dificultam o próprio monitoramento. As ACLs podem dar uma **falsa sensação de segurança** se houver confiança demais nelas:
+
+- o atacante descobre quais IPs, protocolos e portas a ACL permite, por varredura de portas (ver item 14.3), testes de penetração (ataques simulados) ou outro reconhecimento;
+- cria pacotes com IP de origem falsificado;
+- os aplicativos podem abrir conexões em portas arbitrárias;
+- outros recursos do tráfego podem ser manipulados, como o sinalizador established do TCP;
+- uma ACL que deixa voltar mensagens ICMP também deixa passar um túnel ICMP.
+
+Como as regras não antecipam todas as técnicas novas de manipulação, é preciso reforço com análise de comportamento e de contexto, como a dos **firewalls de última geração**, do **AMP** e dos equipamentos de conteúdo de e-mail e web da Cisco.
+
+O **NAT** (*Network Address Translation*) e o **PAT** (*Port Address Translation*) fazem vários endereços internos saírem com um ou mais endereços públicos.
+
+Com o PAT, todos os dispositivos internos aparecem com o mesmo endereço, o que **dificulta saber qual dispositivo interno fez cada pedido**. O problema pesa no **NetFlow**, tecnologia da Cisco que registra os **fluxos** da rede (resumos de quem conversou com quem, por qual porta e quanto): os fluxos são unidirecionais e definidos pelos endereços e portas, e o NAT os **quebra** no gateway, deixando sem informação o que vem depois. A Cisco tem produtos que "costuram" os fluxos mesmo depois da troca de endereços.
+
+### 26.5 Criptografia e Tunelamento
+
+A **VPN** cria um túnel cifrado: um protocolo comum, como o IP, transporta o tráfego criptografado e forma uma conexão virtual ponto a ponto entre redes, ilegível para todos, menos para as pontas da VPN. O malware usa a mesma técnica: um túnel cifrado em um protocolo comum e confiável, entre um host interno e o atacante, para retirar dados, como no caso do DNS.
+
+O tráfego TLS não é inspecionado pelos meios normais e pode esconder malware e comando e controle. As medidas são:
+
+- **posicionar o IPS onde ele veja o tráfego já decifrado**, como depois do ponto em que termina uma VPN site a site (a VPN que liga duas redes, como matriz e filial);
+- criar regras que distingam o tráfego SSL do não SSL, e o HTTPS do não HTTPS;
+- validar os certificados dos servidores (CRL ou OCSP);
+- usar antimalware e filtragem de URL (o endereço de uma página, como https://www.exemplo.com/pagina) no conteúdo HTTPS;
+- usar equipamentos que decifram o tráfego e o enviam ao IPS, como o Cisco SSL Appliance.
+
+### 26.6 P2P e Tor
+
+Nas redes **P2P** (*peer-to-peer*), **cada computador atua ao mesmo tempo como cliente e como servidor**. Dar acesso a usuários desconhecidos é sempre uma preocupação. São três tipos:
+
+- **compartilhamento de arquivos**: os arquivos de cada participante ficam disponíveis aos outros; exemplos: Napster, Gnutella e BitTorrent;
+- **compartilhamento de processadores**: os participantes doam ciclos de processador para tarefas distribuídas, como pesquisa de câncer e de vida extraterrestre;
+- **mensagens instantâneas**: úteis para equipes distribuídas, de preferência em plataformas corporativas, como o Webex Teams, mais seguras que as públicas.
+
+O **Bitcoin** também é P2P: compartilha um banco de dados distribuído (o livro-razão) com os saldos e as transações.
+
+O **P2P de arquivos não deve ser permitido em redes corporativas**: contorna o firewall, conecta-se a vários IPs com portas dinâmicas e espalha malware, porque os arquivos costumam estar infectados e os atacantes colocam malware nos clientes P2P.
+
+O **Tor** é uma plataforma e uma rede de hosts P2P que funcionam como roteadores e permitem **navegar de forma anônima**, com um navegador especial. Ele monta um caminho criptografado em camadas: cada retransmissor "descasca" uma camada, como uma cebola (*onion routing*), e só lê o **próximo salto**. Assim, nenhum dispositivo conhece o caminho inteiro. O Tor é muito usado por criminosos na *dark net* e como canal de comando e controle. Como o destino fica oculto, o tráfego **escapa das listas negras** dos equipamentos de segurança.
+
+### 26.7 Balanceamento de Carga
+
+O **balanceamento de carga** distribui o tráfego entre vários servidores ou caminhos. Na internet, técnicas de DNS mandam o tráfego para recursos com o mesmo nome e vários IPs, às vezes em servidores espalhados geograficamente. Por isso, **uma única transação pode aparecer com vários IPs** nas capturas. Os gerenciadores de balanceamento (**LBM**, *Load Balancing Manager*) também enviam testes de desempenho e de disponibilidade dos caminhos e equipamentos, que podem parecer suspeitos para um analista que não os conheça.
+
+| Protocolo ou tecnologia | Mau uso ou dificuldade |
+| --- | --- |
+| Syslog e NTP | Logs apagados, hora corrompida e DDoS |
+| DNS | Retirada de dados e comando e controle |
+| HTTP | Injeção de iFrame |
+| HTTPS e VPN | Tráfego cifrado não inspecionado |
+| E-mail | Retirada de dados e entrada de malware |
+| ICMP | Reconhecimento e tunelamento |
+| ACLs | Falsa sensação de segurança |
+| NAT e PAT | Dispositivo interno escondido e fluxos quebrados |
+| P2P e Tor | Contorno do firewall e anonimato |
+| Balanceamento de carga | Vários IPs para a mesma transação |
+
+## 27. SIEM, SOAR e Avaliação de Alertas
+
+Com tantas fontes de dados, o analista precisa de ferramentas que **reúnam tudo em um só lugar** e o ajudem a decidir o que é real. Este módulo trata do SIEM e do SOAR e, depois, da avaliação dos alertas: o Security Onion, os alertas do Sguil, as regras do Snort e a classificação em verdadeiros e falsos positivos e negativos.
+
+O cenário de ameaças muda o tempo todo, e os atacantes variam rapidamente suas explorações para escapar da detecção. Por isso, os alertas precisam ser avaliados por analistas.
+
+### 27.1 SIEM
 
 O **SIEM** (*Security Information and Event Management* — gerenciamento de informações e eventos de segurança) **coleta os logs de toda a rede** e oferece relatórios em tempo real e análises de longo prazo. Ele combina o **SEM** (gerenciamento de eventos de segurança) e o **SIM** (gerenciamento de informações de segurança).
 
@@ -3028,7 +3042,7 @@ O **SIEM** (*Security Information and Event Management* — gerenciamento de inf
 
 Exemplos: **Splunk**, de um parceiro da Cisco, muito usado nos **SOCs** (*Security Operations Centers*, os centros de operações de segurança, onde as equipes monitoram a rede o tempo todo), e o Security Onion com **ELK** (Elasticsearch, Logstash e Kibana).
 
-### 29.6 SOAR
+### 27.2 SOAR
 
 O **SOAR** (*Security Orchestration, Automation and Response*) vai além do SIEM e **automatiza as etapas da resposta a incidentes**. Há muitos bons produtos de segurança, mas eles não conversam entre si e exigem vários painéis para tratar seus muitos alertas. Como faltam profissionais para analisar tanto dado, o SOAR une ferramentas de vários fabricantes. Exemplos: FortiSOAR e Cortex XSOAR.
 
@@ -3036,11 +3050,7 @@ As **plataformas de segurança integradas** vão além do SIEM e do SOAR e unem 
 
 SIEM → reúne e correlaciona os eventos; SOAR → responde a eles de forma automatizada.
 
-## 30. Avaliação de Alertas
-
-O cenário de ameaças muda o tempo todo, e os atacantes variam rapidamente suas explorações para escapar da detecção. É impossível prever todas: muitos ataques só são detectados durante ou depois. Por isso, os alertas precisam ser avaliados por analistas, que decidem o que é real.
-
-### 30.1 Security Onion
+### 27.3 Security Onion
 
 O **Security Onion** é um pacote gratuito, de código aberto, de ferramentas de NSM que roda em **Ubuntu Linux**. Ele oferece três funções principais: **captura completa de pacotes e tipos de dados, detecção de intrusão de rede e de host, e ferramentas de análise de alertas**. Pode ser instalado de forma autônoma ou como sensor e servidor. Alguns componentes são mantidos por empresas, como a Cisco e a Riverbed, mas distribuídos como código aberto. Às vezes é abreviado como **SO**.
 
@@ -3067,7 +3077,7 @@ Na análise, o **Sguil** é o **ponto de partida da investigação**, um console
 - **Wireshark**: abre as capturas completas de pacotes relevantes;
 - **Zeek**: inspeciona todo o tráfego de um segmento e permite análise aprofundada.
 
-### 30.2 Alertas no Sguil
+### 27.4 Alertas no Sguil
 
 Os **alertas** são **mensagens geradas pelas ferramentas de monitoramento** a partir de regras, assinaturas ou anomalias, em várias formas; o syslog, por exemplo, tem classificações de gravidade. O Sguil reúne alertas de várias fontes em uma **fila com carimbo de hora**, onde o analista investiga, classifica, escala (repassa a um analista mais experiente) ou retira cada alerta, em vez de usar um sistema de fluxo de trabalho dedicado como o **RTIR** (*Request Tracker for Incident Response*).
 
@@ -3090,7 +3100,7 @@ As condições que disparam um alerta precisam ser predefinidas. Os alertas vêm
 - **transações HTTP, DNS e TCP**: registradas pelo Zeek e nos pcaps;
 - **mensagens syslog**: várias fontes, por isso os formatos variam.
 
-### 30.3 Regras do Snort
+### 27.5 Regras do Snort
 
 O analista precisa entender as regras do Snort, uma das principais fontes de alertas. Uma regra tem **cabeçalho** (ação, protocolo, origem, destino e direção) e **opções** (entre parênteses); o Sguil acrescenta a **localização da regra** (/nsm/server\_data/securityonion/rules/…). Exemplo do curso:
 
@@ -3120,7 +3130,7 @@ As regras vêm de três fontes principais:
 
 O PulledPork baixa as regras do Snort.org automaticamente. Alertas que não vêm do Snort são marcados com tags como OSSEC ou PADS, e é possível criar **regras locais** personalizadas.
 
-### 30.4 Classificação dos Alertas
+### 27.6 Classificação dos Alertas
 
 As regras são **propositalmente conservadoras**: é melhor alertar à toa do que deixar passar um ataque. Os analistas de **nível 1** trabalham nas filas de alertas do Sguil e giram para o Zeek, o Wireshark e o Kibana para confirmar se houve uma exploração.
 
@@ -3146,7 +3156,7 @@ O que fazer:
 - excesso de falsos positivos → informar a equipe e **ajustar as regras**; picos também surgem depois de mudanças legítimas na rede ou de regras novas;
 - falso negativo descoberto depois → **RSA** (*Retrospective Security Analysis* — análise retrospectiva): **aplicar regras e informações novas aos dados guardados**. Por isso, é importante acompanhar as informações sobre ameaças, avaliar se a rede esteve vulnerável e qual o dano possível, e decidir se bastam novas mitigações ou se é preciso uma análise mais profunda.
 
-### 30.5 Análise Determinística e Probabilística
+### 27.7 Análise Determinística e Probabilística
 
 Técnicas estatísticas avaliam o risco de uma exploração dar certo e ajudam a comparar o custo de mitigar a ameaça com o dano que ela causaria:
 
@@ -3375,7 +3385,7 @@ Técnicas estatísticas avaliam o risco de uma exploração dar certo e ajudam a
 
 ## Exercícios
 
-### A. Cálculo de Disponibilidade (ver item 18.2)
+### A. Cálculo de Disponibilidade (ver item 19.2)
 
 Considere um ano de 365 dias.
 
@@ -3384,13 +3394,13 @@ Considere um ano de 365 dias.
 3. Calcule o tempo máximo de inatividade por ano de um sistema com 99,95% de disponibilidade e converta o resultado em horas e minutos.
 4. Um servidor ficou fora do ar por 30 minutos em um ano. Calcule sua disponibilidade e informe se ele atingiu os cinco noves.
 
-### B. Dígito Verificador do ISBN-10 (ver item 14.3)
+### B. Dígito Verificador do ISBN-10 (ver item 20.3)
 
 1. Calcule o dígito verificador do ISBN-10 cujos nove primeiros dígitos são 0 3 0 6 4 0 6 1 5.
 2. Calcule o dígito verificador do ISBN-10 cujos nove primeiros dígitos são 8 5 7 5 2 2 0 0 3.
 3. Um usuário digitou o ISBN 0-306-40615-7. Indique se a validação aceita ou rejeita esse número e por quê.
 
-### C. Máscaras Curinga (ver item 20.5)
+### C. Máscaras Curinga (ver item 16.5)
 
 1. Informe a máscara curinga para a rede 192.168.50.0/24.
 2. Informe a máscara curinga para a rede 172.16.8.64/26 e o comando `permit` correspondente.
@@ -3399,7 +3409,7 @@ Considere um ano de 365 dias.
 5. Indique a faixa de endereços que corresponde a `172.16.32.0 0.0.7.255`.
 6. Escreva a entrada que permite apenas o host 192.168.1.20 de duas formas: com máscara curinga e com a palavra-chave correspondente.
 
-### D. Prioridade do Syslog (ver item 29.2)
+### D. Prioridade do Syslog (ver item 25.3)
 
 1. Calcule a prioridade de uma mensagem com facilidade local7 e gravidade 6.
 2. Calcule a prioridade de uma mensagem com facilidade local0 e gravidade 4.
@@ -3407,14 +3417,14 @@ Considere um ano de 365 dias.
 4. Uma mensagem começa com <11>. Informe o número da facilidade e o nome da gravidade.
 5. Na mensagem `%SYS-5-CONFIG_I: Configured from console by con0`, indique a facilidade Cisco, a gravidade e o código da mensagem.
 
-### E. Posicionamento de ACLs e Firewalls (ver itens 21.7, 23.5 e 24.5)
+### E. Posicionamento de ACLs e Firewalls (ver itens 16.13, 17.5 e 17.12)
 
 1. Indique onde aplicar uma ACL padrão que impede a rede 192.168.10.0/24 de acessar a rede 192.168.30.0/24 e justifique.
 2. Indique onde aplicar uma ACL estendida que impede a rede 192.168.11.0/24 de usar Telnet com a rede 192.168.30.0/24 e justifique.
 3. Classifique cada tráfego, em um firewall com DMZ, como bloqueado, permitido seletivamente ou permitido com inspeção: a) da rede pública para a privada; b) da rede pública para o servidor web da DMZ; c) da rede privada para a internet; d) da DMZ para a rede privada.
 4. Em um roteador com ZPF, a interface G0/0 está na zona PRIVATE e a interface G0/1 não pertence a nenhuma zona. Indique o que acontece com o tráfego entre elas.
 
-### F. Classificação de Alertas (ver item 30.4)
+### F. Classificação de Alertas (ver item 27.6)
 
 Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro negativo ou falso negativo.
 
@@ -3424,7 +3434,7 @@ Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro
 4. Um usuário navegou normalmente na web, e nenhum alerta foi gerado.
 5. Indique qual dos quatro casos é o mais perigoso e por quê.
 
-### G. Questões Conceituais: Fundamentos e Criptografia (ver itens 1 a 8)
+### G. Questões Conceituais: Fundamentos e Criptografia (ver seções 1 a 8)
 
 1. Explique a diferença entre confidencialidade, integridade e disponibilidade, com um exemplo de cada.
 2. Diferencie a analogia da cebola da analogia da alcachofra na defesa em profundidade.
@@ -3433,14 +3443,14 @@ Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro
 5. Informe o que é criptografado em uma assinatura digital e se ela, sozinha, garante confidencialidade.
 6. Diferencie mascaramento de dados de esteganografia.
 
-### H. Questões Conceituais: Controle de Acesso (ver itens 9 a 12)
+### H. Questões Conceituais: Controle de Acesso (ver seções 9 a 12)
 
 1. Cite os três fatores de autenticação e dê um exemplo de cada.
 2. Diferencie os modelos DAC, MAC e RBAC.
 3. Explique o princípio da confiança zero.
 4. Compare o TACACS+ e o RADIUS quanto ao transporte e à criptografia.
 
-### I. Questões Conceituais: Proteção de Sistemas e da Rede (ver itens 13 a 19)
+### I. Questões Conceituais: Proteção de Sistemas e da Rede (ver seções 13 a 15 e 18 a 21)
 
 1. Explique a função da CER na escolha de um sistema biométrico.
 2. Indique por que o Telnet deve ser substituído pelo SSH.
@@ -3450,7 +3460,7 @@ Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro
 6. Explique por que os sistemas SCADA são vulneráveis e qual é a principal medida de proteção.
 7. Indique a finalidade de um honeypot.
 
-### J. Questões Conceituais: Filtragem de Tráfego (ver itens 20 a 24)
+### J. Questões Conceituais: Filtragem de Tráfego (ver seções 16 e 17)
 
 1. Diferencie a ACL padrão da ACL estendida.
 2. Explique a negação implícita e sua consequência para uma ACL que só tem instruções deny.
@@ -3459,7 +3469,7 @@ Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro
 5. Diferencie o firewall de filtragem de pacotes do firewall com estado.
 6. Diferencie as ações Inspect, Pass e Drop do ZPF.
 
-### K. Questões Conceituais: Nuvem (ver itens 25 e 26)
+### K. Questões Conceituais: Nuvem (ver seções 22 e 23)
 
 1. Diferencie o hypervisor tipo 1 do tipo 2.
 2. Diferencie a máquina virtual do contêiner.
@@ -3467,7 +3477,7 @@ Classifique cada situação como verdadeiro positivo, falso positivo, verdadeiro
 4. Indique qual responsabilidade é sempre do cliente no modelo de responsabilidade compartilhada.
 5. Explique a expansão de VMs e a fuga de VM.
 
-### L. Questões Conceituais: Monitoramento (ver itens 27 a 30)
+### L. Questões Conceituais: Monitoramento (ver seções 24 a 27)
 
 1. Explique por que o NTP é importante para a análise dos logs.
 2. Indique dois sinais de retirada de dados pelo DNS.

@@ -17,7 +17,61 @@ const keyOf=id=>LEGACY[id]||('redes-estudo-'+id+'-v1');
 const SIMKEY='redes-simulado-v1', THEMEKEY='redes-estudo-v1-theme';
 function load(k){try{const r=localStorage.getItem(k); return r?JSON.parse(r):null}catch(e){return null}}
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+/* ---------- trilhas reorganizadas: leva grifos, textos editados e progresso para a nova numeração (uma vez) ---------- */
+const Reorg={busy:{},
+  rmap(t,s){const M=t.MIG, one=x=>M.idmap[x]||M.modmap[x]||x;
+    s=s.replace(/((?:ver )?(?:item|itens) )(\d+(?:\.\d+)+(?:(?:, | e )\d+(?:\.\d+)+)*)/g,(m,p,ids)=>p+ids.replace(/\d+(?:\.\d+)*/g,one));
+    s=s.replace(/((?:ver )?(?:seção|seções|módulo|módulos) )(\d+(?:(?:, | e | a )\d+)*)(?![\d.])/g,(m,p,ids)=>p+ids.replace(/\d+/g,k=>M.modmap[k]||k));
+    return s.replace(/vista na seção/g,'explicada na seção').replace(/visto na seção/g,'explicado na seção')},
+  text(html){const d=document.createElement('div'); d.innerHTML=html; return HL.nodes(d).map(n=>n.data).join('')},
+  segs(a,b){const out=[]; let i=0,j=0;
+    while(i<a.length&&j<b.length){
+      if(a[i]===b[j]){const s=i,u=j; while(i<a.length&&j<b.length&&a[i]===b[j]){i++;j++} out.push([s,i,u]); continue}
+      let f=null; for(let d=1;d<=120&&!f;d++) for(let x=0;x<=d&&!f;x++){const y=d-x; if(i+x<a.length&&a.substr(i+x,10)===b.substr(j+y,10)) f=[x,y]}
+      if(!f) break; i+=f[0]; j+=f[1]}
+    return out},
+  pos(seg,p,end){for(const [a,b,c] of seg) if(p>=a&&p<=b) return c+(p-a);
+    if(end){let r=null; for(const [a,b,c] of seg) if(b<=p) r=c+(b-a); return r}
+    for(const [a,b,c] of seg) if(a>=p) return c; return null},
+  ranges(seg,add){return (add||[]).map(r=>({s:this.pos(seg,r.s,false),e:this.pos(seg,r.e,true)})).filter(r=>r.s!==null&&r.e!==null&&r.e>r.s)},
+  hl(x,h){return {add:this.ranges(x.seg,h.add),off:(h.off||[]).map(i=>x.mk[i]).filter(i=>i>=0),ts:h.ts||0}},
+  /* progresso de cada pessoa (tópicos lidos, respostas, último módulo) */
+  prog(t,S){const M=t.MIG; if(!M||!S||(S.mv||1)>=M.v) return false;
+    const o={}; Object.keys(S.open||{}).forEach(k=>(M.open[k]||[]).forEach(n=>o[n]=1)); S.open=o;
+    const e={}; Object.entries(S.ex||{}).forEach(([k,r])=>{const n=M.ex[k]; if(n) e[n]=r}); S.ex=e;
+    if(S.hl){const h={}; Object.entries(S.hl).forEach(([k,v])=>{const x=M.hl[k]; if(x&&v) h[x.to]=this.hl(x,v)}); S.hl=h}
+    if(S.last) S.last=+(M.modmap[String(S.last)]||1);
+    S.mv=M.v; return true},
+  /* grifos e textos editados publicados pela dona do site (conteudo/<trilha>) */
+  pending(t){const M=t.MIG; return !!M&&(((Pub.data[t.id]||{}).kv||{}).v||1)<M.v},
+  conv(t,d){const M=t.MIG, k={}, lost=[];
+    Object.entries(d||{}).forEach(([key,val])=>{
+      if(key==='kv'||!val) return; const old=key.slice(1).replace(/_/g,'.'), x=M.hl[old];
+      if(!x){lost.push(old); return}
+      const o={ts:val.ts||Date.now()};
+      if(typeof val.html==='string'){
+        o.html=this.rmap(t,val.html);
+        if(val.hl){const sg=this.segs(this.text(val.html),this.text(o.html)); o.hl={add:this.ranges(sg,val.hl.add),off:(val.hl.off||[]).slice()}}
+      } else if(val.hl) o.hl=this.hl(x,val.hl);
+      if(o.hl&&!o.hl.add.length&&!o.hl.off.length) delete o.hl;
+      if(o.html!==undefined||o.hl) k[PK(x.to)]=o});
+    return {k,lost}},
+  /* enquanto a dona não abre o site, os visitantes já veem os grifos no lugar novo (só na tela) */
+  cache:{},
+  view(t){const js=Pub.last[t.id]; const c=this.cache[t.id]; if(c&&c.js===js) return c.k; const k=this.conv(t,Pub.data[t.id]).k; this.cache[t.id]={js,k}; return k},
+  pub(t){const M=t.MIG; if(!this.pending(t)||!HL.enabled()||!Pub.loaded[t.id]||this.busy[t.id]||!Sync.db) return;
+    this.busy[t.id]=true; const d=Pub.data[t.id]||{}, {k,lost}=this.conv(t,d);
+    k.kv={v:M.v,ts:Date.now()};
+    store(PKEY(t.id)+'-antes-v'+M.v,d);
+    const ref=Sync.db.collection('conteudo'), FV=firebase.firestore.FieldValue;
+    ref.doc(t.id+'-antes-v'+M.v).set({k:d,updated:FV.serverTimestamp()}).catch(()=>{})
+      .then(()=>ref.doc(t.id).set({k,updated:FV.serverTimestamp()}))
+      .then(()=>{this.busy[t.id]=false; Pub.data[t.id]=k; Pub.last[t.id]=JSON.stringify(k); store(PKEY(t.id),k); Pub.refresh(t); toast('Grifos e textos editados de '+t.short+' levados para a nova ordem do curso.'+(lost.length?' Sem lugar novo: '+lost.join(', ')+'.':''))})
+      .catch(e=>{this.busy[t.id]=false; toast('Não foi possível ajustar os grifos à nova ordem: '+(e.code||e.message))});
+  }
+};
 const ST={}; TR.forEach(t=>{ST[t.id]=Object.assign({open:{},ex:{},last:null,lastTs:0},load(keyOf(t.id))||{})});
+TR.forEach(t=>{if(Reorg.prog(t,ST[t.id])) store(keyOf(t.id),ST[t.id])});
 let SIM=Object.assign({hist:[],cur:null},load(SIMKEY)||{});
 function save(id){ if(id) store(keyOf(id),ST[id]); store(SIMKEY,SIM); Sync.push() }
 
@@ -227,10 +281,11 @@ const Pub={data:{},loaded:{},last:{},
       Migr.run();
     },()=>{}));
   },
-  get(t,k){return (this.data[t.id]||{})[PK(k)]||null},
+  get(t,k){return ((Reorg.pending(t)?Reorg.view(t):this.data[t.id])||{})[PK(k)]||null},
   set(t,k,obj){
     const d=this.data[t.id]=this.data[t.id]||{}, key=PK(k), prev=d[key];
     if(!Sync.db||!Sync.user){toast('Sem conexão com a nuvem agora. Nada foi publicado; tente de novo em instantes.'); return Promise.resolve(false)}
+    if(Reorg.pending(t)){toast('Aguarde um instante: os grifos estão sendo ajustados à nova ordem do curso.'); Migr.run(); return Promise.resolve(false)}
     if(obj){obj.ts=Date.now(); d[key]=obj} else delete d[key];
     this.last[t.id]=JSON.stringify(d); store(PKEY(t.id),d);
     const undo=()=>{if(prev) d[key]=prev; else delete d[key]; this.last[t.id]=JSON.stringify(d); store(PKEY(t.id),d)};
@@ -250,7 +305,8 @@ function paintBox(t,b){b.innerHTML=boxHtml(t,b.dataset.k); HL.render(t,b)}
 /* Leva para o site público os grifos que a dona tinha feito quando eles eram pessoais (uma vez só). */
 const Migr={busy:{},run(){
   if(!HL.enabled()) return;
-  TR.forEach(t=>{const S=ST[t.id]; if(S.hlMig||!Pub.loaded[t.id]||Migr.busy[t.id]) return; Migr.busy[t.id]=true;
+  TR.forEach(t=>Reorg.pub(t));
+  TR.forEach(t=>{const S=ST[t.id]; if(Reorg.pending(t)||S.hlMig||!Pub.loaded[t.id]||Migr.busy[t.id]) return; Migr.busy[t.id]=true;
     const jobs=[]; Object.entries(S.hl||{}).forEach(([k,h])=>{ if(!h||(!(h.add||[]).length&&!(h.off||[]).length)||Pub.get(t,k)) return; jobs.push(Pub.set(t,k,{hl:{add:h.add||[],off:h.off||[]}})) });
     Promise.all(jobs).then(r=>{Migr.busy[t.id]=false; if(r.every(Boolean)){S.hlMig=1; save(t.id)} if(jobs.length) Pub.refresh(t)});
   });
@@ -814,7 +870,7 @@ const Sync={on:false,user:null,doc:null,timer:null,applying:false,
   },
   apply(d){
     if(!d||!d.tracks) return; this.applying=true; let changed=false;
-    TR.forEach(t=>{const a=ST[t.id], b=d.tracks[t.id]; if(!b) return;
+    TR.forEach(t=>{const a=ST[t.id], b=d.tracks[t.id]; if(!b) return; Reorg.prog(t,b);
       Object.keys(b.open||{}).forEach(k=>{if(!a.open[k]){a.open[k]=1; changed=true}});
       a.hl=a.hl||{}; Object.entries(b.hl||{}).forEach(([k,h])=>{const l=a.hl[k]; if(!l||(h.ts||0)>(l.ts||0)){a.hl[k]=h; changed=true}});
       Object.entries(b.ex||{}).forEach(([k,r])=>{const l=a.ex[k]; if(!l||(r.ts||0)>(l.ts||0)){a.ex[k]=r; changed=true}});

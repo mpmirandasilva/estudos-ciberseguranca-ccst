@@ -170,11 +170,38 @@ def build_track(meta,DATA,GLOSS,EX,ICONS):
     exmin=sum(1 if q['t']=='mc' and not q.get('dom') else 2 for v in EX.values() for q in v)
     hours=max(1,round(words/50/60+exmin/60))
     tr=dict(meta); tr.update({'HOURS':hours,'DATA':out,'GLOSS':G,'EX':{str(k):v for k,v in EX.items()},'ICONS':{str(k):v for k,v in ICONS.items()}})
+    mp=os.path.join(HERE,'mig',meta['id']+'.json')
+    if os.path.exists(mp):  # trilha reorganizada: mapa para levar grifos, edições e progresso antigos à nova numeração
+        M=json.load(open(mp)); M['ex']=EXMAP.get(meta['id'],{}); M.pop('idmap_full',None); tr['MIG']=M
     js='window.TRACKS=window.TRACKS||[];\nwindow.TRACKS.push('+json.dumps(tr,ensure_ascii=False,separators=(',',':'))+');\n'
     os.makedirs(os.path.join(OUT,'data'),exist_ok=True)
     open(os.path.join(OUT,'data',meta['id']+'.js'),'w').write(js)
     nq=sum(len(v) for v in EX.values()); nc=sum(1 for v in EX.values() for q in v if q.get('dom'))
     print(meta['id'],'horas',hours,'módulos',len(out),'tópicos',sum(len(m['topics']) for m in out),'questões',nq,'ccst',nc,'figuras',sum(figc.values()),'kB',len(js)//1024)
+
+def remap(tid,ex):
+    p=os.path.join(HERE,'remap_'+tid+'.json')
+    if not os.path.exists(p): return ex
+    R=json.load(open(p)); out={}
+    for k,v in ex.items():
+        for i,q in enumerate(v):
+            q['_o']=f'{k}-{i}'
+            r=q.get('r','')
+            if r in R['items']: q['r']=R['items'][r]
+            elif r in R['mods']: q['r']=R['mods'][r]
+            else: raise SystemExit(f'remap sem destino: {tid} {k} {r}')
+            out.setdefault(int(q['r'].split('.')[0]),[]).append(q)
+    out=dict(sorted(out.items())); m=EXMAP.setdefault(tid,{})
+    for n,v in out.items():
+        for j,q in enumerate(v): m[q.pop('_o')]=f'{n}-{j}'
+    return out
+EXMAP={}
+def remap_ref(ref):
+    tid,num=ref.split(':')
+    p=os.path.join(HERE,'remap_'+tid+'.json')
+    if not os.path.exists(p): return ref
+    R=json.load(open(p))
+    return tid+':'+(R['items'].get(num) or R['mods'].get(num) or num)
 
 def addcy(ex,fn):
     p=os.path.join(HERE,fn)
@@ -220,7 +247,12 @@ def main():
     d4=json.load(open(os.path.join(src,'defesa.json')))
     ex4=modload(os.path.join(HERE,'ex_def.py')).EX
     addcy(ex4,'ccst_t4.py')
+    ex4=remap('defesa',ex4)
     ic4=modload(os.path.join(HERE,'icons_def.py')).ICONS
+    R4=json.load(open(os.path.join(HERE,'remap_defesa.json')))
+    inv={}
+    for o,n in R4['mods'].items(): inv.setdefault(int(n),int(o))
+    ic4={n:ic4[o] for n,o in inv.items()}
     build_track({'id':'defesa','order':4,'short':'Defesa de Rede','label':'Trilha 4 · Network Defense',
                  'title':'Defesa de Rede',
                  'desc':'Defesa em profundidade, criptografia e PKI, controle de acesso e AAA, segurança física, de aplicações e sem fio, alta disponibilidade, ACLs, firewalls e ZPF, nuvem e monitoramento com logs, SIEM e avaliação de alertas.',
@@ -243,6 +275,7 @@ def main():
         for mi,m in enumerate(d['DATA'],1):
             for tp in m['topics']:
                 refs[tid+':'+tp['num']]={'t':tid,'order':d['order'],'short':d['short'],'track':d['title'],'m':mi,'num':tp['num'],'title':tp['title'],'mt':m['title']}
+    for q in P.QS: q['refs']=list(dict.fromkeys(remap_ref(r) for r in q['refs']))
     used={r for q in P.QS for r in q['refs']}
     miss=sorted(used-set(refs))
     if miss: print('PROBLEMAS prova refs',miss)
