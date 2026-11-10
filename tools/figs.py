@@ -184,3 +184,89 @@ def traceroute():
 
 FIGS={'simbolos':simbolos,'encapsulamento':encapsulamento,'hierarquico':hierarquia,'dora':dora,
       'caminho':caminho_roteador,'arp':arp,'handshake':handshake,'traceroute':traceroute}
+
+# ---------- Trilha 4: Defesa de Rede ----------
+def chain(items,label,y=20,h=56,gap=30,sub=None):
+    n=len(items); w=(W-16-gap*(n-1))/n; s=''
+    for i,(t,c) in enumerate(items):
+        x=8+i*(w+gap)
+        s+=box(x,y,w,h,t,c,sub=(sub[i] if sub else None),fs=13)
+        if i<n-1: s+=arrow(x+w+2,y+h/2,x+w+gap-3,y+h/2)
+    return s
+def def_camadas():
+    s=chain([('Internet','c4'),('Roteador\nde borda','c3'),('Firewall','c2'),('Roteador\ninterno','c3'),('Rede interna\n(LAN)','c1')],'',y=20,h=60,gap=26)
+    labs=['não confiável','1ª linha','2ª linha','3ª linha','confiável']
+    n=5; gap=26; w=(W-16-gap*4)/5
+    for i,l in enumerate(labs): s+=text(8+i*(w+gap)+w/2,104,l,'fg-s')
+    return svg(118,s,'Três linhas de defesa entre a internet e a rede interna')
+def def_cripto():
+    s=chain([('Texto claro','c1'),('Criptografia','c3'),('Texto cifrado','c2'),('Descripto-\ngrafia','c3'),('Texto claro','c1')],'',y=20,h=50,gap=24)
+    w=(W-16-24*4)/5
+    for i in (1,3):
+        cx=8+i*(w+24)+w/2
+        s+=arrow(cx,108,cx,74,'t')
+        s+=text(cx,124,'chave','fg-k')
+    s+=text(8+2*(w+24)+w/2,100,'ilegível sem a chave','fg-s')
+    return svg(136,s,'Criptografia e descriptografia com chave')
+def def_assim():
+    s=''
+    s+=text(10,22,'Confidencialidade','fg-h','start',fs=14)
+    s+=chain([('Alice','c1'),('cifra com a\npública de Bob','c3'),('decifra com a\nprivada de Bob','c2'),('Bob','c1')],'',y=34,h=50,gap=26)
+    s+=text(10,120,'Autenticação','fg-h','start',fs=14)
+    s+=chain([('Alice','c1'),('cifra com a\nprivada de Alice','c2'),('decifra com a\npública de Alice','c3'),('Bob','c1')],'',y=132,h=50,gap=26)
+    s+=text(320,208,'só Bob lê  ·  só Alice poderia ter enviado','fg-s')
+    return svg(220,s,'Uso das chaves pública e privada para confidencialidade e para autenticação')
+def def_assinatura():
+    s=text(10,22,'Assinar (Bob)','fg-h','start',fs=14)
+    s+=chain([('Documento','c1'),('Hash','c3'),('Cifra com a\nprivada de Bob','c2'),('Assinatura','c4')],'',y=32,h=50,gap=26)
+    s+=text(10,118,'Verificar (Alice)','fg-h','start',fs=14)
+    s+=chain([('Assinatura','c4'),('Decifra com a\npública de Bob','c3'),('Hash enviado','c3')],'',y=128,h=50,gap=26)
+    s+=chain([('Documento','c1'),('Hash calculado','c3')],'',y=200,h=44,gap=26)
+    s+=box(8,262,W-16,40,'Hashes iguais → veio de Bob e não foi alterado','c1',fs=13)
+    return svg(312,s,'Criação e verificação de uma assinatura digital')
+def def_pki():
+    s=box(210,14,220,54,'CA','c2',sub='autoridade de certificação')
+    s+=box(20,200,170,54,'Bob','c1',sub='titular')
+    s+=box(450,200,170,54,'Alice','c1',sub='quem confere')
+    s+=arrow(70,198,226,72); s+=text(30,128,'1. pede o','fg-s','start'); s+=text(30,144,'certificado','fg-s','start')
+    s+=arrow(270,72,140,196,'t'); s+=text(214,150,'2. confirma a identidade','fg-s','start'); s+=text(214,166,'e emite','fg-s','start')
+    s+=arrow(194,227,446,227); s+=text(320,218,'3. apresenta o certificado','fg-s')
+    s+=arrow(570,198,414,72,'t',dash=True); s+=text(610,128,'4. confere com a','fg-s','end'); s+=text(610,144,'pública da CA','fg-s','end')
+    return svg(266,s,'Emissão e verificação de um certificado digital na PKI')
+def def_dmz():
+    s=box(250,94,140,54,'Firewall','c2',sub='três interfaces')
+    s+=box(8,94,170,54,'Internet','c4',sub='não confiável')
+    s+=box(462,94,170,54,'LAN privada','c1',sub='confiável')
+    s+=box(235,212,170,54,'DMZ','c3',sub='servidores web e e-mail')
+    s+=line(178,121,250,121); s+=line(390,121,462,121); s+=line(320,148,320,212)
+    s+=text(214,82,'pública → LAN: bloqueado','fg-s'); s+=text(426,82,'LAN → fora: inspecionado','fg-s')
+    s+=text(470,236,'DMZ → LAN: bloqueado','fg-s','start'); s+=text(170,236,'pública → DMZ:','fg-s','end'); s+=text(170,252,'permitido seletivamente','fg-s','end')
+    return svg(278,s,'Firewall com DMZ entre a internet e a rede privada')
+def def_acl():
+    s=box(220,10,200,40,'Pacote chega','c4',fs=13)
+    s+=arrow(320,50,320,72)
+    s+=box(170,72,300,44,'Compara com a próxima ACE','c3',fs=13)
+    s+=arrow(320,116,320,138)
+    s+=box(200,138,240,44,'Corresponde?','c2',fs=13)
+    s+=arrow(440,160,500,160); s+=text(470,152,'sim','fg-k')
+    s+=box(500,138,132,44,'permit / deny','c1',fs=13)
+    s+=arrow(320,182,320,206); s+=text(334,198,'não','fg-k','start')
+    s+=box(185,206,270,44,'Há mais ACEs na lista?','c2',fs=13)
+    s+=line(185,228,120,228); s+=line(120,228,120,94); s+=arrow(120,94,168,94); s+=text(132,220,'sim','fg-k','start')
+    s+=arrow(320,250,320,274); s+=text(334,266,'não','fg-k','start')
+    s+=box(180,274,280,44,'Negação implícita: descarta','c4',fs=13)
+    return svg(330,s,'Processamento de um pacote por uma ACL, de cima para baixo')
+def def_https():
+    return seq([('Navegador',130,'c1'),('Servidor',510,'c2')],
+      [(0,1,'1. pede a página https://','',False),
+       (1,0,'2. chave pública + certificado','',True),
+       (0,0,'',"",False)][:2]+[
+       (0,1,'3. confere o certificado e envia a chave simétrica','cifrada com a chave pública do servidor',False),
+       (1,0,'4. página cifrada com a chave simétrica','o navegador decifra e mostra',True)],
+      'Estabelecimento de uma conexão HTTPS',gap=64)
+def def_kerberos():
+    return seq([('Cliente',100,'c1'),('Servidor Kerberos',320,'c2'),('Serviço',540,'c3')],
+      [(0,1,'1. autentica-se','',False),(1,0,'2. recebe o TGT','tíquete de concessão de tíquete',True),
+       (0,1,'3. apresenta o TGT','e pede um serviço',False),(1,0,'4. tíquete de serviço','com carimbo de hora e validade',True),
+       (0,2,'5. apresenta o tíquete e acessa','',False)],'Autenticação com tíquetes no Kerberos',gap=60,aw=150)
+FIGS.update({'def_camadas':def_camadas,'def_cripto':def_cripto,'def_assim':def_assim,'def_assinatura':def_assinatura,'def_pki':def_pki,'def_dmz':def_dmz,'def_acl':def_acl,'def_https':def_https,'def_kerberos':def_kerberos})

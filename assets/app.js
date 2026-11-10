@@ -5,6 +5,7 @@
 'use strict';
 const TR=(window.TRACKS||[]).slice().sort((a,b)=>a.order-b.order);
 const TRK={}; TR.forEach(t=>TRK[t.id]=t);
+const CYDOM={1:'Princípios essenciais de segurança',2:'Conceitos básicos de segurança de rede',3:'Segurança de endpoints',4:'Avaliação de vulnerabilidades e riscos',5:'Tratamento de incidentes'};
 const DOMAINS={1:'Padrões e conceitos',2:'Endereçamento e sub-redes',3:'Endpoints e mídias',4:'Infraestrutura',5:'Diagnóstico de problemas',6:'Segurança'};
 const $=(s,el=document)=>el.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -464,7 +465,7 @@ function kindOf(q){
   if(q.t==='multi'&&q.f.every(f=>f.ch)) return q.ord?'ordenar':'associação';
   return 'resposta digitada';
 }
-function qHead(q,n){return `<div class="q-top"><span class="k">${pad(n)}</span><div class="txt">${esc(q.q)}</div><span class="kind">${kindOf(q)}</span>${q.dom?`<span class="kind ccst" title="Domínio ${q.dom} do blueprint CCST Networking: ${esc(DOMAINS[q.dom])}">CCST ${q.dom}.0</span>`:''}</div>`}
+function qHead(q,n){return `<div class="q-top"><span class="k">${pad(n)}</span><div class="txt">${esc(q.q)}</div><span class="kind">${kindOf(q)}</span>${q.dom?(q.cy?`<span class="kind ccst" title="Domínio ${q.dom} do blueprint CCST Cybersecurity: ${esc(CYDOM[q.dom])}">CCST Cyber ${q.dom}.0</span>`:`<span class="kind ccst" title="Domínio ${q.dom} do blueprint CCST Networking: ${esc(DOMAINS[q.dom])}">CCST ${q.dom}.0</span>`):''}</div>`}
 function renderQ(t,m,q,i,n){
   const S=ST[t.id]; const key=m.idx+'-'+i; const st=S.ex[key];
   const el=document.createElement('div'); el.className='frame q'+(st?(st.ok?' ok':' bad'):'');
@@ -533,7 +534,7 @@ function renderGloss(t){
 
 /* ---------- simulado ---------- */
 const SIMN=40, SIMMIN=50;
-function pool(){const p=[]; TR.forEach(t=>t.MODS.forEach(m=>(t.EX[m.idx]||[]).forEach((q,i)=>{if(q.dom) p.push({tid:t.id,m:m.idx,i,d:q.dom})}))); return p}
+function pool(){const p=[]; TR.forEach(t=>t.MODS.forEach(m=>(t.EX[m.idx]||[]).forEach((q,i)=>{if(q.dom&&!q.cy) p.push({tid:t.id,m:m.idx,i,d:q.dom})}))); return p}
 function pickSim(n){
   const P=pool(); const r=seeded('sim'+Date.now()); const by={}; P.forEach(x=>(by[x.d]=by[x.d]||[]).push(x));
   Object.values(by).forEach(a=>a.sort(()=>r()-.5));

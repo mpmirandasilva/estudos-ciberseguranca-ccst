@@ -13,7 +13,17 @@ def modload(p):
 
 FIG_BY_ALT=[('Símbolos','simbolos'),('Encapsulamento','encapsulamento'),('hierárquico','hierarquico'),('DORA','dora'),
             ('Caminho de um pacote','caminho'),('Solicitação ARP','arp'),('ARP','arp'),('handshake','handshake'),('traceroute','traceroute')]
-CAPTION={'simbolos':'Símbolos usados nos diagramas de rede',
+CAPTION={
+ 'def_camadas':'O tráfego da internet atravessa três linhas de defesa até chegar à rede interna',
+ 'def_cripto':'A chave transforma o texto claro em texto cifrado e, do outro lado, o texto cifrado de volta em texto claro',
+ 'def_assim':'A chave usada para criptografar define o resultado: a pública do destinatário dá confidencialidade; a privada do remetente, autenticação',
+ 'def_assinatura':'Bob assina com a própria chave privada; Alice confere com a chave pública de Bob e compara os hashes',
+ 'def_pki':'A CA confirma a identidade de Bob e emite o certificado; Alice confia nele porque confere a assinatura da CA',
+ 'def_kerberos':'No Kerberos, o cliente se autentica uma vez e depois usa tíquetes para acessar os serviços',
+ 'def_acl':'A ACL é lida de cima para baixo e para na primeira correspondência; o que não corresponde a nada é descartado',
+ 'def_dmz':'Com a DMZ, o firewall tem três interfaces e trata de forma diferente cada sentido do tráfego',
+ 'def_https':'No HTTPS, a criptografia assimétrica protege a troca da chave simétrica, que depois cifra a página',
+ 'simbolos':'Símbolos usados nos diagramas de rede',
  'encapsulamento':'Na origem, cada camada acrescenta seu cabeçalho (encapsulamento); no destino, eles são retirados na ordem inversa',
  'hierarquico':'Modelo hierárquico: conexões redundantes entre as camadas superiores; os usuários se conectam na camada de acesso',
  'dora':'Processo DORA: as quatro mensagens com que o cliente obtém um endereço IPv4',
@@ -153,6 +163,13 @@ def build_track(meta,DATA,GLOSS,EX,ICONS):
     nq=sum(len(v) for v in EX.values()); nc=sum(1 for v in EX.values() for q in v if q.get('dom'))
     print(meta['id'],'horas',hours,'módulos',len(out),'tópicos',sum(len(m['topics']) for m in out),'questões',nq,'ccst',nc,'figuras',sum(figc.values()),'kB',len(js)//1024)
 
+def addcy(ex,fn):
+    p=os.path.join(HERE,fn)
+    if not os.path.exists(p): return
+    for k,v in modload(p).EX.items():
+        for q in v: q['cy']=1
+        ex.setdefault(k,[]).extend(v)
+
 def main():
     src=os.path.join(HERE,'src')
     # trilha 1
@@ -188,6 +205,7 @@ def main():
     subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'defesa'],check=True)
     d4=json.load(open(os.path.join(src,'defesa.json')))
     ex4=modload(os.path.join(HERE,'ex_def.py')).EX
+    addcy(ex4,'ccst_t4.py')
     ic4=modload(os.path.join(HERE,'icons_def.py')).ICONS
     build_track({'id':'defesa','order':4,'short':'Defesa de Rede','label':'Trilha 4 · Network Defense',
                  'title':'Defesa de Rede',
