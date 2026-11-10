@@ -21,7 +21,7 @@ Da mesma forma, a **governança de dados** determina quem está autorizado a tom
 | Processador (operador) dos dados | Pessoa ou empresa que **trata dados pessoais em nome do controlador** |
 | Custodiante dos dados | **Implementa a classificação e os controles** de segurança definidos pelo proprietário; cuida do controle técnico |
 | Administrador dos dados (*data steward*) | Garante que os dados atendam às necessidades do negócio e aos requisitos regulatórios |
-| Encarregado de proteção de dados (*DPO*) | **Supervisiona a estratégia de proteção de dados** da empresa |
+| Encarregado de proteção de dados (*DPO*, *Data Protection Officer*) | **Supervisiona a estratégia de proteção de dados** da empresa |
 
 ### 1.2 Políticas de Segurança Cibernética
 
@@ -100,7 +100,7 @@ O **crime cibernético** se divide em **três categorias**:
 - **crime assistido por computador**: o computador é **usado para cometer o crime**, como roubo ou fraude;
 - **crime incidental ao computador**: o computador **guarda informações ligadas a um crime real**, sem ser a ferramenta; por exemplo, armazena vídeos baixados ilegalmente.
 
-Muitas ferramentas da internet exigem pouca experiência, o que faz o crime cibernético crescer **mais rápido do que a capacidade de criar leis** contra ele. Nos EUA, combatem esse crime o **IC3** (*Internet Crime Complaint Center*, do FBI), a **InfraGard** e a **SIIA** (*Software and Information Industry Association*).
+Muitas ferramentas da internet exigem pouca experiência, o que faz o crime cibernético crescer **mais rápido do que a capacidade de criar leis** contra ele. Nos EUA, combatem esse crime o **IC3** (*Internet Crime Complaint Center*, o centro de denúncias de crimes na internet do FBI, a polícia federal americana), a **InfraGard** (parceria entre o FBI e empresas privadas para proteger a infraestrutura crítica) e a **SIIA** (*Software and Information Industry Association*, associação das empresas de software, que combate a pirataria).
 
 ### 2.4 Fontes das Leis Cibernéticas
 
@@ -109,7 +109,7 @@ As leis proíbem comportamentos indesejados. Nos EUA, há **três fontes** de le
 | Fonte | O que é | Exemplo |
 | --- | --- | --- |
 | Lei estatutária | Leis do Congresso, com agências e penalidades civis e criminais; as **leis penais** aplicam um código moral aceito, com a autoridade do governo | A Lei de Fraude e Abuso de Computador proíbe o acesso sem autorização ou além dela, com multa ou prisão |
-| Direito administrativo | Rege as **agências do governo** e garante que ajam conforme a lei | A **FCC** e a **FTC** tratam de fraudes e roubo de propriedade intelectual |
+| Direito administrativo | Rege as **agências do governo** e garante que ajam conforme a lei | A **FCC** (*Federal Communications Commission*, que regula as telecomunicações) e a **FTC** (*Federal Trade Commission*, que defende o consumidor e a concorrência) tratam de fraudes e roubo de propriedade intelectual |
 | Direito comum | Casos julgados no sistema judiciário, que criam **precedentes** e bases constitucionais | Decisões dos tribunais |
 
 ### 2.5 FISMA e Leis Setoriais
@@ -154,7 +154,7 @@ Os EUA **não têm uma lei federal central de privacidade**, mas um conjunto de 
 | --- | --- |
 | Privacy Act (1974) | Código de práticas justas para os **dados pessoais em registros de agências federais** |
 | **FOIA** (*Freedom of Information Act*) | **Acesso público aos registros do governo**, com presunção de divulgação: o governo é que precisa justificar a recusa; tem **nove isenções** |
-| **FERPA** (*Family Educational Rights and Privacy Act*) | Acesso dos estudantes aos seus registros escolares; funciona por **consentimento prévio** (*opt-in*) dos pais, e os direitos passam ao aluno aos **18 anos** ou ao entrar no ensino superior |
+| **FERPA** (*Family Educational Rights and Privacy Act*) | Acesso dos estudantes aos seus registros escolares; funciona por **consentimento prévio** (*opt-in*, em que nada é compartilhado sem autorização expressa) dos pais, e os direitos passam ao aluno aos **18 anos** ou ao entrar no ensino superior |
 | **COPPA** (*Children's Online Privacy Protection Act*) | Privacidade de **crianças menores de 13 anos**: exige consentimento dos pais antes de coletar seus dados |
 | **CIPA** (*Children's Internet Protection Act*) | De 2000; protege **menores de 17 anos** contra conteúdo ofensivo e obsceno na internet |
 | **VPPA** (*Video Privacy Protection Act*) | Impede compartilhar o histórico de aluguel de vídeos e jogos; alterada em 2013 para permitir que empresas como a Netflix guardem o histórico com consentimento, por até dois anos |
@@ -182,7 +182,7 @@ Essas leis geraram as **políticas de privacidade**, que ajudam a cumprir a lei.
 5. documenta os problemas encontrados ao comparar requisitos e práticas;
 6. revisa as conclusões com os interessados.
 
-**Observação:** no Brasil, o tema é regido principalmente pela **LGPD** (Lei Geral de Proteção de Dados, Lei 13.709/2018), que usa os papéis de controlador, operador e encarregado vistos na governança de dados.
+**Observação:** no Brasil, o tema é regido principalmente pela **LGPD** (Lei Geral de Proteção de Dados, Lei 13.709/2018), que usa os papéis de controlador, operador e encarregado vistos na governança (ver item 1.1) de dados.
 
 ### 2.8 Leis Internacionais
 
@@ -293,7 +293,7 @@ Os provedores de serviço às vezes precisam provar aos clientes que seus contro
 | Workforce Framework | NIST | Categorias e funções dos profissionais |
 | Controles do CIS | CIS | Controles essenciais por nível de recursos |
 | CCM | CSA | Controles específicos da nuvem |
-| SOC 2 | AICPA (norma SSAE 18) | Auditoria dos controles de um provedor |
+| SOC 2 | AICPA (*American Institute of Certified Public Accountants*, o conselho dos contadores dos EUA), norma SSAE 18 | Auditoria dos controles de um provedor |
 | CMMC | DoD | Certificação de fornecedores da defesa dos EUA |
 
 ## 4. Gerenciamento de Riscos
@@ -328,6 +328,8 @@ Identificar → Avaliar → Responder → Monitorar
 2. **avaliar o risco**: analisar a gravidade de cada ameaça, porque algumas podem paralisar a empresa e outras são pequenos incômodos; a priorização pode ser pelo **impacto financeiro** (análise quantitativa) ou por uma **escala de impacto** na operação (análise qualitativa);
 3. **responder ao risco**: a gerência classifica e prioriza as ameaças, e uma equipe decide como responder a cada uma: **mitigar, transferir ou aceitar**;
 4. **monitorar o risco**: revisar continuamente os resultados das ações; os riscos aceitos precisam de acompanhamento de perto.
+
+![O gerenciamento de riscos é um ciclo: identificar, avaliar, responder e monitorar, sem parar](img/ameacas/gt_risco.png){width=6in}
 
 O acompanhamento usa um **registro de riscos** (*risk register*), um programa ou serviço em nuvem com os detalhes de cada risco identificado e os controles ou estratégias de resposta adotados.
 
@@ -370,7 +372,7 @@ A **análise quantitativa** **atribui números** ao processo, com cinco valores:
 | Valor | Significado |
 | --- | --- |
 | Valor do ativo (**AV**, *Asset Value*) | **Custo de reposição** do ativo, ou a receita que ele gera |
-| Fator de exposição (**EF**, *Exposure Factor*) | **Porcentagem do valor do ativo perdida** em uma ameaça específica; perda total = 1,0 (100%); é um valor subjetivo |
+| Fator de exposição (**EF**, *Exposure Factor*) | **Porcentagem do valor do ativo perdida** em uma ameaça específica; perda total = 1,0 (100%), metade = 0,5 (50%); é um valor subjetivo |
 | Expectativa de perda única (**SLE**, *Single Loss Expectancy*) | Perda em **uma ocorrência** da ameaça |
 | Taxa anualizada de ocorrência (**ARO**, *Annualized Rate of Occurrence*) | **Probabilidade de a perda ocorrer no ano**; pode passar de 100% se a perda ocorrer mais de uma vez por ano |
 | Expectativa de perda anual (**ALE**, *Annual Loss Expectancy*) | **Perda esperada por ano**, que mostra à gerência quanto vale a pena gastar para proteger o ativo |
@@ -427,7 +429,7 @@ Com a análise feita, a empresa monta uma **tabela de gerenciamento de ativos** 
 
 ### 4.8 Avaliação de Riscos Segundo o NIST
 
-O NIST descreve o gerenciamento de riscos como um **processo contínuo, em várias etapas e cíclico**, que faz parte do programa de segurança da empresa:
+O NIST (ver item 3.5) descreve o gerenciamento de riscos como um **processo contínuo, em várias etapas e cíclico**, que faz parte do programa de segurança da empresa:
 
 Identificação → Avaliação → Planejamento da resposta → Implementação da resposta → Monitoramento → (volta à identificação)
 
@@ -454,7 +456,7 @@ O NIST dá outros nomes às quatro respostas ao risco:
 | --- | --- | --- |
 | Prevenção (*avoidance*) | Evitar: **parar a atividade** cujo risco supera o benefício | Descontinuar um serviço |
 | Redução | Reduzir a vulnerabilidade com controles | Corrigir os servidores assim que surgem vulnerabilidades |
-| Compartilhamento | Transferir **parte do risco** a terceiros | Contratar um **CSIRT** como serviço (**SECaaS**, *Security as a Service*) para o monitoramento; comprar seguro |
+| Compartilhamento | Transferir **parte do risco** a terceiros | Contratar um **CSIRT** (equipe de resposta a incidentes, explicada logo abaixo) como serviço (**SECaaS**, *Security as a Service*, segurança contratada como serviço) para o monitoramento; comprar seguro |
 | Retenção | Aceitar o risco e suas consequências | Riscos de **baixo impacto e mitigação cara**, ou tão grandes que não podem ser evitados, reduzidos ou compartilhados |
 
 Um **CSIRT** (*Computer Security Incident Response Team*) é uma equipe de resposta a incidentes de segurança.
@@ -492,7 +494,7 @@ Exemplo de controle compensatório: a empresa que não pode ter um cão de guard
 
 ### 5.3 Auditoria e Conformidade dos Controles
 
-O **CIS** mapeou seus **18 controles essenciais** para as principais estruturas de conformidade, como **PCI DSS, NIST Cybersecurity Framework, FISMA, HIPAA, GDPR e ISO/IEC 27001**; o **GDPR** (*General Data Protection Regulation*) é o regulamento de proteção de dados da União Europeia. Com isso, o profissional vê quais controles do CIS ajudam a cumprir cada estrutura. Os membros do CIS também têm a ferramenta **CIS-CAT Pro**, que **avalia a conformidade** com base nesses mapeamentos.
+O **CIS** (ver item 3.6) mapeou seus **18 controles essenciais** para as principais estruturas de conformidade, como **PCI DSS, NIST Cybersecurity Framework, FISMA, HIPAA, GDPR e ISO/IEC 27001**; o **GDPR** (*General Data Protection Regulation*) é o regulamento de proteção de dados da União Europeia. Com isso, o profissional vê quais controles do CIS ajudam a cumprir cada estrutura. Os membros do CIS também têm a ferramenta **CIS-CAT Pro**, que **avalia a conformidade** com base nesses mapeamentos.
 
 ## 6. Inteligência de Ameaças
 
@@ -566,7 +568,7 @@ Os **honeypots** são **redes ou servidores simulados para atrair atacantes**; a
 
 | Fonte | Tipo | Destaque |
 | --- | --- | --- |
-| Cisco Talos | Serviço comercial | Regras do Snort, ClamAV e SpamCop |
+| Cisco Talos | Serviço comercial | Regras do Snort (IDS gratuito), ClamAV (antivírus gratuito) e SpamCop (lista de remetentes de spam) |
 | FireEye Helix | Serviço comercial | SIEM e SOAR na nuvem, sem assinaturas |
 | AIS | Serviço do governo dos EUA | Gratuito, em tempo real |
 | CVE | Dicionário | Identificador único por vulnerabilidade |
@@ -641,7 +643,7 @@ Além das abordagens estatísticas e comportamentais, existe a **detecção base
 
 ## 8. Avaliações e Testes de Segurança
 
-Com a linha de base definida, a empresa precisa descobrir **onde está vulnerável antes que um atacante descubra**. Como quase todas as empresas se conectam à internet e oferecem serviços ao público, e como novas vulnerabilidades surgem o tempo todo, **testes de segurança periódicos são essenciais**.
+Com a linha de base (ver item 7.1) definida, a empresa precisa descobrir **onde está vulnerável antes que um atacante descubra**. Como quase todas as empresas se conectam à internet e oferecem serviços ao público, e como novas vulnerabilidades surgem o tempo todo, **testes de segurança periódicos são essenciais**.
 
 ### 8.1 Análise de Risco, Avaliação de Vulnerabilidades e Teste de Penetração
 
@@ -709,7 +711,7 @@ O **teste de segurança de rede** verifica **se todas as implementações de seg
 
 Na implementação, testam-se partes específicas da rede. Com a rede integrada e funcionando, faz-se o **ST&E** (*Security Test and Evaluation* — teste e avaliação de segurança), um **exame das proteções de uma rede em operação**, com três objetivos:
 
-- descobrir **falhas de projeto, implementação e operação** que possam violar a política de segurança;
+- descobrir **falhas de projeto, implementação e operação** que possam violar a política de segurança (ver item 1.2);
 - verificar se os mecanismos e dispositivos de segurança são **adequados** para aplicar a política;
 - avaliar a **consistência entre a documentação e a implementação**.
 
@@ -846,7 +848,7 @@ O **sniffing** é como espionar alguém: o atacante **examina todo o tráfego qu
 
 ## 10. Teste de Penetração
 
-O **teste de penetração** (*pen test*) **testa os pontos fracos dos sistemas usando as técnicas de um atacante**. Ele simula como alguém obteria acesso não autorizado e comprometeria os sistemas, e mostra como a empresa **aguentaria um ataque real**. Também é chamado de **hacking ético**.
+O **teste de penetração (ver item 8.1)** (*pen test*) **testa os pontos fracos dos sistemas usando as técnicas de um atacante**. Ele simula como alguém obteria acesso não autorizado e comprometeria os sistemas, e mostra como a empresa **aguentaria um ataque real**. Também é chamado de **hacking ético**.
 
 **Importante:** o teste de penetração **não é o mesmo que o teste de vulnerabilidades**, que só identifica possíveis problemas. No pen test, o especialista **invade, com permissão da empresa**, um site, uma rede ou um servidor, usando os métodos dos hackers *black hat*. O objetivo principal é **encontrar e corrigir as vulnerabilidades antes dos criminosos**.
 
@@ -992,7 +994,7 @@ Normalmente, **o fornecedor informa as notas base e temporal**, e **a empresa af
 
 Duas fontes dos EUA trabalham junto com o CVSS:
 
-- **CVE**: o dicionário de identificadores das vulnerabilidades conhecidas, mantido pela MITRE. O identificador CVE é a forma padrão de **pesquisar uma vulnerabilidade e achar suas correções**, e aparece nos serviços de inteligência e nos logs de segurança. O site **CVE Details** liga as notas CVSS aos registros CVE e permite navegar pelos registros por gravidade;
+- **CVE** (ver item 6.4): o dicionário de identificadores das vulnerabilidades conhecidas, mantido pela MITRE. O identificador CVE é a forma padrão de **pesquisar uma vulnerabilidade e achar suas correções**, e aparece nos serviços de inteligência e nos logs de segurança. O site **CVE Details** liga as notas CVSS aos registros CVE e permite navegar pelos registros por gravidade;
 - **NVD** (*National Vulnerability Database* — banco de dados nacional de vulnerabilidades): **usa os identificadores CVE** e acrescenta **notas CVSS, detalhes técnicos, entidades afetadas** e recursos para investigação. É criado e mantido pelo **NIST**.
 
 | Recurso | Mantido por | O que oferece |
@@ -1092,6 +1094,8 @@ Mesmo com prevenção, testes e patches, ataques acontecem. Para reagir bem, o a
 
 Reconhecimento → Armamento → Entrega → Exploração → Instalação → Comando e controle → Ações nos objetivos
 
+![As sete etapas da Cyber Kill Chain; romper qualquer uma delas faz o ataque fracassar](img/ameacas/gt_killchain.png){width=6in}
+
 | Etapa | O que o atacante faz |
 | --- | --- |
 | 1. Reconhecimento | **Pesquisa informações** sobre o alvo |
@@ -1146,7 +1150,7 @@ O atacante **instala um backdoor para manter o acesso contínuo**. O acesso prec
 
 | Táticas do atacante | Defesa do SOC |
 | --- | --- |
-| Instalar um **webshell** no servidor web; criar pontos de **persistência** com serviços e chaves AutoRun; alterar o carimbo de hora do malware para parecer parte do sistema | **Detectar, registrar e analisar a instalação**: **HIPS** (*Host-based Intrusion Prevention System*) para alertar ou bloquear caminhos comuns de instalação; ver se o malware exige privilégios elevados; auditar os endpoints em busca de arquivos criados de forma anormal; saber se é ameaça conhecida ou variante nova |
+| Instalar um **webshell** (página escondida no site que permite ao atacante dar comandos ao servidor pelo navegador) no servidor web; criar pontos de **persistência** com serviços e chaves AutoRun (as entradas do registro que iniciam programas com o Windows); alterar o carimbo de hora do malware para parecer parte do sistema | **Detectar, registrar e analisar a instalação**: **HIPS** (*Host-based Intrusion Prevention System*) para alertar ou bloquear caminhos comuns de instalação; ver se o malware exige privilégios elevados; auditar os endpoints em busca de arquivos criados de forma anormal; saber se é ameaça conhecida ou variante nova |
 
 ### 13.7 Comando e Controle
 
@@ -1166,7 +1170,7 @@ O atacante **alcança seu objetivo**: roubar dados, fazer um DDoS, enviar spam o
 
 ## 14. Modelo Diamond de Análise de Intrusão
 
-A Cyber Kill Chain mostra **as etapas** de um ataque. O **Modelo Diamond de Análise de Intrusão** olha para **cada evento** e mostra **quem atacou, com o quê, por onde e contra quem**, o que ajuda a investigar e a encadear os eventos.
+A Cyber Kill Chain (ver seção 13) mostra **as etapas** de um ataque. O **Modelo Diamond de Análise de Intrusão** olha para **cada evento** e mostra **quem atacou, com o quê, por onde e contra quem**, o que ajuda a investigar e a encadear os eventos.
 
 ### 14.1 Os Quatro Elementos
 
@@ -1180,6 +1184,8 @@ No Modelo Diamond, um **evento** é uma **atividade limitada no tempo e restrita
 | Vítima | **Alvo** do ataque; pode depois virar parte da infraestrutura para lançar outros ataques |
 
 As ligações entre os cantos se leem assim: **o adversário usa a infraestrutura para se conectar à vítima** e **desenvolve a capacidade para explorar a vítima**. Exemplo: um adversário usa um malware (capacidade) por meio do e-mail (infraestrutura) para explorar uma vítima.
+
+![Modelo Diamond: o adversário usa uma capacidade, por meio de uma infraestrutura, contra uma vítima](img/ameacas/gt_diamond.png){width=6in}
 
 ### 14.2 Meta-recursos
 
@@ -1236,7 +1242,7 @@ Quando o analista confirma um alerta, ele tem nas mãos **provas de uma atividad
 
 ### 15.1 Perícia Forense Digital
 
-A **perícia forense digital** é a **recuperação e investigação das informações encontradas em dispositivos digitais** relacionadas a atividades criminosas. Os **IOCs** são as evidências de que ocorreu um incidente e podem estar em dispositivos de armazenamento, na **memória volátil** ou nos dados de rede, como **pcaps** (capturas de pacotes) e logs. **Todos os IOCs precisam ser preservados** para análise e atribuição.
+A **perícia forense digital** é a **recuperação e investigação das informações encontradas em dispositivos digitais** relacionadas a atividades criminosas. Os **IOCs** (ver item 6.3) são as evidências de que ocorreu um incidente e podem estar em dispositivos de armazenamento, na **memória volátil** ou nos dados de rede, como **pcaps** (capturas de pacotes) e logs. **Todos os IOCs precisam ser preservados** para análise e atribuição.
 
 A investigação depende de onde vem a atividade:
 
@@ -1280,6 +1286,8 @@ A **RFC 3227**, da **IETF**, orienta a coleta de evidências digitais pela **vol
 5. dados de registro e monitoramento remotos;
 6. interconexões físicas e topologias;
 7. **mídias de arquivamento**, fitas e outros backups.
+
+![Ordem de coleta das evidências, da mais volátil (some primeiro) para a menos volátil](img/ameacas/gt_coleta.png){width=6in}
 
 Também devem ser registrados os detalhes dos sistemas de onde as provas saíram: **quem tem acesso e com quais permissões**, e as configurações de hardware e software.
 
@@ -1347,7 +1355,7 @@ Um bom plano **minimiza os danos**, melhora o programa com as lições aprendida
 
 ### 16.2 Partes Interessadas
 
-Além do **CSIRT**, outros grupos participam, e é importante garantir sua cooperação **antes** do incidente:
+Além do **CSIRT** (ver item 4.8), outros grupos participam, e é importante garantir sua cooperação **antes** do incidente:
 
 | Parte | Papel |
 | --- | --- |
@@ -1384,6 +1392,8 @@ A maioria dos domínios tem cinco níveis, mas a **resposta a incidentes tem só
 O NIST define quatro fases:
 
 Preparação → Detecção e análise → Contenção, erradicação e recuperação → Atividade pós-incidente → (volta à preparação)
+
+![Ciclo de vida da resposta a incidentes do NIST](img/ameacas/gt_ir.png){width=6in}
 
 | Fase | O que o CSIRT faz |
 | --- | --- |
@@ -1638,6 +1648,7 @@ O plano precisa ser treinado e testado. Os métodos vão do mais simples ao mais
 | ARP | Address Resolution Protocol | Protocolo que associa endereços IP a endereços MAC |
 | ATT&CK | Adversarial Tactics, Techniques and Common Knowledge | Base de conhecimento do MITRE sobre o comportamento dos atacantes |
 | AUP | Acceptable Use Policy | Política de uso aceitável |
+| AV | Asset Value | Valor do ativo, usado na análise quantitativa de riscos |
 | AV (CVSS) | Attack Vector | Vetor de ataque, métrica do CVSS |
 | AV (risco) | Asset Value | Valor do ativo |
 | BCP | Business Continuity Plan | Plano de continuidade de negócios |

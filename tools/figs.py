@@ -333,3 +333,56 @@ def end_boot():
     s+=text(320,96,'POST e MBR/ESP · lê o BCD · confere assinaturas (KMCS) · inicia kernel e HAL · cria a sessão','fg-s')
     return svg(110,s,'Etapas da inicialização do Windows')
 FIGS.update({'end_ddos':end_ddos,'end_smurf':end_smurf,'end_synflood':end_synflood,'end_arp':end_arp,'end_dhcp':end_dhcp,'end_dnstunnel':end_dnstunnel,'end_wincamadas':end_wincamadas,'end_boot':end_boot})
+
+# ---------- Trilha 5: Gerenciamento de Ameaças ----------
+def cycle(items,label,cy_=150,r=110,bw=170,bh=46):
+    import math
+    n=len(items); s=''; pts=[]
+    for i,(t,c) in enumerate(items):
+        a=-math.pi/2+2*math.pi*i/n
+        pts.append((320+r*1.9*math.cos(a),cy_+r*math.sin(a)))
+    def out(x0,y0,x1,y1,rev=False):
+        for k in range(0,101):
+            t=k/100; x=x0+(x1-x0)*t; y=y0+(y1-y0)*t
+            if abs(x-x0)>bw/2+8 or abs(y-y0)>bh/2+8: return x,y
+        return x1,y1
+    arr=''
+    for i in range(n):
+        x1,y1=pts[i]; x2,y2=pts[(i+1)%n]
+        sx,sy=out(x1,y1,x2,y2); ex,ey=out(x2,y2,x1,y1)
+        arr+=arrow(sx,sy,ex,ey,'t')
+    for (t,c),(x,y) in zip(items,pts): s+=box(x-bw/2,y-bh/2,bw,bh,t,c,fs=13)
+    s+=arr
+    return svg(cy_+r+bh/2+12,s,label)
+def gt_risco():
+    return cycle([('Identificar','c1'),('Avaliar','c3'),('Responder','c2'),('Monitorar','c4')],'Ciclo contínuo do gerenciamento de riscos',cy_=120,r=86)
+def gt_ir():
+    return cycle([('Preparação','c1'),('Detecção\ne análise','c3'),('Contenção, erradicação\ne recuperação','c2'),('Atividade\npós-incidente','c4')],'Ciclo de vida da resposta a incidentes do NIST',cy_=130,r=96,bw=200,bh=52)
+def gt_killchain():
+    st=['Reconhecimento','Armamento','Entrega','Exploração','Instalação','Comando e controle','Ações nos objetivos']
+    s=''; y=8
+    for i,t in enumerate(st):
+        c='c1' if i<3 else ('c2' if i<6 else 'c4')
+        s+=box(60,y,330,36,f'{i+1}. {t}',c,fs=13)
+        if i<6: s+=arrow(225,y+36,225,y+46)
+        y+=46
+    s+=text(410,40,'antes da invasão','fg-k','start'); s+=text(410,200,'dentro da rede','fg-k','start'); s+=text(410,300,'objetivo atingido','fg-k','start')
+    s+=text(410,120,'quanto mais cedo','fg-s','start'); s+=text(410,136,'a cadeia é rompida,','fg-s','start'); s+=text(410,152,'menor o dano','fg-s','start')
+    return svg(y+4,s,'As sete etapas da Cyber Kill Chain')
+def gt_diamond():
+    P={'Adversário':(320,40),'Capacidade':(540,150),'Infraestrutura':(100,150),'Vítima':(320,260)}
+    s=''
+    for a,b in [('Adversário','Capacidade'),('Capacidade','Vítima'),('Vítima','Infraestrutura'),('Infraestrutura','Adversário'),('Adversário','Vítima'),('Infraestrutura','Capacidade')]:
+        (x1,y1),(x2,y2)=P[a],P[b]; s+=line(x1,y1,x2,y2,'fg-mu',dash=(a,b) in [('Adversário','Vítima'),('Infraestrutura','Capacidade')])
+    sub={'Adversário':'quem ataca','Capacidade':'malware, técnica','Infraestrutura':'e-mail, IPs, domínios de C2','Vítima':'pessoa, empresa, sistema'}
+    for k,(x,y) in P.items(): s+=box(x-90,y-26,180,52,k,{'Adversário':'c2','Capacidade':'c3','Infraestrutura':'c3','Vítima':'c1'}[k],sub=sub[k])
+    return svg(298,s,'Os quatro elementos do Modelo Diamond')
+def gt_coleta():
+    st=[('Registradores e caches','c2'),('RAM, tabela de roteamento, cache ARP, processos','c2'),('Sistemas de arquivos temporários','c3'),('Discos e mídias removíveis','c3'),('Logs e monitoramento remotos','c4'),('Interconexões físicas e topologia','c4'),('Backups e mídias de arquivamento','c4')]
+    s=''; y=8
+    for i,(t,c) in enumerate(st):
+        w=440-i*32; s+=box(240-w/2,y,w,34,t,c,fs=12.5,bold=i<2); y+=40
+    s+=arrow(600,14,600,y-10,'t'); s+=text(596,y+10,'menos volátil','fg-k','end'); s+=text(586,22,'mais volátil','fg-k','end')
+    s+=text(20,y+10,'colete de cima para baixo','fg-s','start')
+    return svg(y+20,s,'Ordem de coleta das evidências, da mais volátil para a menos volátil')
+FIGS.update({'gt_risco':gt_risco,'gt_ir':gt_ir,'gt_killchain':gt_killchain,'gt_diamond':gt_diamond,'gt_coleta':gt_coleta})

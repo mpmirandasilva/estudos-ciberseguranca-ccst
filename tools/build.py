@@ -14,6 +14,11 @@ def modload(p):
 FIG_BY_ALT=[('Símbolos','simbolos'),('Encapsulamento','encapsulamento'),('hierárquico','hierarquico'),('DORA','dora'),
             ('Caminho de um pacote','caminho'),('Solicitação ARP','arp'),('ARP','arp'),('handshake','handshake'),('traceroute','traceroute')]
 CAPTION={
+ 'gt_risco':'O gerenciamento de riscos é um ciclo: identificar, avaliar, responder e monitorar, sem parar',
+ 'gt_killchain':'As sete etapas da Cyber Kill Chain; romper qualquer uma delas faz o ataque fracassar',
+ 'gt_diamond':'Modelo Diamond: o adversário usa uma capacidade, por meio de uma infraestrutura, contra uma vítima',
+ 'gt_coleta':'Ordem de coleta das evidências, da mais volátil (some primeiro) para a menos volátil',
+ 'gt_ir':'Ciclo de vida da resposta a incidentes do NIST',
  'end_ddos':'No DDoS, o atacante comanda os manipuladores, que comandam os zumbis da botnet; todos atacam o mesmo alvo',
  'end_smurf':'No ataque Smurf, os pedidos de eco levam o IP da vítima como origem, e todas as respostas caem sobre ela',
  'end_synflood':'Na inundação SYN, o servidor guarda cada conexão semiaberta à espera de um ACK que nunca chega',
@@ -224,6 +229,7 @@ def main():
     subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'ameacas'],check=True)
     d5=json.load(open(os.path.join(src,'ameacas.json')))
     ex5=modload(os.path.join(HERE,'ex_gt.py')).EX
+    addcy(ex5,'ccst_t5.py')
     ic5=modload(os.path.join(HERE,'icons_gt.py')).ICONS
     build_track({'id':'ameacas','order':5,'short':'Ameaças','label':'Trilha 5 · Cyber Threat Management',
                  'title':'Gerenciamento de Ameaças Cibernéticas',
