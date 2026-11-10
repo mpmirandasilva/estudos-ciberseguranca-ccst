@@ -14,6 +14,14 @@ def modload(p):
 FIG_BY_ALT=[('Símbolos','simbolos'),('Encapsulamento','encapsulamento'),('hierárquico','hierarquico'),('DORA','dora'),
             ('Caminho de um pacote','caminho'),('Solicitação ARP','arp'),('ARP','arp'),('handshake','handshake'),('traceroute','traceroute')]
 CAPTION={
+ 'end_ddos':'No DDoS, o atacante comanda os manipuladores, que comandam os zumbis da botnet; todos atacam o mesmo alvo',
+ 'end_smurf':'No ataque Smurf, os pedidos de eco levam o IP da vítima como origem, e todas as respostas caem sobre ela',
+ 'end_synflood':'Na inundação SYN, o servidor guarda cada conexão semiaberta à espera de um ACK que nunca chega',
+ 'end_arp':'Com duas respostas ARP falsas, o atacante se coloca entre o PC e o gateway',
+ 'end_dhcp':'O cliente aceita a primeira oferta que chega; se for a do servidor falso, passa a usar o atacante como gateway',
+ 'end_dnstunnel':'No tunelamento DNS, os dados saem escondidos em consultas e os comandos voltam nas respostas',
+ 'end_wincamadas':'Arquitetura do Windows: aplicativos em modo usuário, kernel e HAL em modo kernel, sobre o hardware',
+ 'end_boot':'Sequência de inicialização do Windows, do firmware ao logon',
  'def_camadas':'O tráfego da internet atravessa três linhas de defesa até chegar à rede interna',
  'def_cripto':'A chave transforma o texto claro em texto cifrado e, do outro lado, o texto cifrado de volta em texto claro',
  'def_assim':'A chave usada para criptografar define o resultado: a pública do destinatário dá confidencialidade; a privada do remetente, autenticação',
@@ -196,6 +204,7 @@ def main():
     subprocess.run([sys.executable,os.path.join(HERE,'conv.py'),'endpoint'],check=True)
     d3=json.load(open(os.path.join(src,'endpoint.json')))
     ex3=modload(os.path.join(HERE,'ex_end.py')).EX
+    addcy(ex3,'ccst_t3.py')
     ic3=modload(os.path.join(HERE,'icons_end.py')).ICONS
     build_track({'id':'endpoint','order':3,'short':'Endpoint','label':'Trilha 3 · Endpoint Security',
                  'title':'Segurança de Endpoint',

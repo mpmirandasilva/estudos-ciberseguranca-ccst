@@ -16,7 +16,7 @@ O **cubo da segurança cibernética** é um modelo que resume a tarefa de proteg
 | Segunda | Os estados em que os dados podem estar | Em trânsito, em repouso (armazenamento) e em processamento |
 | Terceira | Os pilares da defesa | Tecnologia; políticas e práticas; pessoas (educação, treinamento e conscientização) |
 
-Os três objetivos da primeira dimensão formam a **tríade CIA** (*Confidentiality, Integrity, Availability*), que ajuda o profissional a priorizar ações ao proteger qualquer sistema em rede:
+Os três objetivos da primeira dimensão formam a **tríade CIA** (*Confidentiality, Integrity, Availability*; em português, também tríade CID), que ajuda o profissional a priorizar ações ao proteger qualquer sistema em rede:
 
 - **confidencialidade**: **impede a divulgação de informações** a pessoas, recursos ou processos não autorizados;
 - **integridade**: garante a **precisão, a consistência e a confiabilidade** dos dados;
@@ -101,11 +101,11 @@ As redes transmitem **pacotes**, unidades de dados cuja estrutura é definida po
 
 | Objetivo | Ameaça | Proteção |
 | --- | --- | --- |
-| Confidencialidade | Captura, gravação ou roubo dos dados | Criptografia: VPNs, SSL, IPsec e outros métodos |
+| Confidencialidade | Captura, gravação ou roubo dos dados | Criptografia: VPNs (túneis protegidos pela internet), SSL/TLS (o cadeado do HTTPS), IPsec (criptografia dos pacotes IP) e outros métodos |
 | Integridade | Interceptação e alteração dos dados | Sistemas de integridade: hash e redundância de dados |
 | Disponibilidade | Dispositivos falsos que capturam e até apagam os dados, como um celular que se passa por ponto de acesso sem fio, ou sequestro de uma conexão autorizada | **Autenticação mútua**: o usuário se autentica no servidor e o servidor se autentica no usuário |
 
-Uma **VPN** (*Virtual Private Network* — rede privada virtual) cria um túnel criptografado pela internet.
+Uma **VPN** (*Virtual Private Network* — rede privada virtual) cria um túnel criptografado pela internet, por exemplo entre o notebook de quem trabalha em casa e a rede da empresa.
 
 ### 1.7 Dados em Processamento
 
@@ -113,7 +113,7 @@ Os **dados em processamento** (*data in process*) são os dados durante a **entr
 
 - **entrada**: digitação manual, digitalização de formulários, envio de arquivos ou leitura de sensores; a corrupção pode vir de rótulos errados, formatos incompatíveis, erros de digitação ou sensores com defeito;
 - **modificação**: qualquer alteração dos dados originais, feita por usuários ou programas; codificar, compactar e criptografar são modificações intencionais. Quando a alteração torna os dados ilegíveis ou inúteis, ocorre **corrupção de dados**, causada por falhas de equipamento ou por código malicioso;
-- **saída**: envio para impressoras, monitores e alto-falantes; a corrupção pode vir de delimitadores errados, configurações de comunicação incorretas ou impressoras mal configuradas.
+- **saída**: envio para impressoras, monitores e alto-falantes; a corrupção pode vir de delimitadores errados (os caracteres que separam os campos, como a vírgula em uma planilha CSV), configurações de comunicação incorretas ou impressoras mal configuradas.
 
 A saída influencia decisões, por isso sua precisão é fundamental. Proteger os dados em processamento exige **sistemas bem projetados** e políticas de teste, manutenção e atualização.
 
@@ -221,7 +221,7 @@ Neste resumo, **ator de ameaça** é o indivíduo ou grupo que se enquadra como 
 
 ### 2.7 Evolução dos Atores de Ameaça
 
-O *hacking* começou nos anos 1960 com o **phreaking** telefônico: as centrais usavam tons para indicar funções, e imitar um tom com um apito permitia fazer ligações de longa distância de graça. Nos anos 1980, com modems discados, surgiram os programas de **discagem de guerra** (*war dialing*), que ligavam para todos os números de uma região em busca de computadores e depois usavam programas de quebra de senha.
+O *hacking* começou nos anos 1960 com o **phreaking** telefônico: as centrais usavam tons para indicar funções, e imitar um tom com um apito permitia fazer ligações de longa distância de graça. Nos anos 1980, com os modems discados (aparelhos que ligavam o computador à rede pela linha telefônica), surgiram os programas de **discagem de guerra** (*war dialing*), que ligavam para todos os números de uma região em busca de computadores e depois usavam programas de quebra de senha.
 
 Os principais tipos de atores de ameaça hoje são:
 
@@ -229,7 +229,7 @@ Os principais tipos de atores de ameaça hoje são:
 | --- | --- |
 | Script kiddies | Jovens ou atacantes inexperientes que **usam ferramentas prontas**; surgiram nos anos 1990 e em geral não visam lucro |
 | Corretores de vulnerabilidades | Hackers de chapéu cinza que descobrem falhas e as relatam aos fabricantes, às vezes por recompensa |
-| Hacktivistas | Hackers de chapéu cinza que **protestam contra ideias políticas e sociais**, publicando material, vazando informações e fazendo ataques DDoS |
+| Hacktivistas | Hackers de chapéu cinza que **protestam contra ideias políticas e sociais**, publicando material, vazando informações e fazendo ataques DDoS (negação de serviço distribuída, em que muitos computadores atacam o mesmo alvo ao mesmo tempo) |
 | Cibercriminosos | Hackers de chapéu preto, autônomos ou de organizações criminosas, **motivados por dinheiro** |
 | Patrocinados pelo Estado | Roubam segredos e sabotam redes de governos estrangeiros, grupos terroristas e empresas; são vistos como chapéu branco ou preto **conforme o ponto de vista** |
 
@@ -241,7 +241,7 @@ Os atores de ameaça **não escolhem vítimas**: atacam usuários domésticos, p
 
 As organizações devem seguir uma lista de tarefas como:
 
-- fornecedor de TI confiável;
+- fornecedor de TI (tecnologia da informação) confiável;
 - software de segurança atualizado;
 - testes de penetração regulares;
 - backup em nuvem e em disco rígido;
@@ -256,8 +256,8 @@ Todo ataque tem características que permitem identificá-lo. Compartilhar essas
 
 Os **IOCs** (*Indicators of Compromise* — indicadores de comprometimento) são **a evidência de que um ataque ocorreu**. Exemplos:
 
-- os hashes (SHA-256, SHA-1, MD5) e o nome do arquivo de um malware;
-- os domínios consultados no DNS e os IPs dos servidores usados no ataque;
+- os hashes (SHA-256, SHA-1, MD5; o hash é um resumo matemático que identifica o arquivo, como uma impressão digital) e o nome do arquivo de um malware;
+- os domínios consultados no DNS (o serviço que traduz nomes, como www.exemplo.com, em endereços IP) e os IPs dos servidores usados no ataque;
 - as alterações que o malware faz no sistema;
 - em um e-mail falso de prêmio: o fato de a pessoa não participar de sorteio, o IP do remetente, o assunto, o link e o anexo.
 
@@ -273,7 +273,7 @@ Os **IOAs** (*Indicators of Attack* — indicadores de ataque) tratam da **motiv
 Os governos promovem a segurança cibernética e o compartilhamento de informações:
 
 - a **CISA** (*Cybersecurity and Infrastructure Security Agency*), dos EUA, usa o **AIS** (*Automated Indicator Sharing* — compartilhamento automatizado de indicadores) para trocar indicadores de ataque entre o governo e o setor privado, sem custo, assim que as ameaças são verificadas;
-- a CISA e a **NCSA** (*National Cyber Security Alliance*) fazem em outubro uma campanha anual, o **mês nacional de conscientização em segurança cibernética** (NCSAM), com temas como redes sociais, configurações de privacidade, aplicativos, atualizações, compras on-line, Wi-Fi e dados de clientes;
+- a CISA e a **NCSA** (*National Cyber Security Alliance*) fazem em outubro uma campanha anual, o **mês nacional de conscientização em segurança cibernética** (NCSAM, *National Cyber Security Awareness Month*), com temas como redes sociais, configurações de privacidade, aplicativos, atualizações, compras on-line, Wi-Fi e dados de clientes;
 - a **ENISA** (Agência da União Europeia para a Cibersegurança) tem papel semelhante ao da CISA nos países da União Europeia.
 
 ## 3. Domínios e Tipos de Ameaças
@@ -300,12 +300,12 @@ Classificar as ameaças ajuda a avaliar a probabilidade de cada uma e o impacto 
 | Categoria | Exemplos |
 | --- | --- |
 | Ataques de software | Ataque DoS bem-sucedido; vírus de computador |
-| Erros de software | Bug; aplicativo fora do ar; falha de *cross-site scripting*; compartilhamento ilegal em servidor de arquivos |
+| Erros de software | Bug (defeito no programa); aplicativo fora do ar; falha de *cross-site scripting* (o site exibe código malicioso enviado por um atacante, que roda no navegador das vítimas); compartilhamento ilegal em servidor de arquivos |
 | Sabotagem | Usuário autorizado que invade o banco de dados principal; desfiguração (*defacement*) do site da empresa |
 | Erro humano | Erros de digitação; firewall mal configurado |
 | Roubo | Notebooks ou equipamentos levados de uma sala destrancada |
 | Falhas de hardware | Disco rígido que trava |
-| Interrupção de serviços básicos | Falta de energia; danos por água de um sprinkler com defeito |
+| Interrupção de serviços básicos | Falta de energia; danos por água de um sprinkler (chuveiro automático contra incêndio) com defeito |
 | Desastres naturais | Furacões, tornados, terremotos, inundações e incêndios |
 
 Os criminosos muitas vezes **combinam duas ou mais táticas**, e cabe aos profissionais de segurança educar as pessoas sobre elas.
@@ -321,7 +321,7 @@ O **domínio do usuário** inclui todos os que acessam os sistemas da empresa: f
 | Roubo de dados | Causa prejuízo financeiro, dano à reputação e responsabilidade legal |
 | Downloads e mídias não autorizados | Fotos, músicas, jogos e aplicativos baixados e discos externos ou pen drives são a origem de muitas infecções |
 | VPNs não autorizadas | A criptografia esconde o roubo de dados, porque o administrador não consegue acompanhar a transmissão |
-| Sites não autorizados | Pedem para baixar scripts ou plug-ins com código malicioso ou *adware* e podem até assumir câmeras e aplicativos |
+| Sites não autorizados | Pedem para baixar scripts (pequenos programas) ou plug-ins (complementos do navegador) com código malicioso ou *adware* (programa que exibe propagandas) e podem até assumir câmeras e aplicativos |
 | Destruição de sistemas ou dados | Ativistas, funcionários insatisfeitos ou concorrentes apagam dados ou destroem dispositivos |
 
 **Importante:** nenhuma tecnologia torna os sistemas mais seguros do que **o comportamento das pessoas** que os usam.
@@ -333,7 +333,7 @@ As principais ameaças aos dispositivos são:
 - equipamentos ligados e sem supervisão, que permitem acesso não autorizado;
 - arquivos, fotos, músicas ou vídeos de fontes não confiáveis, que podem executar código malicioso;
 - vulnerabilidades dos programas instalados, exploradas para iniciar ataques;
-- novos vírus, worms e outros malwares descobertos todos os dias;
+- novos vírus, worms e outros malwares (programas maliciosos, explicados no módulo 5) descobertos todos os dias;
 - pen drives, CDs ou DVDs não autorizados;
 - violação proposital das políticas, que pode trazer consequências graves ao usuário;
 - **hardware ou software desatualizado**, que deixa os sistemas mais vulneráveis.
@@ -395,7 +395,7 @@ O **domínio das instalações físicas** trata do acesso físico aos prédios, 
 As vulnerabilidades de software surgem de **erros de programação**, **falhas de protocolos** ou **má configuração**, e os ataques estão cada vez mais sofisticados. Dois exemplos:
 
 - **APT** (*Advanced Persistent Threat* — ameaça persistente avançada): **ataque contínuo e discreto**, com táticas de espionagem, vários agentes e malware sofisticado; o atacante **fica sem ser detectado por muito tempo**; costuma visar governos e grandes organizações e é bem financiado;
-- **ataques de algoritmo**: usam algoritmos de programas legítimos para gerar comportamentos indesejados; por exemplo, o algoritmo que mede o consumo de energia pode ser usado para escolher alvos ou gerar alertas falsos, ou o computador pode ser travado ao consumir toda a memória RAM ou a CPU.
+- **ataques de algoritmo**: usam algoritmos de programas legítimos para gerar comportamentos indesejados; por exemplo, o algoritmo que mede o consumo de energia pode ser usado para escolher alvos ou gerar alertas falsos, ou o computador pode ser travado ao consumir toda a memória RAM (a memória de trabalho) ou a CPU (o processador).
 
 ### 3.8 Inteligência de Ameaças
 
@@ -405,7 +405,7 @@ As principais fontes de pesquisa são:
 
 | Fonte | O que é |
 | --- | --- |
-| CVE (*Common Vulnerabilities and Exposures*) | **Dicionário público de vulnerabilidades**, patrocinado pelo US-CERT e pelo Departamento de Segurança Interna dos EUA e mantido pela MITRE; cada entrada tem um número padrão, uma descrição e referências |
+| CVE (*Common Vulnerabilities and Exposures*) | **Dicionário público de vulnerabilidades**, patrocinado pelo US-CERT (a equipe de resposta a emergências de computação dos EUA) e pelo Departamento de Segurança Interna dos EUA e mantido pela MITRE (organização americana sem fins lucrativos de pesquisa); cada falha recebe um código, como CVE-2021-44228; cada entrada tem um número padrão, uma descrição e referências |
 | Dark web | Conteúdo criptografado, **fora dos buscadores**, que exige software ou autorização específica; pesquisadores a monitoram em busca de novas ameaças |
 | IOC | Assinaturas de malware ou nomes de domínio que provam e detalham uma violação |
 | AIS | Troca de indicadores da CISA em tempo real, usando a linguagem **STIX** (*Structured Threat Information Expression*) e o protocolo **TAXII** (*Trusted Automated Exchange of Intelligence Information*) |
@@ -440,7 +440,7 @@ As táticas podem ser **combinadas** para aumentar as chances de sucesso.
 
 ### 4.3 Olhar por Cima do Ombro e Vasculhar o Lixo
 
-O **shoulder surfing** (olhar por cima do ombro) é **observar o alvo para obter informações** como senhas, PINs e dados de cartão. O criminoso pode usar binóculos ou câmeras. Por isso, a tela do caixa eletrônico só é visível de certos ângulos.
+O **shoulder surfing** (olhar por cima do ombro) é **observar o alvo para obter informações** como senhas, PINs (as senhas numéricas, como a do cartão) e dados de cartão. O criminoso pode usar binóculos ou câmeras. Por isso, a tela do caixa eletrônico só é visível de certos ângulos.
 
 O **dumpster diving** (mergulho no lixo) é **examinar o lixo do alvo** em busca de informações descartadas. Por isso, documentos confidenciais devem ser **triturados** ou guardados em sacos de queima até serem incinerados.
 
@@ -462,7 +462,7 @@ Os atacantes ainda usam:
 | --- | --- |
 | Fraude de fatura | Fatura falsa, muitas vezes com linguagem urgente ou ameaçadora, que leva a vítima a pagar ou a digitar credenciais em uma tela de login falsa |
 | Ataque de bebedouro (*watering hole*) | O atacante descobre **quais sites a empresa usa** e infecta um ou mais deles com malware |
-| Typosquatting | Registra endereços parecidos com os verdadeiros e explora **erros de digitação** na URL para coletar dados pessoais ou financeiros |
+| Typosquatting | Registra endereços parecidos com os verdadeiros e explora **erros de digitação** na URL (o endereço do site, como www.exemplo.com.br) para coletar dados pessoais ou financeiros; exemplo: "gooogle.com" |
 | Adendo (*prepending*) | **Remove a etiqueta "externo"** que a empresa coloca nos e-mails de fora, para que a mensagem pareça interna |
 | Campanhas de influência | Muito usadas na guerra cibernética; combinam **notícias falsas**, desinformação e publicações em redes sociais |
 
@@ -526,12 +526,14 @@ O **DDoS** (*Distributed Denial of Service* — negação de serviço distribuí
 
 Atacante → Manipuladores → Zumbis → Alvo
 
+![No DDoS, o atacante comanda os manipuladores, que comandam os zumbis da botnet; todos atacam o mesmo alvo](img/endpoint/end_ddos.png){width=6in}
+
 ### 5.5 Homem no Meio e Ataques de Repetição
 
 Os atacantes podem **interceptar ou alterar a comunicação** entre dois dispositivos:
 
 - **MitM** (*Man-in-the-Middle* — homem no meio): o criminoso assume o controle de um dispositivo sem que o usuário saiba e passa a **interceptar, manipular e retransmitir** informações entre a origem e o destino;
-- **MitMo** (*Man-in-the-Mobile* — homem no celular): variação que **assume o controle do celular** da vítima e envia as informações aos atacantes. Exemplo: o malware **ZeuS** captura em silêncio os SMS de verificação em duas etapas;
+- **MitMo** (*Man-in-the-Mobile* — homem no celular): variação que **assume o controle do celular** da vítima e envia as informações aos atacantes. Exemplo: o malware **ZeuS** captura em silêncio os SMS (mensagens de texto) com os códigos de verificação em duas etapas;
 - **ataque de repetição** (*replay*): o atacante **captura uma comunicação e a retransmite**, ou a atrasa, para enganar o destinatário e contornar a autenticação.
 
 ### 5.6 Ataques de Dia Zero
@@ -557,12 +559,12 @@ O **XSS** (*Cross-Site Scripting* — script entre sites) é uma vulnerabilidade
 
 1. o criminoso **injeta um script malicioso** em uma página web;
 2. a vítima acessa a página, e o script passa para o navegador dela;
-3. o script acessa **cookies, tokens de sessão** ou outras informações e as envia ao criminoso;
+3. o script acessa **cookies** (pequenos arquivos que o site guarda no navegador, por exemplo para manter o login), **tokens de sessão** (o código que prova que o usuário já está logado) ou outras informações e as envia ao criminoso;
 4. com elas, o criminoso **se passa pelo usuário**.
 
 ### 6.2 Ataques de Injeção
 
-A maioria dos sites guarda seus dados em um banco de dados, como os de **SQL** (*Structured Query Language* — a linguagem de consulta dos bancos relacionais) ou de **XML** (*Extensible Markup Language*). Os ataques de injeção exploram as fraquezas desses bancos e de outros componentes:
+A maioria dos sites guarda seus dados em um banco de dados, como os de **SQL** (*Structured Query Language* — a linguagem de consulta dos bancos relacionais) ou de **XML** (*Extensible Markup Language*). Nos ataques de injeção, o criminoso digita, em um campo de formulário, comandos em vez de dados comuns; se o sistema não filtrar a entrada, executa esses comandos. Eles exploram as fraquezas desses bancos e de outros componentes:
 
 | Ataque | Como funciona |
 | --- | --- |
@@ -589,7 +591,7 @@ Cada informação obtida sobre um sistema pode virar arma. Outros ataques são:
 
 | Ataque | Como funciona |
 | --- | --- |
-| CSRF (*Cross-Site Request Forgery* — falsificação de solicitação entre sites) | Comandos não autorizados são enviados **do navegador do usuário para um aplicativo web confiável**, por imagens, formulários ocultos ou JavaScript, sem que ele perceba |
+| CSRF (*Cross-Site Request Forgery* — falsificação de solicitação entre sites) | Comandos não autorizados são enviados **do navegador do usuário para um aplicativo web confiável** em que ele já está logado, por imagens, formulários ocultos ou JavaScript (a linguagem de programação das páginas web), sem que ele perceba; exemplo: um link que faz o banco aberto em outra aba executar uma transferência |
 | Condição de corrida | Também chamado de **TOC/TOU** (tempo de verificação/tempo de uso): o sistema, feito para executar tarefas em sequência, é **forçado a fazer duas ou mais operações ao mesmo tempo**; por exemplo, dois *threads* (as menores sequências de instruções de um programa) alteram os mesmos dados juntos |
 | Tratamento inadequado de entrada | Dados digitados **sem validação** alteram o fluxo do programa e causam estouro de buffer ou injeção de SQL |
 | Tratamento de erros | **Mensagens de erro revelam informações**, como nomes de hosts, diretórios, arquivos, bancos, tabelas e campos, usadas em ataques de injeção |
@@ -648,7 +650,7 @@ As principais medidas são:
 Os ataques vão além do software:
 
 - **ataques físicos**: ações para destruir, expor, alterar, desativar ou roubar a infraestrutura ou o hardware. Exemplos: pen drive com malware; cabos USB, carregadores e adaptadores com um chip sem fio que permite controlar o dispositivo; leitores que copiam cartões de crédito para criar clones;
-- **ataques adversos à inteligência artificial**: o **aprendizado de máquina** usa modelos matemáticos que dependem dos dados de entrada; dados corrompidos distorcem o resultado. Exemplo: enganar um veículo autônomo para que leia errado as placas;
+- **ataques adversos à inteligência artificial**: o **aprendizado de máquina** (programas que aprendem padrões a partir de exemplos) usa modelos matemáticos que dependem dos dados de entrada; dados corrompidos distorcem o resultado. Exemplo: enganar um veículo autônomo para que leia errado as placas;
 - **ataques à cadeia de fornecimento**: interceptam os fornecedores de sistemas, peças e software. Exemplo: alterar a data de fim de vida útil (**EOL**, *End of Life*) de um software para que a empresa perca o suporte;
 - **ataques à nuvem**: exploram os dados, aplicações, plataformas e infraestruturas na nuvem (SaaS, PaaS e IaaS), já que o provedor mantém o equipamento, mas a empresa fica exposta a novas ameaças.
 
@@ -658,7 +660,7 @@ Os protocolos são a base da comunicação de dados e, por isso, são alvo dos a
 
 ### 7.1 IPv4 e IPv6
 
-O **IP** (*Internet Protocol*) é o protocolo da **camada 3** (camada de rede) que leva um pacote do host de origem ao de destino através de várias redes. Ele é **sem conexão** e **não rastreia nem gerencia o fluxo** de pacotes; essas funções ficam com o TCP, na camada 4.
+O **IP** (*Internet Protocol*) é o protocolo da **camada 3** (camada de rede) que leva um pacote do host de origem ao de destino através de várias redes. Ele é **sem conexão** (não combina nada com o destino antes de enviar) e **não rastreia nem gerencia o fluxo** de pacotes; essas funções ficam com o TCP (*Transmission Control Protocol*), na camada 4, a de transporte.
 
 **Importante:** o IP **não verifica se o endereço de origem é verdadeiro**. Por isso, o atacante pode enviar pacotes com origem falsificada e adulterar outros campos do cabeçalho.
 
@@ -669,8 +671,8 @@ O cabeçalho do IPv4 tem no mínimo **20 bytes**:
 | Campo | Tamanho | Função |
 | --- | --- | --- |
 | Versão | 4 bits | Valor 0100, que identifica o IPv4 |
-| Tamanho do cabeçalho (IHL) | 4 bits | Tamanho do cabeçalho; mínimo de 20 bytes |
-| Serviços diferenciados (DS) | 8 bits | Antigo **ToS**; define a prioridade do pacote: 6 bits de **DSCP** e 2 de **ECN** (notificação de congestionamento) |
+| Tamanho do cabeçalho (IHL, *Internet Header Length*) | 4 bits | Tamanho do cabeçalho; mínimo de 20 bytes |
+| Serviços diferenciados (DS) | 8 bits | Antigo **ToS** (*Type of Service*); define a prioridade do pacote (por exemplo, voz antes de download): 6 bits de **DSCP** (*Differentiated Services Code Point*, o código de prioridade) e 2 de **ECN** (*Explicit Congestion Notification*, aviso de congestionamento) |
 | Tamanho total | 16 bits | Tamanho do pacote com cabeçalho e dados; máximo de 65.535 bytes |
 | Identificação, flags e deslocamento do fragmento | 16, 3 e 13 bits | Usados para **fragmentar** o pacote quando a rota não aceita seu tamanho e remontá-lo depois |
 | TTL (*Time to Live*) | 8 bits | **Limita a vida do pacote**: cada roteador subtrai 1; ao chegar a zero, o pacote é descartado e o roteador envia à origem um ICMP de **tempo excedido** |
@@ -716,7 +718,7 @@ Os ataques mais comuns ao IP são:
 
 O **ICMP** transporta **mensagens de diagnóstico e de erro** quando rotas, hosts ou portas não estão disponíveis. O comando **ping** envia uma **solicitação de eco** (*echo request*) para testar a conexão, e o destino devolve uma **resposta de eco** (*echo reply*).
 
-Os atacantes usam o ICMP para **reconhecimento e varredura**: mapear a topologia, descobrir os hosts ativos, identificar o sistema operacional (**impressão digital do sistema operacional**) e saber o estado de um firewall. Também o usam em ataques DoS e DDoS, como a **inundação ICMP**, com pedidos de eco de origem falsificada. As mensagens de maior interesse para o atacante são:
+Os atacantes usam o ICMP para **reconhecimento e varredura**: mapear a topologia, descobrir os hosts ativos, identificar o sistema operacional (**impressão digital do sistema operacional**) e saber o estado de um firewall. Também o usam em ataques DoS e DDoS (ver item 5.4), como a **inundação ICMP**, com pedidos de eco de origem falsificada. As mensagens de maior interesse para o atacante são:
 
 | Mensagem ICMP | Uso no ataque |
 | --- | --- |
@@ -739,23 +741,25 @@ Os atacantes usam a **amplificação e a reflexão** para criar ataques DoS. No 
 
 Atacante → Pedidos com o IP da vítima → Muitos hosts → Respostas → Vítima
 
+![No ataque Smurf, os pedidos de eco levam o IP da vítima como origem, e todas as respostas caem sobre ela](img/endpoint/end_smurf.png){width=6in}
+
 Hoje também são usadas a reflexão e amplificação pelo **DNS** e pelo **NTP** (*Network Time Protocol*, protocolo que sincroniza relógios). Os atacantes ainda usam **ataques de exaustão de recursos**, que consomem os recursos do alvo ou da rede até travá-los.
 
 ### 7.7 Falsificação de Endereços
 
 A **falsificação de endereço IP** (*IP spoofing*) cria pacotes com **origem falsa** para **esconder a identidade** do remetente ou **se passar por um usuário legítimo**, obtendo acesso a dados ou contornando a segurança. Costuma fazer parte de outro ataque, como o Smurf. Pode ser:
 
-- **não cega**: o atacante **vê o tráfego** entre o host e o destino; serve para inspecionar a resposta da vítima, descobrir o estado de um firewall, **prever números de sequência** e sequestrar uma sessão;
+- **não cega**: o atacante **vê o tráfego** entre o host e o destino; serve para inspecionar a resposta da vítima, descobrir o estado de um firewall, **prever números de sequência** (a numeração que o TCP dá aos dados de cada conexão, explicada no item 8.2) e sequestrar uma sessão;
 - **cega**: o atacante **não vê o tráfego**; serve para ataques DoS.
 
-A **falsificação de endereço MAC** exige acesso à rede interna. O **endereço MAC** (*Media Access Control*) é o endereço físico da placa de rede, e o switch guarda em sua **tabela CAM** em qual porta está cada MAC. O ataque ocorre assim:
+A **falsificação de endereço MAC** exige acesso à rede interna. O **endereço MAC** (*Media Access Control*) é o endereço físico da placa de rede, e o switch guarda em sua **tabela CAM** (*Content Addressable Memory*, a tabela de endereços MAC) em qual porta está cada MAC. O ataque ocorre assim:
 
 1. o atacante troca o MAC do seu computador pelo **MAC de um alvo**, como um servidor;
 2. envia um quadro com esse MAC;
 3. o switch **atualiza a tabela CAM**, associando o MAC à porta do atacante;
 4. o switch passa a **encaminhar ao atacante** os quadros destinados ao alvo.
 
-Também há falsificação de **aplicativos e serviços**: por exemplo, conectar um **servidor DHCP falso** (o DHCP é o serviço que distribui endereços IP automaticamente) para criar uma condição MitM.
+Também há falsificação de **aplicativos e serviços**: por exemplo, conectar um **servidor DHCP falso** (o DHCP é o serviço que distribui endereços IP automaticamente) para criar uma condição MitM (ver item 5.5).
 
 ## 8. Vulnerabilidades do TCP e do UDP
 
@@ -783,7 +787,7 @@ Os **seis bits de controle** (*flags*) são:
 
 - **URG**: o campo de ponteiro urgente é significativo;
 - **ACK**: o campo de confirmação é significativo;
-- **PSH**: função *push*;
+- **PSH**: função *push* (entregar os dados ao aplicativo imediatamente, sem esperar juntar mais);
 - **RST**: redefine (encerra) a conexão;
 - **SYN**: sincroniza os números de sequência;
 - **FIN**: o remetente não tem mais dados.
@@ -819,9 +823,11 @@ Os principais ataques ao TCP são:
 - **ataque de redefinição** (*TCP reset*): o atacante envia um pacote falsificado com **RST** a um ou aos dois lados, o que **encerra a conexão de forma abrupta**;
 - **sequestro de sessão TCP**: difícil de executar; o atacante **assume um host já autenticado**: falsifica o IP de um dos lados, **prevê o próximo número de sequência** e envia um ACK ao outro. Se der certo, **pode enviar dados, mas não recebê-los**.
 
+![Na inundação SYN, o servidor guarda cada conexão semiaberta à espera de um ACK que nunca chega](img/endpoint/end_synflood.png){width=6in}
+
 ### 8.4 Funcionamento do UDP
 
-O **UDP** (*User Datagram Protocol*) é usado pelo DNS, DHCP, TFTP, NFS, SNMP e por aplicações em tempo real, como streaming e VoIP. É **sem conexão** e tem **sobrecarga muito menor** que o TCP, porque não oferece retransmissão, sequenciamento nem controle de fluxo. Seu cabeçalho tem só **8 bytes**: porta de origem, porta de destino, comprimento e soma de verificação, com 16 bits cada.
+O **UDP** (*User Datagram Protocol*) é usado pelo DNS, pelo DHCP, pelo **TFTP** (*Trivial File Transfer Protocol*, transferência simples de arquivos), pelo **NFS** (*Network File System*, compartilhamento de arquivos em rede), pelo **SNMP** (*Simple Network Management Protocol*, monitoramento de equipamentos) e por aplicações em tempo real, como streaming de vídeo e VoIP (telefonia pela internet). É **sem conexão** e tem **sobrecarga muito menor** que o TCP, porque não oferece retransmissão, sequenciamento nem controle de fluxo. Seu cabeçalho tem só **8 bytes**: porta de origem, porta de destino, comprimento e soma de verificação, com 16 bits cada.
 
 **Observação:** o UDP divide os dados em **datagramas**, mas o termo genérico "segmento" também é usado.
 
@@ -835,7 +841,7 @@ Mais comum é a **inundação UDP**, que consome todos os recursos da rede:
 
 1. o atacante usa uma ferramenta como **UDP Unicorn** ou **LOIC** (*Low Orbit Ion Cannon*);
 2. envia muitos pacotes UDP, em geral de origem falsificada, a um servidor, **varrendo as portas** em busca de portas fechadas;
-3. o servidor responde a cada uma com um ICMP de **porta inacessível**;
+3. o servidor responde a cada uma com um ICMP (ver item 7.5) de **porta inacessível**;
 4. o excesso de tráfego consome a largura de banda, com efeito semelhante ao de um DoS.
 
 | Protocolo | Ataque | Efeito |
@@ -871,6 +877,8 @@ O **envenenamento do cache ARP** (*ARP spoofing* ou *ARP poisoning*) envia **res
 2. o R1 responde com seu MAC verdadeiro (A1:A1:A1:A1:A1:A1), e os dois atualizam seus caches;
 3. o atacante (MAC EE:EE:EE:EE:EE:EE) envia **duas respostas ARP gratuitas falsas**: "192.168.10.1 tem EE:EE:EE:EE:EE:EE" para o PC-A e "192.168.10.10 tem EE:EE:EE:EE:EE:EE" para o R1;
 4. os dois atualizam seus caches, e **todo o tráfego entre eles passa pelo atacante**.
+
+![Com duas respostas ARP falsas, o atacante se coloca entre o PC e o gateway](img/endpoint/end_arp.png){width=6in}
 
 O envenenamento pode ser:
 
@@ -919,6 +927,8 @@ O ataque funciona porque **o cliente aceita a primeira oferta que recebe**:
 3. a oferta do servidor falso chega primeiro, e o cliente envia o DHCPREQUEST aceitando-a;
 4. só o servidor falso confirma; o legítimo para de responder, porque a solicitação já foi aceita.
 
+![O cliente aceita a primeira oferta que chega; se for a do servidor falso, passa a usar o atacante como gateway](img/endpoint/end_dhcp.png){width=6in}
+
 ## 10. Ataques ao DNS
 
 O **DNS** (*Domain Name System*) **associa nomes**, como www.cisco.com, **aos endereços IPv4 ou IPv6** de que os computadores precisam. Se um servidor DNS não sabe a resposta, pergunta a outro. As respostas usam **registros de recursos** (**RR**, *Resource Records*), que indicam o tipo de informação.
@@ -930,7 +940,7 @@ O **DNS** (*Domain Name System*) **associa nomes**, como www.cisco.com, **aos en
 Alguns riscos envolvem o próprio domínio da empresa:
 
 - **reputação de domínio**: a empresa precisa monitorar a reputação do seu domínio e do seu IP para se proteger de domínios externos maliciosos;
-- **sequestro de domínio**: o atacante **obtém o controle das informações de DNS** do alvo e as altera. A forma mais comum é mudar, por engenharia social, o **e-mail de contato do administrador** ou invadir essa conta; o e-mail é fácil de achar no registro **WHOIS**, que é público;
+- **sequestro de domínio**: o atacante **obtém o controle das informações de DNS** do alvo e as altera. A forma mais comum é mudar, por engenharia social (ver item 4.1), o **e-mail de contato do administrador** ou invadir essa conta; o e-mail é fácil de achar no registro **WHOIS**, uma consulta pública que mostra quem registrou cada domínio;
 - **redirecionamento de URL**: a **URL** (*Uniform Resource Locator*) identifica um recurso na internet. Redirecionar é comum e legítimo, como um portal que leva o usuário de volta ao login, mas o atacante pode **redirecionar para um site malicioso**.
 
 ### 10.2 Ataques aos Resolvedores Abertos
@@ -949,8 +959,8 @@ O **cache DNS** é o banco de dados temporário que guarda as consultas recentes
 
 Para esconder a identidade, os atacantes usam **técnicas furtivas de DNS**:
 
-- **fluxo rápido** (*fast flux*): esconde os sites de phishing e malware atrás de **hosts DNS comprometidos cujos IPs mudam a cada poucos minutos**; muito usado por botnets;
-- **fluxo duplo** (*double IP flux*): muda rapidamente os IPs **e também o servidor de nomes autoritativo**, o que dificulta ainda mais achar a origem;
+- **fluxo rápido** (*fast flux*): esconde os sites de phishing (ver item 6.8) e malware atrás de **hosts DNS comprometidos cujos IPs mudam a cada poucos minutos**; muito usado por botnets;
+- **fluxo duplo** (*double IP flux*): muda rapidamente os IPs **e também o servidor de nomes autoritativo** (o servidor que dá a resposta oficial sobre o domínio), o que dificulta ainda mais achar a origem;
 - **algoritmos de geração de domínio** (**DGA**): o malware **gera nomes de domínio aleatórios** usados como ponto de encontro com os servidores de **comando e controle** (**C&C**), os computadores que dão ordens ao malware.
 
 No **sombreamento de domínio** (*domain shadowing*), o atacante **rouba as credenciais da conta de um domínio** e cria em silêncio **muitos subdomínios** que apontam para servidores maliciosos, sem que o dono perceba. Se um subdomínio for descoberto, ele simplesmente cria outros.
@@ -959,15 +969,17 @@ No **sombreamento de domínio** (*domain shadowing*), o atacante **rouba as cred
 
 As **botnets** espalham malware e fazem ataques DDoS e de phishing, e o DNS é muitas vezes ignorado como canal usado por elas. Quando o tráfego DNS é identificado como parte de um incidente, **o ataque geralmente já acabou**.
 
-No **tunelamento DNS**, o atacante **coloca tráfego que não é DNS dentro do tráfego DNS**, o que costuma **contornar as soluções de segurança**. Para isso, altera registros como TXT, MX, SRV, NULL, A ou CNAME. Com registros TXT, que podem levar comandos aos bots, o processo é:
+No **tunelamento DNS**, o atacante **coloca tráfego que não é DNS dentro do tráfego DNS**, o que costuma **contornar as soluções de segurança**. Para isso, usa registros como TXT (texto livre), MX (servidor de e-mail), SRV, NULL, A (endereço IPv4) ou CNAME (apelido de outro nome). Com registros TXT, que podem levar comandos aos bots, o processo é:
 
 1. os dados são divididos em **vários blocos codificados**;
 2. cada bloco vai em um **rótulo de subdomínio** de uma consulta DNS;
-3. sem resposta no DNS local, a consulta segue para os servidores recursivos do provedor;
-4. o servidor recursivo a encaminha ao **servidor de nomes autoritativo do atacante**;
+3. sem resposta no DNS local, a consulta segue para os servidores recursivos do provedor (os que procuram a resposta em nome do cliente);
+4. o servidor recursivo a encaminha ao **servidor de nomes autoritativo do atacante** (o servidor "oficial" do domínio, que o atacante controla);
 5. o processo se repete até todos os blocos serem enviados;
 6. o servidor do atacante responde a cada consulta com **comandos codificados**;
 7. o malware no host infectado junta os blocos e executa os comandos.
+
+![No tunelamento DNS, os dados saem escondidos em consultas e os comandos voltam nas respostas](img/endpoint/end_dnstunnel.png){width=6in}
 
 Para interromper o túnel:
 
@@ -996,7 +1008,7 @@ Bloquear a navegação não é uma opção, porque as empresas precisam da web. 
 
 1. a vítima visita, sem saber, uma página **comprometida** por malware;
 2. a página a **redireciona**, muitas vezes por vários servidores comprometidos, para um site com código malicioso;
-3. o computador é infectado só pela visita, o chamado **download automático** (*drive-by download*): um **kit de exploração**, em geral um script PHP com console de gerenciamento para o atacante, verifica o sistema operacional, o Java e o Flash da vítima em busca de uma falha;
+3. o computador é infectado só pela visita, o chamado **download automático** (*drive-by download*): um **kit de exploração**, em geral um script em PHP (linguagem usada em sites) com um painel de gerenciamento para o atacante, verifica o sistema operacional, o Java e o Flash (programas que rodavam conteúdo dentro do navegador) da vítima em busca de uma falha;
 4. ao achar um programa vulnerável, o kit baixa do seu servidor o código que explora a falha;
 5. o computador comprometido se conecta ao servidor de malware e baixa uma **carga útil**, que pode ser o malware ou um serviço que baixa outros malwares;
 6. o malware final é executado.
@@ -1026,7 +1038,7 @@ As contramedidas são:
 
 ### 11.4 iFrames Maliciosos
 
-Um **iFrame** (*inline frame*) é um elemento HTML que **carrega dentro da página outra página de outra origem**; é muito usado para inserir anúncios. O atacante invade um servidor web e acrescenta um iFrame que aponta para o seu servidor. Às vezes o iFrame tem **poucos pixels**, quase invisível, e entrega spam, kits de exploração e outros malwares.
+Um **iFrame** (*inline frame*) é um elemento do HTML (a linguagem das páginas web) que **carrega dentro da página outra página de outra origem**; é muito usado para inserir anúncios. O atacante invade um servidor web e acrescenta um iFrame que aponta para o seu servidor. Às vezes o iFrame tem **poucos pixels**, quase invisível, e entrega spam, kits de exploração e outros malwares.
 
 Para prevenir:
 
@@ -1082,13 +1094,13 @@ As defesas são:
 Os aplicativos web costumam se ligar a um **banco de dados relacional**, que guarda dados confidenciais e por isso é alvo frequente:
 
 - **injeção de código**: o atacante digita comandos em um campo de entrada inseguro, como código PHP, e eles **são executados no servidor com as permissões do aplicativo web**; ocorre por **validação insuficiente da entrada**;
-- **injeção de SQL**: um dos ataques mais comuns; a consulta maliciosa entra pelos dados do cliente e permite **ler e alterar dados, executar operações de administração** e às vezes dar comandos ao sistema operacional.
+- **injeção de SQL** (ver item 6.2): um dos ataques mais comuns; a consulta maliciosa entra pelos dados do cliente e permite **ler e alterar dados, executar operações de administração** e às vezes dar comandos ao sistema operacional.
 
 Sem **validação rigorosa da entrada**, o aplicativo fica vulnerável. O analista precisa reconhecer consultas SQL suspeitas, descobrir **qual ID de usuário** o atacante usou e o que mais ele pode ter acessado.
 
 ### 11.9 Scripts no Lado do Cliente
 
-O **XSS**, em que um script malicioso é injetado em uma página e executado no navegador da vítima, ataca o **lado do cliente**. Os scripts, em JavaScript, Visual Basic e outras linguagens, coletam informações, espalham malware ou preparam outros ataques. Como na injeção de SQL, a causa é a **falta de validação** do conteúdo publicado em um site confiável. Há dois tipos:
+O **XSS** (ver item 6.1), em que um script malicioso é injetado em uma página e executado no navegador da vítima, ataca o **lado do cliente**. Os scripts, em JavaScript, Visual Basic e outras linguagens, coletam informações, espalham malware ou preparam outros ataques. Como na injeção de SQL, a causa é a **falta de validação** do conteúdo publicado em um site confiável. Há dois tipos:
 
 - **armazenado** (persistente): fica **gravado no servidor** e atinge **todos os visitantes** da página;
 - **refletido** (não persistente): fica **em um link**, e só é infectado quem clica nele.
@@ -1132,7 +1144,7 @@ O antivírus é **baseado em host**: instalado em computadores e servidores, ele
 Os worms dependem mais da rede que os vírus, e combatê-los exige coordenação. A resposta tem **quatro fases**:
 
 1. **contenção**: **limita a propagação** às áreas já afetadas, segmentando a rede com **ACLs de entrada e saída** em roteadores e firewalls;
-2. **inoculação**: ao mesmo tempo ou logo depois, **aplica a correção do fabricante em todos os sistemas não infectados**, tirando alvos do worm;
+2. **inoculação**: ao mesmo tempo ou logo depois, **aplica a correção do fabricante em todos os sistemas não infectados**, tirando alvos do worm (ver item 5.1);
 3. **quarentena**: **identifica as máquinas infectadas** dentro das áreas contidas e as desconecta, bloqueia ou remove;
 4. **tratamento**: **desinfecta** os sistemas: encerra o processo do worm, remove arquivos e configurações alterados e corrige a vulnerabilidade; nos casos graves, reinstala o sistema.
 
@@ -1175,10 +1187,10 @@ O DoS pode fazer parte de uma ofensiva maior e afetar também os equipamentos do
 
 Como muitos ataques DoS usam **endereços falsificados**, os roteadores e switches Cisco têm tecnologias **antispoofing**:
 
-- **segurança de porta** (*port security*);
-- **DHCP snooping**, que aceita respostas DHCP só de portas confiáveis;
-- **IP Source Guard**;
-- **DAI** (*Dynamic ARP Inspection* — inspeção dinâmica de ARP);
+- **segurança de porta** (*port security*), que limita quais e quantos endereços MAC podem usar cada porta do switch;
+- **DHCP (ver item 9.4) snooping**, que aceita respostas DHCP só de portas confiáveis;
+- **IP Source Guard**, que bloqueia pacotes cujo IP de origem não corresponde ao que o DHCP entregou naquela porta;
+- **DAI** (*Dynamic ARP Inspection* — inspeção dinâmica de ARP), que descarta respostas ARP falsas;
 - **ACLs**.
 
 | Ataque | Principais defesas |
@@ -1195,11 +1207,11 @@ As redes sem fio permitem conectar-se de qualquer lugar, mas exigem dispositivos
 
 ### 13.1 LAN sem Fio e LAN com Fio
 
-Uma **WLAN** (*Wireless LAN* — rede local sem fio) usa **radiofrequência** (**RF**) em vez de cabos na camada física e na subcamada MAC da camada de enlace. As duas redes vêm da família de padrões **IEEE 802**: o **802.3** define a Ethernet com fio, e o **802.11**, a rede sem fio. As WLANs diferem das LANs com fio porque:
+Uma **WLAN** (*Wireless LAN* — rede local sem fio) usa **radiofrequência** (**RF**, as ondas de rádio) em vez de cabos na camada física e na subcamada MAC da camada de enlace (a camada 2, que entrega os quadros dentro da rede local). As duas redes vêm da família de padrões **IEEE 802** (o IEEE, *Institute of Electrical and Electronics Engineers*, é a entidade que publica esses padrões): o **802.3** define a Ethernet com fio, e o **802.11**, a rede sem fio. As WLANs diferem das LANs com fio porque:
 
 - conectam os clientes por um **ponto de acesso** (**AP**, *Access Point*) ou roteador sem fio, e não por um switch;
 - conectam dispositivos móveis a bateria, e a placa sem fio reduz a duração da bateria;
-- usam **prevenção de colisões** (**CSMA/CA**) em vez de detecção de colisões (**CSMA/CD**);
+- usam **prevenção de colisões** (**CSMA/CA**, explicado no item 13.3) em vez de detecção de colisões (**CSMA/CD**, usado na antiga Ethernet com hubs); a colisão acontece quando dois aparelhos transmitem ao mesmo tempo e os sinais se misturam;
 - usam um quadro diferente, com mais informações no cabeçalho;
 - trazem **mais problemas de privacidade**, porque o sinal sai das instalações.
 
@@ -1213,7 +1225,7 @@ Uma **WLAN** (*Wireless LAN* — rede local sem fio) usa **radiofrequência** (*
 
 ### 13.2 Quadro 802.11
 
-Todo quadro da camada 2 tem **cabeçalho, carga útil e FCS** (*Frame Check Sequence*). O quadro 802.11 é parecido com o Ethernet, mas tem mais campos:
+Todo quadro da camada 2 tem **cabeçalho, carga útil e FCS** (*Frame Check Sequence*, um código no final que permite detectar se o quadro chegou com erro). O quadro 802.11 é parecido com o Ethernet, mas tem mais campos:
 
 | Campo | Função |
 | --- | --- |
@@ -1223,13 +1235,13 @@ Todo quadro da camada 2 tem **cabeçalho, carga útil e FCS** (*Frame Check Sequ
 | Endereço 2 | MAC do dispositivo ou AP que transmite |
 | Endereço 3 | Às vezes, o MAC do destino, como o gateway ao qual o AP está ligado |
 | Controle de sequência | Sequência e fragmentação dos quadros |
-| Endereço 4 | Em geral ausente; usado só no modo ad hoc |
+| Endereço 4 | Em geral ausente; usado só no modo ad hoc (aparelhos conectados diretamente entre si, sem AP) e em pontes entre APs |
 | Carga útil | Dados transmitidos |
 | FCS | Controle de erros da camada 2 |
 
 ### 13.3 CSMA/CA
 
-A WLAN é **half-duplex e de meio compartilhado**: só um cliente transmite por vez, e todos usam o mesmo canal. Como o cliente não consegue ouvir enquanto transmite, **não detecta colisões**; por isso usa o **CSMA/CA** (*Carrier Sense Multiple Access with Collision Avoidance*):
+A WLAN é **half-duplex** (envia ou recebe, nunca os dois ao mesmo tempo) **e de meio compartilhado**: só um cliente transmite por vez, e todos usam o mesmo canal. Como o cliente não consegue ouvir enquanto transmite, **não detecta colisões**; por isso usa o **CSMA/CA** (*Carrier Sense Multiple Access with Collision Avoidance*):
 
 1. **escuta o canal** (a portadora) para ver se está livre;
 2. envia ao AP um **RTS** (*Request to Send*), pedindo acesso;
@@ -1247,7 +1259,7 @@ O cliente e o AP precisam concordar nos parâmetros:
 
 - **SSID** (*Service Set Identifier*): o **nome da rede** que aparece na lista; em empresas, cada SSID corresponde a uma **VLAN** (rede local virtual que separa o tráfego), e vários APs podem compartilhar o mesmo SSID;
 - **senha**: exigida para autenticar no AP;
-- **modo de rede**: os padrões 802.11a/b/g/n/ac/ad; os APs podem operar em **modo misto**, aceitando vários ao mesmo tempo;
+- **modo de rede**: os padrões 802.11a/b/g/n/ac/ad (as gerações do Wi-Fi, de velocidades e frequências diferentes; o 802.11n é o Wi-Fi 4 e o 802.11ac, o Wi-Fi 5); os APs podem operar em **modo misto**, aceitando vários ao mesmo tempo;
 - **modo de segurança**: WEP, WPA ou WPA2; deve-se **sempre habilitar o nível mais alto** disponível;
 - **canal**: a faixa de frequência; o AP pode escolhê-lo sozinho ou ele pode ser configurado à mão em caso de interferência.
 
@@ -1287,7 +1299,7 @@ O DoS sem fio pode resultar de:
 - **interferência intencional**: o atacante tenta desativar a rede por completo;
 - **interferência acidental**: fornos de micro-ondas, telefones sem fio, babás eletrônicas e outros aparelhos. A **banda de 2,4 GHz é mais sujeita a interferência que a de 5 GHz**.
 
-O sinal sem fio também sofre com a **EMI** (interferência eletromagnética), a **RFI** (interferência de radiofrequência), raios e lâmpadas fluorescentes. O atacante pode **bloquear deliberadamente a transmissão** com um *jammer* de RF; para isso, a **frequência, a modulação e a potência** do jammer precisam ser iguais às do dispositivo atacado.
+O sinal sem fio também sofre com a **EMI** (*Electromagnetic Interference*, interferência eletromagnética), a **RFI** (*Radio Frequency Interference*, interferência de radiofrequência), raios e lâmpadas fluorescentes. O atacante pode **bloquear deliberadamente a transmissão** com um *jammer* de RF; para isso, a **frequência, a modulação e a potência** do jammer precisam ser iguais às do dispositivo atacado.
 
 Para reduzir o risco:
 
@@ -1364,10 +1376,10 @@ As quatro técnicas de chave compartilhada são:
 
 | Método | Criptografia | Situação |
 | --- | --- | --- |
-| WEP | **RC4** com **chave estática**, que nunca muda | Fácil de quebrar; **nunca deve ser usado** |
-| WPA | WEP reforçado com **TKIP**, que **muda a chave a cada pacote** | Substituto temporário do WEP |
+| WEP | **RC4** (uma cifra antiga, hoje considerada quebrada) com **chave estática**, que nunca muda | Fácil de quebrar; **nunca deve ser usado** |
+| WPA | WEP reforçado com **TKIP** (*Temporal Key Integrity Protocol*), que **muda a chave a cada pacote** | Substituto temporário do WEP |
 | WPA2 | **AES** (*Advanced Encryption Standard*), o protocolo mais forte | **Padrão atual** do setor |
-| WPA3 | Métodos mais recentes; **exige quadros de gerenciamento protegidos** (**PMF**) | Próxima geração; recomendado quando disponível |
+| WPA3 | Métodos mais recentes; **exige quadros de gerenciamento protegidos** (**PMF**, *Protected Management Frames*, que impedem, por exemplo, a desautenticação falsa do item 14.3) | Próxima geração; recomendado quando disponível |
 
 **Observação:** o curso recomenda usar WPA2 até o WPA3 se tornar comum, mas lembra que o WPA2 **já não é considerado totalmente seguro**.
 
@@ -1376,7 +1388,7 @@ As quatro técnicas de chave compartilhada são:
 Os roteadores domésticos oferecem dois modos de WPA2:
 
 - **pessoal**: para casas e pequenos escritórios; os clientes se autenticam com uma **chave pré-compartilhada** (**PSK**, *Pre-Shared Key*), sem servidor especial;
-- **corporativo** (*Enterprise*): para empresas; exige um **servidor RADIUS** (*Remote Authentication Dial-In User Service*). É mais complexo, mas mais seguro: o dispositivo é autenticado pelo servidor, e os usuários, pelo padrão **802.1X**, que usa o **EAP** (*Extensible Authentication Protocol*).
+- **corporativo** (*Enterprise*): para empresas; exige um **servidor RADIUS** (*Remote Authentication Dial-In User Service*), um servidor central que confere o usuário e a senha de cada pessoa. É mais complexo, mas mais seguro: o dispositivo é autenticado pelo servidor, e os usuários, pelo padrão **802.1X**, que usa o **EAP** (*Extensible Authentication Protocol*).
 
 ### 15.4 Criptografia no WPA e no WPA2
 
@@ -1428,8 +1440,8 @@ Um **firewall** é um **sistema ou grupo de sistemas que aplica uma política de
 
 - negar o tráfego de entrada com **endereços de origem internos**;
 - negar os pedidos de eco ICMP vindos de fora;
-- negar consultas externas ao Active Directory e ao servidor SQL;
-- permitir o tráfego externo para o **servidor web**, o FTP, o SMTP e o IMAP.
+- negar consultas externas ao Active Directory (o cadastro central de usuários do Windows) e ao servidor SQL (o banco de dados);
+- permitir o tráfego externo para o **servidor web**, o FTP (transferência de arquivos), o SMTP (envio de e-mail) e o IMAP (leitura de e-mail).
 
 Todos os firewalls têm três propriedades:
 
@@ -1467,7 +1479,7 @@ No ZPF, **o tráfego entre interfaces da mesma zona passa livremente**, e **todo
 
 ### 16.3 Tipos de Firewall
 
-Os tipos de firewall diferem nas camadas do modelo OSI que examinam:
+Os tipos de firewall diferem nas camadas do modelo OSI que examinam (a camada 3 tem os endereços IP; a 4, as portas TCP e UDP; a 5, o controle das sessões; e a 7, o conteúdo dos aplicativos, como o HTTP):
 
 | Tipo | Camadas | Como funciona |
 | --- | --- | --- |
@@ -1479,7 +1491,7 @@ Os tipos de firewall diferem nas camadas do modelo OSI que examinam:
 Outras formas de implementação são:
 
 - **firewall de host**: software de firewall em um PC ou servidor;
-- **firewall transparente**: filtra o tráfego entre duas interfaces em ponte;
+- **firewall transparente**: fica no meio do caminho, invisível para a rede, e filtra o tráfego entre duas interfaces ligadas em ponte;
 - **firewall híbrido**: combina tipos; por exemplo, o de inspeção de aplicações junta o com estado e o gateway de aplicação.
 
 ### 16.4 IDS e IPS
@@ -1495,7 +1507,7 @@ Os dois têm características em comum:
 - usam **assinaturas**, conjuntos de regras que reconhecem atividades maliciosas, para detectar violações graves, ataques comuns e coletar informações;
 - detectam padrões **atômicos** (um único pacote) ou **compostos** (vários pacotes).
 
-Quando o tráfego malicioso chega a um sensor com IPS, o sensor envia um registro ao **console de gerenciamento** e descarta o tráfego, mandando-o para o "*bit bucket*".
+Quando o tráfego malicioso chega a um sensor com IPS, o sensor envia um registro ao **console de gerenciamento** e descarta o tráfego, mandando-o para o "*bit bucket*" (a "lixeira de bits", isto é, ele simplesmente some).
 
 | Solução | Vantagens | Desvantagens |
 | --- | --- | --- |
@@ -1508,7 +1520,7 @@ Quando o tráfego malicioso chega a um sensor com IPS, o sensor envia um registr
 
 Há dois tipos de IPS:
 
-- **HIPS** (*Host-based IPS*): software instalado no host que monitora o sistema operacional e os processos críticos. Bloqueia comportamentos fora do normal, como alterações não autorizadas no registro, mudanças em diretórios do sistema, instalação de programas e estouros de buffer, e impede o host de participar de um DoS ou de uma sessão FTP ilícita. Funciona como **antivírus, antimalware e firewall juntos**;
+- **HIPS** (*Host-based IPS*): software instalado no host que monitora o sistema operacional e os processos críticos. Bloqueia comportamentos fora do normal, como alterações não autorizadas no registro (o banco de configurações do Windows, visto no módulo 19), mudanças em diretórios do sistema, instalação de programas e estouros de buffer, e impede o host de participar de um DoS ou de uma sessão FTP ilícita. Funciona como **antivírus, antimalware e firewall juntos**;
 - **IPS de rede**: equipamento dedicado ou não, com **sensores em pontos definidos da rede**, que detectam e reagem em tempo real, onde quer que esteja o alvo. É **componente essencial** da prevenção de intrusão; o HIPS deve ser integrado a ele.
 
 | HIPS |  |
@@ -1581,12 +1593,12 @@ O NetFlow conta os bytes e pacotes de cada fluxo, como uma conexão HTTPS entre 
 - porta de origem;
 - porta de destino;
 - tipo de protocolo da camada 3 (em geral TCP ou UDP, ou ICMP);
-- marcação **ToS**, que indica as regras de qualidade de serviço (**QoS**);
+- marcação **ToS** (*Type of Service*), que indica as regras de qualidade de serviço (**QoS**, *Quality of Service*, que dá prioridade a certos tipos de tráfego);
 - interface lógica de entrada.
 
 ### 17.4 Espelhamento de Portas
 
-Um **analisador de pacotes** (*sniffer*) é um software que **captura os pacotes que entram e saem da placa de rede**. Muitas vezes é melhor usá-lo em uma estação separada. Mas o switch **isola o tráfego**, e o analisador ou o IDS não veem tudo o que passa no segmento.
+Um **analisador de pacotes** (*sniffer*) é um software que **captura os pacotes que entram e saem da placa de rede**. Muitas vezes é melhor usá-lo em uma estação separada. Mas o switch **isola o tráfego**, e o analisador ou o IDS (ver item 16.4) não veem tudo o que passa no segmento.
 
 O **espelhamento de portas** (*port mirroring*) faz o switch **copiar o tráfego** que passa por ele e enviar a cópia por uma porta onde está o monitor. O tráfego original segue normalmente.
 
@@ -1624,9 +1636,9 @@ Os protocolos de comunicação com os servidores AAA são o **TACACS+** (*Termin
 | Característica | TACACS+ | RADIUS |
 | --- | --- | --- |
 | Funcionalidade | Separa autenticação, autorização e contabilidade (modular) | Junta autenticação e autorização; separa a contabilidade |
-| Padrão | Principalmente Cisco | Padrão aberto (RFC) |
+| Padrão | Principalmente Cisco | Padrão aberto (RFC, os documentos que definem os padrões da internet) |
 | Transporte | **TCP** | **UDP** |
-| Desafio CHAP | Bidirecional | Unidirecional, do servidor para o cliente |
+| Desafio CHAP (prova de senha sem enviá-la pela rede) | Bidirecional | Unidirecional, do servidor para o cliente |
 | Confidencialidade | **Pacote inteiro criptografado** | **Só a senha** |
 | Personalização | Autoriza comandos do roteador por usuário ou grupo | Não autoriza comandos |
 | Contabilidade | Limitada | Abrangente |
@@ -1640,9 +1652,9 @@ Uma **VPN** é uma **rede privada criada sobre uma rede pública**, em geral a i
 
 As primeiras VPNs eram túneis IP sem autenticação nem criptografia, como o **GRE** (*Generic Routing Encapsulation*), da Cisco, que encapsula vários protocolos de rede em túneis IP e cria um link virtual ponto a ponto. Hoje, VPN significa uma implementação **segura e criptografada**.
 
-A VPN liga dois pontos, como uma filial e a matriz, em uma conexão lógica na camada 2 ou 3. Exemplos de VPNs de camada 3 são o GRE, o **MPLS** (*Multiprotocol Label Switching*) e o **IPsec**. O GRE e o IPsec fazem conexões ponto a ponto; o MPLS liga muitos sites.
+A VPN liga dois pontos, como uma filial e a matriz, em uma conexão lógica na camada 2 ou 3. Exemplos de VPNs de camada 3 são o GRE, o **MPLS** (*Multiprotocol Label Switching*, rede das operadoras que encaminha os pacotes por rótulos) e o **IPsec**. O GRE e o IPsec fazem conexões ponto a ponto; o MPLS liga muitos sites.
 
-O **IPsec** é um conjunto de protocolos, apoiado pelo **IETF**, que oferece **autenticação, integridade, controle de acesso e confidencialidade** em redes IP. As VPNs IPsec são usadas em duas topologias:
+O **IPsec** (*IP Security*) é um conjunto de protocolos, apoiado pelo **IETF** (*Internet Engineering Task Force*, a entidade que publica os padrões da internet), que oferece **autenticação, integridade, controle de acesso e confidencialidade** em redes IP. As VPNs IPsec são usadas em duas topologias:
 
 - **site a site**: liga a matriz às filiais;
 - **acesso remoto**: dá acesso seguro a quem viaja ou trabalha de casa.
@@ -1728,6 +1740,8 @@ Aplicativos → API do Windows e drivers de modo usuário → Kernel, drivers de
 - **HAL** (*Hardware Abstraction Layer* — camada de abstração de hardware): software que **cuida de toda a comunicação entre o hardware e o kernel**. Os dois não são totalmente independentes: o kernel às vezes fala direto com o hardware, e a HAL precisa do kernel para algumas funções;
 - **drivers**: programas que permitem ao sistema operacional se comunicar com um dispositivo.
 
+![Arquitetura do Windows: aplicativos em modo usuário, kernel e HAL em modo kernel, sobre o hardware](img/endpoint/end_wincamadas.png){width=6in}
+
 ### 19.2 Modo Usuário e Modo Kernel
 
 A CPU do Windows opera em dois modos:
@@ -1750,7 +1764,7 @@ Antes de ser usado, um disco precisa ser **particionado** (dividido em **partiç
 
 | Sistema de arquivos | Características |
 | --- | --- |
-| FAT (FAT16 e FAT32) e exFAT | Simples e aceitos por muitos sistemas; o FAT tem limites de partições e de tamanho e **não é mais usado em HDs e SSDs**; o FAT32 é o mais comum |
+| FAT (FAT16 e FAT32) e exFAT | Simples e aceitos por muitos sistemas; o FAT tem limites de partições e de tamanho (no FAT32, nenhum arquivo passa de 4 GB) e **não é mais usado em HDs e SSDs** (os discos internos); o FAT32 e o exFAT ainda são comuns em pen drives e cartões de memória |
 | HFS+ (*Hierarchical File System Plus*) | Usado no **macOS**; o Windows lê suas partições com software especial |
 | EXT (*Extended File System*) | Usado no **Linux**; o Windows lê suas partições com software especial |
 | NTFS (*New Technology File System*) | **O mais usado ao instalar o Windows**; aceito por todas as versões do Windows e do Linux; o macOS só lê, a menos que instale drivers |
@@ -1765,7 +1779,7 @@ O **NTFS** é o preferido porque:
 
 A formatação NTFS cria estas estruturas:
 
-- **setor de inicialização da partição**: os primeiros 16 setores, com a localização da MFT; os últimos 16 guardam uma cópia;
+- **setor de inicialização da partição**: os primeiros 16 setores (o setor é o menor bloco de gravação do disco, em geral 512 bytes), com a localização da MFT; os últimos 16 guardam uma cópia;
 - **MFT** (*Master File Table* — tabela mestra de arquivos): a localização de todos os arquivos e pastas, com atributos como segurança e carimbos de hora;
 - **arquivos de sistema**: arquivos ocultos com informações sobre volumes e atributos;
 - **área de arquivos**: onde ficam os arquivos e pastas.
@@ -1795,13 +1809,15 @@ Há dois tipos de **firmware** (o software gravado na placa-mãe):
 A inicialização ocorre assim:
 
 1. **BIOS**: inicializa o hardware e faz o **POST** (*Power-On Self-Test*), que testa os dispositivos; ao achar o disco do sistema, procura o **MBR** (*Master Boot Record*), que tem um pequeno programa que localiza e carrega o sistema. **UEFI**: carrega os programas **.efi** de uma partição especial, a **ESP** (*EFI System Partition*);
-2. o **Bootmgr.exe** passa a CPU do modo real para o **modo protegido**, para usar toda a memória, e lê o **BCD** (*Boot Configuration Data*), que diz se o computador está saindo da hibernação;
+2. o **Bootmgr.exe** passa a CPU do modo real (o modo antigo, que só enxerga 1 MB de memória) para o **modo protegido**, para usar toda a memória, e lê o **BCD** (*Boot Configuration Data*), que diz se o computador está saindo da hibernação;
 3. **saindo da hibernação**: o **Winresume.exe** lê o **Hiberfil.sys**, que guarda o estado do computador, e vai para o logon;
 4. **inicialização a frio**: o **Winload.exe** registra a configuração de hardware no registro e usa a **KMCS** (*Kernel Mode Code Signing*) para garantir que **todos os drivers tenham assinatura digital**;
 5. o **Ntoskrnl.exe** inicia o kernel e configura a HAL;
 6. o **SMSS** (*Session Manager Subsystem*) lê o registro, cria o ambiente do usuário, inicia o **Winlogon** e prepara a área de trabalho de cada usuário.
 
 BIOS/UEFI → Bootmgr.exe → BCD → Winload.exe → Ntoskrnl.exe → SMSS → Logon
+
+![Sequência de inicialização do Windows, do firmware ao logon](img/endpoint/end_boot.png){width=6in}
 
 ### 19.6 Programas que Iniciam com o Windows
 
@@ -1861,10 +1877,10 @@ O **registro** é um **banco de dados hierárquico** com todas as informações 
 | HKEY\_LOCAL\_MACHINE (HKLM) | Informações do sistema |
 | HKEY\_CURRENT\_CONFIG (HKCC) | Perfil de hardware atual |
 
-**Não é possível criar ramos novos**; chaves e valores podem ser criados, alterados ou apagados por uma conta de administrador, com o **regedit.exe**. Pequenas mudanças podem ter **efeitos catastróficos**. O caminho das chaves usa a barra invertida (), como as pastas. Os tipos de valor são:
+**Não é possível criar ramos novos**; chaves e valores podem ser criados, alterados ou apagados por uma conta de administrador, com o **regedit.exe**. Pequenas mudanças podem ter **efeitos catastróficos**. O caminho das chaves usa a barra invertida (`\`), como as pastas; exemplo: `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`. Os tipos de valor são:
 
-- **REG\_BINARY**: números ou valores booleanos;
-- **REG\_DWORD**: números maiores que 32 bits ou dados brutos;
+- **REG\_BINARY**: dados binários brutos;
+- **REG\_DWORD**: um número de 32 bits, muito usado como chave liga e desliga (0 ou 1);
 - **REG\_SZ**: textos (*strings*).
 
 Para a segurança, o registro importa de duas formas:
@@ -1917,7 +1933,7 @@ A ajuda tem quatro níveis: `get-help comando` (básica), `-examples` (com exemp
 
 A **WMI** (*Windows Management Instrumentation* — instrumentação de gerenciamento do Windows) **gerencia computadores remotos**: obtém informações de componentes, estatísticas de hardware e software e monitora a saúde dos computadores. Fica em Gerenciamento do Computador > Serviços e Aplicativos > Controle WMI, com quatro guias: Geral, Backup/Restaurar, Segurança e Avançado.
 
-**Importante:** atacantes usam a WMI para se conectar a sistemas remotos, alterar o registro e executar comandos. Ela **escapa da detecção** porque é tráfego comum, confiado pelos dispositivos de segurança, e os comandos remotos **quase não deixam rastros**. Por isso, o acesso à WMI deve ser **muito restrito**.
+**Importante:** atacantes usam a WMI para se conectar a sistemas remotos, alterar o registro (ver item 19.10) e executar comandos. Ela **escapa da detecção** porque é tráfego comum, confiado pelos dispositivos de segurança, e os comandos remotos **quase não deixam rastros**. Por isso, o acesso à WMI deve ser **muito restrito**.
 
 O comando **net** administra e mantém o sistema, com vários subcomandos (`net help` lista todos):
 
@@ -1974,7 +1990,7 @@ O **SMB** (*Server Message Block*), criado pela IBM com ajuda da Microsoft, **co
 
 `\\servidor\compartilhamento\arquivo`
 
-O servidor pode ser um nome DNS, um nome **NetBIOS** ou um IP; o compartilhamento é a pasta raiz no host remoto. Ao compartilhar, define-se a área do sistema de arquivos e o controle de acesso: ler, gravar ou negar.
+O servidor pode ser um nome DNS (ver seção 10), um nome **NetBIOS** (o nome curto do computador na rede Windows) ou um IP; o compartilhamento é a pasta raiz no host remoto. Ao compartilhar, define-se a área do sistema de arquivos e o controle de acesso: ler, gravar ou negar.
 
 O Windows cria **compartilhamentos administrativos**, identificados pelo **cifrão** (`$`): **`C$`, `D$`** para cada volume, **`admin$`** para a pasta do Windows e **`print$`** para as impressoras. **Só administradores** os acessam. Para conectar, digita-se o UNC no Explorador de Arquivos, com as **credenciais do computador remoto**.
 
@@ -1986,8 +2002,8 @@ O **RDP** (*Remote Desktop Protocol*) permite **entrar em um host remoto e contr
 
 O **Windows Server** é a edição usada principalmente em **data centers**, numa família iniciada no **Windows Server 2003** (o Windows 2000 Server é considerado uma versão cliente do NT 5.0; o 2003 é baseado no NT 5.2). Ele oferece:
 
-- **serviços de rede**: DNS, DHCP, serviços de terminal, controlador de rede e virtualização Hyper-V;
-- **serviços de arquivo**: SMB, NFS e DFS;
+- **serviços de rede**: DNS, DHCP, serviços de terminal (acesso remoto de vários usuários ao mesmo servidor), controlador de rede e virtualização Hyper-V (máquinas virtuais);
+- **serviços de arquivo**: SMB, NFS (compartilhamento de arquivos com Linux) e DFS (*Distributed File System*, que reúne pastas de vários servidores sob um só caminho);
 - **serviços web**: FTP, HTTP e HTTPS;
 - **gerenciamento**: Política de Grupo e **Active Directory** (serviço de diretório dos domínios).
 
@@ -2018,7 +2034,7 @@ O **Visualizador de Eventos** registra o **histórico de eventos de aplicativos,
 
 ### 21.3 Atualizações do Windows
 
-Nenhum software é perfeito, e alguns ataques chegam antes das defesas, os **ataques de dia zero**. Para a maior proteção possível, o Windows deve estar sempre com as correções e os service packs mais recentes:
+Nenhum software é perfeito, e alguns ataques chegam antes das defesas, os **ataques de dia zero** (ver item 5.6). Para a maior proteção possível, o Windows deve estar sempre com as correções e os service packs mais recentes:
 
 - **patches** (correções): atualizações de código que impedem que um vírus ou worm recém-descoberto tenha sucesso;
 - **service pack**: um pacote que reúne várias correções e atualizações.
@@ -2036,7 +2052,7 @@ Na maioria das redes Windows, o **Active Directory** organiza os computadores em
 - **política de senha** (em Políticas de Conta): os critérios de senha de todos os usuários locais. Senhas evitam roubo de dados e confirmam que os registros de eventos são válidos;
 - **política de bloqueio de conta**: impede ataques de **força bruta**; por exemplo, depois de **cinco tentativas erradas**, a conta fica **bloqueada por 30 minutos**, e então a contagem volta a zero;
 - **bloqueio ao iniciar a proteção de tela**: depois de pouco tempo sem uso, o computador só volta a ser usado com novo login;
-- **direitos de usuário**, **regras de firewall** e o **AppLocker**, que restringe os arquivos que usuários ou grupos podem executar.
+- **direitos de usuário**, **regras de firewall** (ver item 16.1) e o **AppLocker**, que restringe os arquivos que usuários ou grupos podem executar.
 
 Se vários computadores autônomos precisam da mesma política, ela pode ser **exportada**, por exemplo como workstation.inf, e importada nos outros.
 
@@ -2178,21 +2194,21 @@ No Linux, administrar um servidor é, em grande parte, cuidar dos seus arquivos 
 Os serviços são gerenciados por **arquivos de configuração**, com opções como o número da porta, o local dos recursos hospedados e as regras de autorização dos clientes. O serviço lê esses arquivos ao iniciar, e uma alteração **costuma exigir reiniciar o serviço**. Como os serviços em geral rodam com privilégios de superusuário, editar seus arquivos também exige esses privilégios. Exemplos:
 
 - **/etc/nginx/nginx.conf**: o **Nginx**, servidor web leve;
-- **/etc/ntp.conf**: o NTP, com os servidores do *pool* e as restrições de consulta;
+- **/etc/ntp.conf**: o NTP (ver item 17.5), com os servidores do *pool* (o grupo de servidores públicos de hora) e as restrições de consulta;
 - **/etc/snort/snort.conf**: o **Snort**, IDS baseado em Linux; por exemplo, `ipvar HOME_NET [209.165.200.224/27]` define a rede protegida e `ipvar EXTERNAL_NET any`, a externa.
 
 Não há um formato obrigatório, mas é comum usar **opção = valor**, e o caractere **#** indica comentário.
 
 ### 23.2 Endurecimento de Dispositivos
 
-O **endurecimento** (*hardening*) é **aplicar métodos comprovados para proteger o dispositivo e seu acesso administrativo**: manter senhas, configurar recursos avançados de login remoto, usar login seguro por SSH e definir **papéis administrativos**, já que nem todo o pessoal de TI precisa do mesmo nível de acesso.
+O **endurecimento** (*hardening*) é **aplicar métodos comprovados para proteger o dispositivo e seu acesso administrativo**: manter senhas, configurar recursos avançados de login remoto, usar login seguro por SSH (ver item 22.5) e definir **papéis administrativos**, já que nem todo o pessoal de TI precisa do mesmo nível de acesso.
 
 Muitas distribuições vêm com serviços ativos por motivos históricos que não são mais necessários; **pará-los e impedir que iniciem sozinhos** também é endurecimento. As **atualizações** são essenciais: novas vulnerabilidades surgem todos os dias, e um computador atualizado tem menos chance de ser comprometido. As boas práticas são:
 
 - garantir a **segurança física**;
 - **minimizar os pacotes instalados**;
 - **desativar os serviços não usados**;
-- usar SSH e **desabilitar o login do root por SSH**;
+- usar SSH e **desabilitar o login do root (ver item 22.2) por SSH**;
 - manter o sistema atualizado;
 - **desativar a detecção automática de USB**;
 - exigir senhas fortes;
@@ -2216,10 +2232,10 @@ Alguns logs tratam dos **daemons**, processos que **rodam em segundo plano sem i
 | /var/log/auth.log | **Eventos de autenticação** no Debian e no Ubuntu |
 | /var/log/secure | Equivalente do auth.log no **Red Hat e no CentOS**; registra logins sudo e SSH e erros do SSSD |
 | /var/log/boot.log | Mensagens do processo de inicialização |
-| /var/log/dmesg | Mensagens do *ring buffer* do kernel sobre o hardware e os drivers; importante porque, nesses eventos de baixo nível, o syslog ainda não está rodando |
+| /var/log/dmesg | Mensagens do *ring buffer* do kernel (uma área de memória circular onde o kernel anota seus avisos) sobre o hardware e os drivers; importante porque, nesses eventos de baixo nível, o syslog ainda não está rodando |
 | /var/log/kern.log | Informações registradas pelo kernel |
 | /var/log/cron | Execução das **tarefas agendadas** (*cron jobs*), com estado e erros |
-| /var/log/mysqld.log ou mysql.log | Mensagens do MySQL; o primeiro no Red Hat, CentOS e Fedora, o segundo no Debian e Ubuntu |
+| /var/log/mysqld.log ou mysql.log | Mensagens do MySQL (um banco de dados gratuito muito usado em sites); o primeiro no Red Hat, CentOS e Fedora, o segundo no Debian e Ubuntu |
 
 Cada linha de um log é um evento, e o **carimbo de data e hora** no início marca quando ele ocorreu.
 
@@ -2304,7 +2320,7 @@ A permissão é **764**, e o comando para defini-la seria `chmod 764 space.txt`.
 
 ### 24.4 Links Rígidos e Simbólicos
 
-Um **link rígido** (*hard link*) é **outro nome que aponta para o mesmo lugar do arquivo** no sistema de arquivos, o **inode**. É criado com `ln arquivo novo`. Exemplo: `ln space.txt space.hard.txt` faz o número de links subir para 2; alterar um altera o outro, e **apagar um deles não apaga o arquivo**, que continua acessível pelo outro nome.
+Um **link rígido** (*hard link*) é **outro nome que aponta para o mesmo lugar do arquivo** no sistema de arquivos, o **inode** (a "ficha" de cada arquivo, com seu dono, suas permissões e sua localização no disco). É criado com `ln arquivo novo`. Exemplo: `ln space.txt space.hard.txt` faz o número de links subir para 2; alterar um altera o outro, e **apagar um deles não apaga o arquivo**, que continua acessível pelo outro nome.
 
 Um **link simbólico** (*symbolic link* ou *soft link*) também reflete as alterações no original, mas **aponta para o nome do arquivo**. É criado com `ln -s`. Exemplo: `ln -s test.txt mytest.txt`; se **test.txt for apagado**, o link passa a apontar para algo que **não existe mais**. O `ls -l` mostra `mytest.txt -> test.txt`.
 
@@ -2388,7 +2404,7 @@ As defesas são **manter o computador atualizado** e **fechar todos os serviços
 
 ### 25.5 Detecção de Rootkits
 
-Um **rootkit** é um malware que **aumenta os privilégios de um usuário não autorizado** ou dá acesso a partes do sistema normalmente proibidas, e muitas vezes protege um **backdoor**. Pode ser instalado automaticamente na infecção ou à mão pelo atacante. É destrutivo porque **altera o código do kernel e seus módulos**: esconde a intrusão, apaga os rastros da instalação e até **adultera as ferramentas de diagnóstico**. A grande maioria **exige acesso root**.
+Um **rootkit** (ver item 5.2) é um malware que **aumenta os privilégios de um usuário não autorizado** ou dá acesso a partes do sistema normalmente proibidas, e muitas vezes protege um **backdoor**. Pode ser instalado automaticamente na infecção ou à mão pelo atacante. É destrutivo porque **altera o código do kernel e seus módulos**: esconde a intrusão, apaga os rastros da instalação e até **adultera as ferramentas de diagnóstico**. A grande maioria **exige acesso root**.
 
 Como o próprio sistema está comprometido, a detecção é difícil:
 
@@ -2430,7 +2446,7 @@ Um bom administrador configura o sistema para resistir a ameaças externas:
 Alguns pontos merecem atenção especial:
 
 - **antivírus falsos** (*rogue antivirus*): anúncios ou janelas que imitam avisos do Windows, dizem que o computador está infectado e pedem para "limpá-lo"; clicar em qualquer lugar da janela pode **instalar malware**;
-- **malware sem arquivo** (*fileless*): usa programas legítimos e vai **direto para a memória**, sem depender de arquivos, por isso **não deixa rastros** e é difícil de detectar e remover. O ataque termina quando o sistema reinicia. Usa linguagens de script como o **PowerShell**;
+- **malware sem arquivo** (*fileless*): usa programas legítimos e vai **direto para a memória**, sem depender de arquivos, por isso **não deixa rastros** e é difícil de detectar e remover. O ataque termina quando o sistema reinicia. Usa linguagens de script como o **PowerShell** (ver item 20.3);
 - **scripts maliciosos**: linguagens como **Python**, **Bash** (a linguagem da linha de comando do macOS e da maioria dos Linux) e **VBA** (*Visual Basic for Applications*, usado nas macros da Microsoft) podem criar malware;
 - **software não aprovado**: instalado por engano ou de propósito, pode não ser malicioso, mas viola a política e interfere nos serviços da empresa. **Deve ser removido imediatamente**.
 
@@ -2446,7 +2462,7 @@ Os **patches** são atualizações de código que os fabricantes fornecem para i
 - cada computador baixa as atualizações de um **servidor local**, sem se conectar ao fabricante;
 - **os usuários não podem desativar ou contornar** as atualizações.
 
-Também é preciso atualizar os **aplicativos de terceiros**, como Adobe Acrobat, Java e Chrome. Uma abordagem **proativa** ajuda a evitar ransomware e outras ameaças.
+Também é preciso atualizar os **aplicativos de terceiros**, como Adobe Acrobat, Java e Chrome. Uma abordagem **proativa** ajuda a evitar ransomware (ver item 5.3) e outras ameaças.
 
 ### 26.4 Ferramentas de Segurança do Endpoint
 
@@ -2459,7 +2475,7 @@ Uma **solução baseada em host** é um software que roda no computador e trabal
 | HIPS | Monitora **chamadas de sistema**, acesso a arquivos e configurações no registro, além de anomalias de banda, protocolos e portas; ao detectar algo, pode **alertar, registrar, redefinir a conexão ou descartar os pacotes** |
 | EDR (*Endpoint Detection and Response*) | **Monitora e coleta dados continuamente** do endpoint, analisa e **responde** às ameaças; o antivírus só bloqueia, e o EDR também **encontra** ameaças no dispositivo |
 | DLP | Garante, de forma centralizada, que dados confidenciais não sejam perdidos, mal usados ou acessados por quem não deve |
-| NGFW | Combina o firewall tradicional com outras filtragens, como um firewall de aplicação com **inspeção profunda de pacotes** (**DPI**) em linha em um IPS |
+| NGFW | Combina o firewall tradicional com outras filtragens, como um firewall de aplicação com **inspeção profunda de pacotes** (**DPI**, *Deep Packet Inspection*, que examina o conteúdo do pacote, e não só os cabeçalhos) em linha em um IPS |
 
 A **criptografia** transforma os dados com um algoritmo complexo para torná-los ilegíveis; uma **chave** especial os torna legíveis de novo.
 
@@ -2490,7 +2506,7 @@ A Apple oferece no hardware e no macOS:
 | --- | --- |
 | Hardware com foco em segurança | CPU especial, inicialização e motor de criptografia AES dedicado em um chip chamado **Secure Enclave** |
 | Armazenamento criptografado | **Data Protection** e **FileVault** criptografam e descriptografam os arquivos ao gravar e ler, **sem expor as chaves** à CPU, ao sistema ou aos aplicativos |
-| Inicialização segura | A ROM de inicialização só permite rodar o sistema da Apple **genuíno e inalterado** |
+| Inicialização segura | A ROM de inicialização (memória gravada de fábrica, que não pode ser alterada) só permite rodar o sistema da Apple **genuíno e inalterado** |
 | Dados biométricos | Processados no hardware de segurança, **separados do sistema e dos aplicativos**, inclusive de malware |
 | Encontre meu Mac | Localiza dispositivos perdidos ou roubados e permite **bloqueá-los e apagá-los** remotamente |
 | XProtect | Antimalware **por assinatura**, que alerta e oferece remover os arquivos |
@@ -2511,7 +2527,7 @@ A **RFID** (*Radio Frequency Identification* — identificação por radiofrequ�
 
 ## 27. Proteção Antimalware
 
-O malware continua sendo um grande desafio, e cada endpoint é uma possível porta de entrada. A nuvem e as VPNs ampliam ainda mais os limites da rede: um dispositivo que acessa a VPN a partir de uma rede pública pode **injetar malware** na rede da empresa.
+O malware continua sendo um grande desafio, e cada endpoint é uma possível porta de entrada. A nuvem e as VPNs ampliam ainda mais os limites da rede: um dispositivo que acessa a VPN (ver item 17.7) a partir de uma rede pública pode **injetar malware** na rede da empresa.
 
 ### 27.1 Ameaças aos Endpoints
 
@@ -2526,7 +2542,7 @@ Alguns números mostram o tamanho do problema, segundo as previsões citadas no 
 
 ### 27.2 Segurança do Perímetro e da LAN
 
-A imprensa costuma noticiar ataques externos: DoS que derruba o acesso público, invasão do servidor web para desfigurar o site e invasão de servidores para roubar dados. O **perímetro** é protegido por um roteador reforçado com VPN, um NGFW (como o ASA), um IPS e um servidor AAA, com ESA e WSA para e-mail e web.
+A imprensa costuma noticiar ataques externos: DoS que derruba o acesso público, invasão do servidor web para desfigurar o site e invasão de servidores para roubar dados. O **perímetro** é protegido por um roteador reforçado com VPN, um NGFW (como o ASA), um IPS (ver item 16.4) e um servidor AAA, com ESA e WSA para e-mail e web.
 
 **Importante:** muitos ataques **vêm de dentro da rede**, por isso proteger a LAN interna é quase tão importante quanto o perímetro. Um host interno invadido vira **ponto de partida** para chegar a servidores e dados confidenciais. Há dois elementos a proteger:
 
@@ -2537,7 +2553,7 @@ A imprensa costuma noticiar ataques externos: DoS que derruba o acesso público,
 
 O perímetro está sempre se expandindo: as pessoas acessam a rede da empresa por VPN com dispositivos que também usam redes públicas e domésticas pouco protegidas. Esses dispositivos são protegidos por:
 
-- **antivírus/antimalware**: detecta e mitiga vírus e malware; exemplos: Windows Defender, **Cisco AMP for Endpoints**, Norton, McAfee e Trend Micro. Há três formas de detecção:
+- **antivírus/antimalware**: detecta e mitiga vírus e malware; exemplos: Windows Defender, **Cisco AMP (ver item 16.6) for Endpoints**, Norton, McAfee e Trend Micro. Há três formas de detecção:
   - **por assinatura**: reconhece características de **malware conhecido**;
   - **heurística**: reconhece **características gerais** comuns a vários tipos de malware;
   - **por comportamento**: analisa **comportamentos suspeitos**;
@@ -2613,7 +2629,7 @@ O HIDS usa estratégias **proativas e reativas**. Contra ameaças conhecidas, us
 
 A maioria dos produtos combina software no host com **gerenciamento centralizado**, integrado ao monitoramento da rede e à inteligência de ameaças. Exemplos: **Cisco AMP**, **AlienVault USM**, **Tripwire** e **OSSEC**.
 
-O **OSSEC** (*Open Source HIDS Security*) usa um **servidor gerenciador central** e **agentes** para Mac, Windows, Linux e Solaris. O gerenciador também recebe alertas de dispositivos de rede e firewalls por **syslog**. O OSSEC monitora os logs dos hosts, **verifica a integridade dos arquivos**, detecta rootkits e outros malwares e pode executar scripts ou aplicativos em resposta a eventos.
+O **OSSEC** (*Open Source HIDS Security*) usa um **servidor gerenciador central** e **agentes** para Mac, Windows, Linux e Solaris. O gerenciador também recebe alertas de dispositivos de rede e firewalls por **syslog** (ver item 17.5). O OSSEC monitora os logs dos hosts, **verifica a integridade dos arquivos**, detecta rootkits e outros malwares e pode executar scripts ou aplicativos em resposta a eventos.
 
 ## 29. Segurança de Aplicações
 
@@ -2652,7 +2668,7 @@ Os **sites** também podem entrar nessas listas, criadas à mão ou obtidas de s
 
 O **sandboxing** (caixa de areia) permite **executar e analisar arquivos suspeitos em um ambiente seguro**. As sandboxes automáticas observam os efeitos do malware desconhecido para descobrir seu comportamento e criar defesas.
 
-O malware polimórfico e o novo malware **entram na rede apesar das melhores defesas**. O HIDS e outros sistemas alertam sobre um possível malware; então:
+O malware polimórfico e o novo malware **entram na rede apesar das melhores defesas**. O HIDS (ver item 28.2) e outros sistemas alertam sobre um possível malware; então:
 
 1. o **Cisco AMP** rastreia a **trajetória do arquivo** na rede e "volta no tempo" para obter uma cópia;
 2. o arquivo é executado em uma sandbox, como o **Cisco Threat Grid Glovebox**, que documenta suas atividades;
@@ -2869,6 +2885,8 @@ A política se desdobra em três tipos de documentos:
 | NAC | Network Admission Control | Controle de admissão na rede |
 | NAS | Network-Attached Storage | Armazenamento ligado à rede |
 | NCSA | National Cyber Security Alliance | Aliança nacional de segurança cibernética dos EUA |
+| NCSAM | National Cyber Security Awareness Month | Mês de conscientização em segurança cibernética dos EUA |
+| NetBIOS | Network Basic Input/Output System | Nome curto dos computadores na rede Windows |
 | NFC | Near Field Communication | Comunicação por aproximação |
 | NFS | Network File System | Sistema de arquivos em rede |
 | NGFW | Next-Generation Firewall | Firewall de última geração |
@@ -2888,12 +2906,14 @@ A política se desdobra em três tipos de documentos:
 | PaaS | Platform as a Service | Plataforma como serviço |
 | PAN | Personal Area Network | Rede pessoal |
 | PID | Process Identifier | Identificador do processo |
+| PIN | Personal Identification Number | Senha numérica curta |
 | PMF | Protected Management Frames | Quadros de gerenciamento protegidos |
 | POP3 | Post Office Protocol version 3 | Protocolo de recebimento de e-mails |
 | POST | Power-On Self-Test | Autoteste ao ligar o computador |
 | PSH | Push | Bit de função push do TCP |
 | PSIRT | Product Security Incident Response Team | Equipe da Cisco para vulnerabilidades em produtos |
 | PSK | Pre-Shared Key | Chave pré-compartilhada |
+| QoS | Quality of Service | Qualidade de serviço: prioridade para certos tipos de tráfego |
 | RADIUS | Remote Authentication Dial-In User Service | Protocolo de autenticação AAA em padrão aberto |
 | RAID | Redundant Array of Independent Disks | Conjunto redundante de discos |
 | RAM | Random Access Memory | Memória principal do computador |
@@ -2945,6 +2965,7 @@ A política se desdobra em três tipos de documentos:
 | UNC | Universal Naming Convention | Formato de caminho de recursos de rede |
 | URG | Urgent | Bit de ponteiro urgente do TCP |
 | URL | Uniform Resource Locator | Endereço de um recurso na internet |
+| US-CERT | United States Computer Emergency Readiness Team | Equipe de resposta a emergências de computação dos EUA |
 | USB | Universal Serial Bus | Barramento serial universal |
 | VBA | Visual Basic for Applications | Linguagem das macros da Microsoft |
 | VLAN | Virtual LAN | Rede local virtual |

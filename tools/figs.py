@@ -270,3 +270,66 @@ def def_kerberos():
        (0,1,'3. apresenta o TGT','e pede um serviço',False),(1,0,'4. tíquete de serviço','com carimbo de hora e validade',True),
        (0,2,'5. apresenta o tíquete e acessa','',False)],'Autenticação com tíquetes no Kerberos',gap=60,aw=150)
 FIGS.update({'def_camadas':def_camadas,'def_cripto':def_cripto,'def_assim':def_assim,'def_assinatura':def_assinatura,'def_pki':def_pki,'def_dmz':def_dmz,'def_acl':def_acl,'def_https':def_https,'def_kerberos':def_kerberos})
+
+# ---------- Trilha 3: Segurança de Endpoint ----------
+def end_ddos():
+    s=box(240,10,160,44,'Atacante','c2',fs=13)
+    for x in (110,410): s+=box(x,90,120,40,'Manipulador','c3',fs=12.5); 
+    for x in (170,470): s+=arrow(320,54,x,88)
+    zs=[30,150,270,390,510]
+    for i,x in enumerate(zs):
+        s+=box(x,168,100,38,'Zumbi','c4',fs=12.5)
+        src=170 if i<3 else 470
+        s+=arrow(src,130,x+50,166,dash=True)
+        s+=arrow(x+50,206,320,250,'t')
+    s+=box(240,252,160,44,'Alvo','c1',fs=13)
+    s+=text(320,318,'milhares de pedidos ao mesmo tempo: o serviço cai','fg-s')
+    return svg(330,s,'Ataque DDoS com botnet: atacante, manipuladores, zumbis e alvo')
+def end_smurf():
+    s=box(20,20,150,48,'Atacante','c2',fs=13)
+    s+=box(20,200,150,48,'Vítima','c1',fs=13)
+    for k,y in enumerate((14,84,154,224)):
+        s+=box(440,y,170,40,'Host','c4',fs=12.5)
+        s+=arrow(172,44,436,y+20)
+        s+=arrow(438,y+20,174,224,'t',dash=True)
+    s+=text(20,96,'1. eco ICMP com o IP','fg-s','start'); s+=text(20,112,'da vítima como origem','fg-s','start')
+    s+=text(20,272,'2. todas as respostas vão à vítima','fg-s','start')
+    return svg(286,s,'Ataque Smurf: amplificação e reflexão')
+def end_synflood():
+    return seq([('Atacante (IPs falsos)',140,'c2'),('Servidor',500,'c1')],
+      [(0,1,'SYN','origem 10.9.9.1 (falsa)',False),(1,0,'SYN-ACK','vai para um endereço que não responde',True),
+       (0,1,'SYN','origem 10.9.9.2 (falsa)',False),(0,1,'SYN, SYN, SYN...','',False)],
+      'Inundação SYN',gap=58,aw=190,notes=[(500,'conexões semiabertas lotam a tabela'),(140,'o ACK nunca é enviado')])
+def end_arp():
+    s=box(20,30,150,50,'PC-A','c1',sub='192.168.10.10'); s+=box(470,30,150,50,'R1 (gateway)','c3',sub='192.168.10.1')
+    s+=box(245,190,150,50,'Atacante','c2',sub='MAC EE:EE…')
+    s+=line(170,55,470,55,'',dash=True); s+=text(320,46,'caminho normal','fg-s')
+    s+=arrow(250,188,130,84,'t'); s+=text(80,150,'"o MAC de .1','fg-s','start'); s+=text(80,166,'é EE:EE…"','fg-s','start')
+    s+=arrow(390,188,510,84,'t'); s+=text(560,150,'"o MAC de .10','fg-s','end'); s+=text(560,166,'é EE:EE…"','fg-s','end')
+    s+=text(320,270,'todo o tráfego entre PC-A e R1 passa pelo atacante (MitM)','fg-s')
+    return svg(284,s,'Envenenamento do cache ARP com respostas gratuitas falsas')
+def end_dhcp():
+    return seq([('Cliente',100,'c1'),('Servidor falso',320,'c2'),('Servidor legítimo',540,'c3')],
+      [(0,2,'1. DHCPDISCOVER (broadcast)','chega aos dois servidores',False),
+       (1,0,'2. oferta falsa chega primeiro','gateway e DNS do atacante',True),
+       (0,1,'3. DHCPREQUEST','aceita a primeira oferta',False),
+       (1,0,'4. DHCPACK','o cliente passa a usar o atacante como gateway',True)],
+      'Falsificação de DHCP',gap=62,aw=160)
+def end_dnstunnel():
+    s=chain([('Host\ninfectado','c2'),('DNS local','c4'),('DNS recursivo\ndo provedor','c3'),('DNS autoritativo\ndo atacante','c2')],'',y=20,h=56,gap=28)
+    s+=text(320,104,'dados roubados viajam como subdomínios: dGVzdGU.exemplo-mal.com','fg-m',fs=12)
+    s+=text(320,126,'as respostas (registros TXT) trazem comandos de volta ao malware','fg-s')
+    return svg(140,s,'Tunelamento DNS: dados e comandos escondidos em consultas DNS')
+def end_wincamadas():
+    rows=[('Aplicativos','c1','modo usuário'),('API do Windows e drivers de modo usuário','c1','modo usuário'),('Kernel, drivers de modo kernel e sistema de arquivos','c3','modo kernel'),('HAL (camada de abstração de hardware)','c3','modo kernel'),('Hardware','c4','')]
+    s=''; y=10
+    for t,c,m in rows:
+        s+=box(20,y,470,40,t,c,fs=13)
+        if m: s+=text(510,y+25,m,'fg-k','start')
+        y+=50
+    return svg(y+4,s,'Camadas da arquitetura do Windows')
+def end_boot():
+    s=chain([('BIOS/UEFI','c4'),('Bootmgr','c3'),('Winload','c3'),('Ntoskrnl','c2'),('SMSS → Logon','c1')],'',y=20,h=50,gap=24)
+    s+=text(320,96,'POST e MBR/ESP · lê o BCD · confere assinaturas (KMCS) · inicia kernel e HAL · cria a sessão','fg-s')
+    return svg(110,s,'Etapas da inicialização do Windows')
+FIGS.update({'end_ddos':end_ddos,'end_smurf':end_smurf,'end_synflood':end_synflood,'end_arp':end_arp,'end_dhcp':end_dhcp,'end_dnstunnel':end_dnstunnel,'end_wincamadas':end_wincamadas,'end_boot':end_boot})
