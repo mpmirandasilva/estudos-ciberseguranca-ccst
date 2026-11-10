@@ -303,7 +303,7 @@ Outros benefícios são:
 
 - **prototipagem mais fácil**: laboratórios isolados podem ser criados rapidamente para testes;
 - **provisionamento mais rápido**: criar um servidor virtual é muito mais rápido que instalar um físico;
-- **maior tempo de atividade**: as plataformas oferecem recursos de tolerância a falhas e redundância;
+- **maior tempo de atividade**: as plataformas oferecem recursos de tolerância a falhas (ver item 1.2) e redundância;
 - **recuperação de desastres aprimorada**: é possível testar e automatizar a troca para um sistema reserva (failover) antes que ocorra um problema;
 - **suporte a sistemas legados**: sistemas antigos podem continuar funcionando por mais tempo, até a migração.
 
@@ -697,7 +697,7 @@ O quadro de **broadcast** é recebido e processado por todos os dispositivos da 
 
 O conjunto de dispositivos alcançados por um broadcast é chamado de **domínio de broadcast**.
 
-Quando o quadro transporta um pacote IPv4 de broadcast, o endereço IP de destino também é de broadcast. Exemplo: 192.168.1.255, em que a parte que identifica o host tem todos os bits iguais a 1.
+Quando o quadro transporta um pacote IPv4 de broadcast, o endereço IP (ver item 2.1) de destino também é de broadcast. Exemplo: 192.168.1.255, em que a parte que identifica o host tem todos os bits iguais a 1.
 
 Exemplos de uso:
 
@@ -997,7 +997,7 @@ Para se comunicar, um host precisa ter configurados:
 No Windows, essas informações podem ser vistas de duas formas:
 
 - **comando ipconfig** → mostra o **endereço IPv4, a máscara e o gateway padrão** de cada placa de rede;
-- **comando ipconfig /all** → mostra também o **endereço MAC** (chamado de "endereço físico"), os **servidores DNS** e se o endereço foi recebido por **DHCP**;
+- **comando ipconfig /all** → mostra também o **endereço MAC (ver item 5.4)** (chamado de "endereço físico"), os **servidores DNS** e se o endereço foi recebido por **DHCP**;
 - **Central de Rede e Compartilhamento** → tela do Painel de Controle que mostra as redes ativas, se a conexão é **com fio ou sem fio** e as propriedades de cada conexão.
 
 No Linux, o comando equivalente é **ip address**; no macOS, é **ifconfig**.
@@ -1107,7 +1107,7 @@ O ARP tem duas funções básicas:
 
 #### 8.1.1 Endereços MAC no Quadro
 
-Todo quadro Ethernet leva dois endereços MAC:
+Todo quadro Ethernet (ver item 5.3) leva dois endereços MAC:
 
 - **MAC de origem**: o da placa de rede do host que envia;
 - **MAC de destino**: o do dispositivo de destino, quando ele está na mesma rede local.
@@ -1182,7 +1182,7 @@ Switches corporativos oferecem uma proteção chamada **DAI (Dynamic ARP Inspect
 
 ### 8.3 ARP e IPv6
 
-O IPv6 não usa ARP. Nele, a descoberta do endereço MAC é feita pelo **ND (Neighbor Discovery – Descoberta de Vizinhos)**, que usa mensagens ICMPv6.
+O IPv6 (ver item 6.6) não usa ARP. Nele, a descoberta do endereço MAC é feita pelo **ND (Neighbor Discovery – Descoberta de Vizinhos)**, que usa mensagens ICMPv6.
 
 ### 8.4 Resumo do Processo ARP
 
@@ -1589,7 +1589,7 @@ Ele é usado para identificar problemas de resolução de nomes e verificar o fu
 
 ### 10.2 DHCP (Dynamic Host Configuration Protocol)
 
-O **DHCP (Dynamic Host Configuration Protocol – Protocolo de Configuração Dinâmica de Host)** atribui automaticamente o endereço IPv4, a máscara de sub-rede, o gateway padrão, o servidor DNS e outros parâmetros aos dispositivos.
+O **DHCP (Dynamic Host Configuration Protocol – Protocolo de Configuração Dinâmica de Host)** atribui automaticamente o endereço IPv4, a máscara de sub-rede (ver item 7.2), o gateway padrão, o servidor DNS e outros parâmetros aos dispositivos.
 
 #### 10.2.1 Endereçamento Estático e Dinâmico
 
@@ -1703,7 +1703,7 @@ O **modo de configuração global** é o modo em que se alteram as configuraçõ
 A partir dele, acessam-se os **submodos de configuração**, usados para configurar partes específicas:
 
 - **modo de configuração de linha**: configura o acesso pelo console, pelo SSH ou pelo Telnet. Prompt: Switch(config-line)#;
-- **modo de configuração de interface**: configura uma porta do switch ou uma interface do roteador. Prompt: Switch(config-if)#.
+- **modo de configuração de interface**: configura uma porta do switch (ver item 5.5) ou uma interface do roteador. Prompt: Switch(config-if)#.
 
 | Modo | Prompt | O que permite |
 | --- | --- | --- |
@@ -1800,7 +1800,7 @@ Quando a saída de um comando não cabe na tela, aparece o aviso **--More--**:
 Para interromper operações:
 
 - **Ctrl+C ou Ctrl+Z** → saem de qualquer modo de configuração e voltam ao **EXEC privilegiado**;
-- **Ctrl+Shift+6** → **interrompe** processos como pesquisas DNS, ping e traceroute.
+- **Ctrl+Shift+6** → **interrompe** processos como pesquisas DNS (ver item 10.1), ping e traceroute.
 
 ### 11.4 Comandos show
 
@@ -1818,7 +1818,7 @@ Os comandos **show** exibem a **configuração e o estado** do dispositivo.
 
 ## 12. Configuração de uma Rede Cisco Pequena
 
-Com a CLI, é possível fazer a configuração inicial de switches e roteadores. Ela envolve quatro tarefas principais:
+Com a CLI (ver item 11.1), é possível fazer a configuração inicial de switches e roteadores. Ela envolve quatro tarefas principais:
 
 - dar um nome ao dispositivo;
 - proteger o acesso com senhas;
@@ -2133,9 +2133,9 @@ O ICMPv6 inclui o **ND (Neighbor Discovery – Descoberta de Vizinhos)**, que te
 #### 13.2.1 Entre Roteador e Dispositivo
 
 - **RS (Router Solicitation – Solicitação de Roteador)**: enviada pelo dispositivo para pedir informações de endereçamento ao roteador;
-- **RA (Router Advertisement – Anúncio de Roteador)**: enviada pelo roteador a cada 200 segundos, ou em resposta a uma RS, com informações como o prefixo da rede, o comprimento do prefixo, o endereço DNS e o nome de domínio.
+- **RA (Router Advertisement – Anúncio de Roteador)**: enviada pelo roteador a cada 200 segundos, ou em resposta a uma RS, com informações como o prefixo (ver item 7.3) da rede, o comprimento do prefixo, o endereço DNS e o nome de domínio.
 
-Um host que se configura automaticamente pelo método **SLAAC (Stateless Address Autoconfiguration – Configuração Automática de Endereço sem Estado)**, ou seja, que monta o próprio endereço a partir das informações da RA, usa como gateway padrão o endereço do roteador que enviou a RA.
+Um host que se configura automaticamente pelo método **SLAAC (Stateless Address Autoconfiguration – Configuração Automática de Endereço sem Estado)**, ou seja, que monta o próprio endereço a partir das informações da RA, usa como gateway padrão (ver item 12.5) o endereço do roteador que enviou a RA.
 
 #### 13.2.2 Entre Dispositivos
 
@@ -2144,7 +2144,7 @@ Um host que se configura automaticamente pelo método **SLAAC (Stateless Address
 
 Essas mensagens têm duas funções:
 
-- **resolução de endereços**: substitui o ARP no IPv6. O dispositivo conhece o IPv6 do destino, mas não o MAC; envia uma NS, e o dono do endereço responde com uma NA contendo seu MAC;
+- **resolução de endereços**: substitui o ARP (ver item 8.1) no IPv6. O dispositivo conhece o IPv6 do destino, mas não o MAC; envia uma NS, e o dono do endereço responde com uma NA contendo seu MAC;
 - **DAD (Duplicate Address Detection – Detecção de Endereço Duplicado)**: ao receber um endereço, o dispositivo envia uma NS para o próprio endereço. Se alguém responder com uma NA, o endereço já está em uso; se ninguém responder, o endereço é exclusivo. O DAD não é obrigatório, mas é recomendado.
 
 O ND também tem uma mensagem de redirecionamento, semelhante à do ICMPv4.
