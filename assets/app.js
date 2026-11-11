@@ -43,8 +43,28 @@ const Reorg={busy:{},
     if(S.last) S.last=+(M.modmap[String(S.last)]||1);
     S.mv=M.v; return true},
   /* grifos e textos editados publicados pela dona do site (conteudo/<trilha>) */
-  pending(t){const M=t.MIG; return !!M&&(((Pub.data[t.id]||{}).kv||{}).v||1)<M.v},
-  conv(t,d){const M=t.MIG, k={}, lost=[];
+  cur(t){return (((Pub.data[t.id]||{}).kv||{}).v)||1},
+  target(t){const M=t.MIG; return M?(M.hv||M.v):1},
+  pending(t){return !!t.MIG&&this.cur(t)<this.target(t)},
+  conv(t,d){const M=t.MIG, cur=(((d||{}).kv||{}).v)||1;
+    let r=cur<2?this.conv1(t,d):{k:Object.fromEntries(Object.entries(d||{}).filter(([key])=>key!=='kv')),lost:[]};
+    if((M.hv||0)>=3&&cur<3) r={k:this.conv3(t,r.k),lost:r.lost};
+    return r},
+  /* versão enxuta (3): só os grifos sobre trechos que continuam iguais seguem; os outros saem */
+  conv3(t,d){const M=t.MIG, k={};
+    const inb=(seg,p)=>{for(const [a,b,c] of seg) if(p>=a&&p<=b) return c+(p-a); return null};
+    Object.entries(d||{}).forEach(([key,val])=>{
+      if(!val) return; const num=key.slice(1).replace(/_/g,'.'), x=(M.hl3||{})[num];
+      if(!x||typeof val.html==='string'){k[key]=val; return}
+      const o={ts:val.ts||Date.now()}, fx=(M.fix3||{})[num]||[];
+      if(val.hl){
+        const add=(val.hl.add||[]).map(r=>{const f=fx.find(z=>z[0]===r.s&&z[1]===r.e); if(f) return f[2]>=0?{s:f[2],e:f[3]}:null;
+          const s=inb(x.seg,r.s), e=inb(x.seg,r.e); return s!==null&&e!==null&&e>s?{s,e}:null}).filter(Boolean);
+        const off=(val.hl.off||[]).map(i=>x.mk[i]).filter(i=>i>=0);
+        if(add.length||off.length) o.hl={add,off}}
+      if(o.hl) k[key]=o});
+    return k},
+  conv1(t,d){const M=t.MIG, k={}, lost=[];
     Object.entries(d||{}).forEach(([key,val])=>{
       if(key==='kv'||!val) return; const old=key.slice(1).replace(/_/g,'.'), x=M.hl[old];
       if(!x){lost.push(old); return}
@@ -61,12 +81,12 @@ const Reorg={busy:{},
   view(t){const js=Pub.last[t.id]; const c=this.cache[t.id]; if(c&&c.js===js) return c.k; const k=this.conv(t,Pub.data[t.id]).k; this.cache[t.id]={js,k}; return k},
   pub(t){const M=t.MIG; if(!this.pending(t)||!HL.enabled()||!Pub.loaded[t.id]||this.busy[t.id]||!Sync.db) return;
     this.busy[t.id]=true; const d=Pub.data[t.id]||{}, {k,lost}=this.conv(t,d);
-    k.kv={v:M.v,ts:Date.now()};
-    store(PKEY(t.id)+'-antes-v'+M.v,d);
+    k.kv={v:this.target(t),ts:Date.now()};
+    store(PKEY(t.id)+'-antes-v'+this.target(t),d);
     const ref=Sync.db.collection('conteudo'), FV=firebase.firestore.FieldValue;
-    ref.doc(t.id+'-antes-v'+M.v).set({k:d,updated:FV.serverTimestamp()}).catch(()=>{})
+    ref.doc(t.id+'-antes-v'+this.target(t)).set({k:d,updated:FV.serverTimestamp()}).catch(()=>{})
       .then(()=>ref.doc(t.id).set({k,updated:FV.serverTimestamp()}))
-      .then(()=>{this.busy[t.id]=false; Pub.data[t.id]=k; Pub.last[t.id]=JSON.stringify(k); store(PKEY(t.id),k); Pub.refresh(t); toast('Grifos e textos editados de '+t.short+' levados para a nova ordem do curso.'+(lost.length?' Sem lugar novo: '+lost.join(', ')+'.':''))})
+      .then(()=>{this.busy[t.id]=false; Pub.data[t.id]=k; Pub.last[t.id]=JSON.stringify(k); store(PKEY(t.id),k); Pub.refresh(t); toast('Grifos e textos editados de '+t.short+' ajustados à nova versão do curso.'+(lost.length?' Sem lugar novo: '+lost.join(', ')+'.':''))})
       .catch(e=>{this.busy[t.id]=false; toast('Não foi possível ajustar os grifos à nova ordem: '+(e.code||e.message))});
   }
 };
