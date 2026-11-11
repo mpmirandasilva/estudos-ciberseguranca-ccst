@@ -477,9 +477,9 @@ As empresas precisam **conscientizar e treinar** os funcionários. As principais
 - incentivar os funcionários a assumir responsabilidade pela segurança;
 - **não ceder à pressão** de desconhecidos.
 
-## 5. Malware e Ataques Cibernéticos
+## 5. Malware e Sua Mitigação
 
-O **malware** (*malicious software*) é **qualquer código usado para roubar dados, contornar o controle de acesso ou danificar e comprometer um sistema**. Ele é a ferramenta de muitos ataques.
+O **malware** (*malicious software*) é **qualquer código usado para roubar dados, contornar o controle de acesso ou danificar e comprometer um sistema**. Ele é a ferramenta de muitos ataques. Este módulo apresenta os tipos de malware e, em seguida, como impedir que eles entrem e se espalhem.
 
 ### 5.1 Vírus, Worms e Cavalos de Troia
 
@@ -511,7 +511,30 @@ Outros tipos de malware são:
 
 **Observação:** o keylogger também tem usos legítimos, como pais que acompanham o uso da internet pelos filhos.
 
-### 5.4 Negação de Serviço
+### 5.4 Mitigação de Malware
+
+O **antivírus** é a principal defesa contra o malware: impede que os hosts sejam infectados e espalhem código malicioso. Limpar computadores infectados leva muito mais tempo do que mantê-los atualizados. É o produto de segurança **mais usado** no mercado, de empresas como Symantec, McAfee e Trend Micro, muitas vezes com licenças por volume.
+
+**Importante:** a **atualização automática das definições de vírus** é o requisito mais crítico para manter a rede livre de vírus e deve constar na política de segurança.
+
+O antivírus é **baseado em host**: instalado em computadores e servidores, ele **não impede o vírus de entrar na rede**. Por isso, os dispositivos de segurança no **perímetro** identificam arquivos de malware pelos seus **IOCs** e os retiram do tráfego antes que causem um incidente. Os atacantes alteram o malware para escapar dessa detecção, e **nenhuma técnica é 100% eficaz**: incidentes vão acontecer.
+
+### 5.5 Mitigação de Worms
+
+Os worms dependem mais da rede que os vírus, e combatê-los exige coordenação. A resposta tem **quatro fases**:
+
+1. **contenção**: **limita a propagação** às áreas já afetadas, segmentando a rede com **ACLs** (*Access Control Lists*, listas de regras que permitem ou bloqueiam tráfego) de entrada e saída em roteadores e firewalls;
+2. **inoculação**: ao mesmo tempo ou logo depois, **aplica a correção do fabricante em todos os sistemas não infectados**, tirando alvos do worm;
+3. **quarentena**: **identifica as máquinas infectadas** dentro das áreas contidas e as desconecta, bloqueia ou remove;
+4. **tratamento**: **desinfecta** os sistemas: encerra o processo do worm, remove arquivos e configurações alterados e corrige a vulnerabilidade; nos casos graves, reinstala o sistema.
+
+Contenção → Inoculação → Quarentena → Tratamento
+
+## 6. Outros Ataques Cibernéticos e Boas Práticas de Defesa
+
+Além do malware, os atacantes **derrubam serviços, interceptam comunicações e exploram falhas ainda desconhecidas**. Este módulo reúne esses ataques e fecha com as boas práticas que protegem a rede contra todos eles.
+
+### 6.1 Negação de Serviço
 
 Os ataques de **negação de serviço** (**DoS**) são **simples de fazer, mesmo por atacantes sem experiência**, e interrompem os serviços, com grande perda de tempo e dinheiro. Até a **tecnologia operacional**, que controla processos físicos em prédios, fábricas e serviços públicos, pode ser afetada e desligada. Há dois tipos principais:
 
@@ -528,7 +551,7 @@ Atacante → Manipuladores → Zumbis → Alvo
 
 ![No DDoS, o atacante comanda os manipuladores, que comandam os zumbis da botnet; todos atacam o mesmo alvo](img/endpoint/end_ddos.png){width=6in}
 
-### 5.5 Homem no Meio e Ataques de Repetição
+### 6.2 Homem no Meio e Ataques de Repetição
 
 Os atacantes podem **interceptar ou alterar a comunicação** entre dois dispositivos:
 
@@ -536,11 +559,20 @@ Os atacantes podem **interceptar ou alterar a comunicação** entre dois disposi
 - **MitMo** (*Man-in-the-Mobile* — homem no celular): variação que **assume o controle do celular** da vítima e envia as informações aos atacantes. Exemplo: o malware **ZeuS** captura em silêncio os SMS (mensagens de texto) com os códigos de verificação em duas etapas;
 - **ataque de repetição** (*replay*): o atacante **captura uma comunicação e a retransmite**, ou a atrasa, para enganar o destinatário e contornar a autenticação.
 
-### 5.6 Ataques de Dia Zero
+### 6.3 Ataques de Dia Zero
 
 Um **ataque de dia zero** **explora uma vulnerabilidade antes que ela seja conhecida ou divulgada pelo fabricante**. A rede fica muito vulnerável entre o momento em que a falha é descoberta (**hora zero**) e o lançamento da correção. A defesa exige uma visão **holística**, de toda a arquitetura da rede.
 
-### 5.7 Defesa Contra os Ataques
+### 6.4 Ataques Físicos, à IA, à Cadeia de Fornecimento e à Nuvem
+
+Os ataques também vão além da rede e do software:
+
+- **ataques físicos**: ações para destruir, expor, alterar, desativar ou roubar a infraestrutura ou o hardware. Exemplos: pen drive com malware; cabos USB, carregadores e adaptadores com um chip sem fio que permite controlar o dispositivo; leitores que copiam cartões de crédito para criar clones;
+- **ataques adversos à inteligência artificial**: o **aprendizado de máquina** (programas que aprendem padrões a partir de exemplos) usa modelos matemáticos que dependem dos dados de entrada; dados corrompidos distorcem o resultado. Exemplo: enganar um veículo autônomo para que leia errado as placas;
+- **ataques à cadeia de fornecimento**: interceptam os fornecedores de sistemas, peças e software. Exemplo: alterar a data de fim de vida útil (**EOL**, *End of Life*) de um software para que a empresa perca o suporte;
+- **ataques à nuvem**: exploram os dados, aplicações, plataformas e infraestruturas na nuvem (SaaS, PaaS e IaaS), já que o provedor mantém o equipamento, mas a empresa fica exposta a novas ameaças.
+
+### 6.5 Defesa Contra os Ataques
 
 As principais medidas contra esses ataques são:
 
@@ -549,110 +581,35 @@ As principais medidas contra esses ataques são:
 - **distribuir a carga** entre vários servidores;
 - **bloquear o ICMP vindo de fora** no firewall. O **ICMP** (*Internet Control Message Protocol*) envia mensagens de erro e de controle, como se um dispositivo consegue falar com outro, e é muito usado em ataques DoS e DDoS.
 
-## 6. Ataques a Aplicativos, E-mail e Navegador
+### 6.6 Ataques de Acesso e Sua Mitigação
 
-Os ataques por meio de **aplicativos web** são cada vez mais comuns. Neles, o criminoso aproveita **falhas na programação do aplicativo** para chegar ao banco de dados ou ao servidor.
+Os **ataques de acesso** tentam **entrar em contas e sistemas sem autorização**. Muitos usam a simples adivinhação de senhas ou **ataques de dicionário e de força bruta**, que testam muitas senhas seguidas. As defesas são:
 
-### 6.1 Cross-Site Scripting
+- **política de autenticação forte**:
+  - senhas com **pelo menos oito caracteres**, com letras maiúsculas e minúsculas, números e caracteres especiais;
+  - **bloqueio da conta** depois de um número de tentativas erradas;
+- **princípio da confiança mínima**: os sistemas não confiam uns nos outros sem necessidade; por exemplo, um servidor confiável não deve confiar sem condições em servidores web;
+- **criptografia** no acesso remoto e no tráfego dos protocolos de roteamento, o que reduz as chances de MitM;
+- protocolos de autenticação **criptografados ou com hash**;
+- **MFA** (*Multi-Factor Authentication* — autenticação multifator): **dois ou mais meios independentes de verificação**, como a senha mais um código por SMS ou um **token de uso único** gerado por software ou dispositivo;
+- educação contra engenharia social.
 
-O **XSS** (*Cross-Site Scripting* — script entre sites) é uma vulnerabilidade comum em aplicativos web:
+Os ataques de acesso são detectados pela **revisão dos logs**, do uso de banda e da carga dos processos; por exemplo, um número incomum de logins com falha. A política deve exigir logs de todos os dispositivos e servidores.
 
-1. o criminoso **injeta um script malicioso** em uma página web;
-2. a vítima acessa a página, e o script passa para o navegador dela;
-3. o script acessa **cookies** (pequenos arquivos que o site guarda no navegador, por exemplo para manter o login), **tokens de sessão** (o código que prova que o usuário já está logado) ou outras informações e as envia ao criminoso;
-4. com elas, o criminoso **se passa pelo usuário**.
+### 6.7 Boas Práticas de Defesa
 
-### 6.2 Ataques de Injeção
+Para fechar, as melhores práticas para proteger uma rede contra todos esses ataques são:
 
-A maioria dos sites guarda seus dados em um banco de dados, como os de **SQL** (*Structured Query Language* — a linguagem de consulta dos bancos relacionais) ou de **XML** (*Extensible Markup Language*). Nos ataques de injeção, o criminoso digita, em um campo de formulário, comandos em vez de dados comuns; se o sistema não filtrar a entrada, executa esses comandos. Eles exploram as fraquezas desses bancos e de outros componentes:
-
-| Ataque | Como funciona |
-| --- | --- |
-| Injeção de SQL | O criminoso **digita uma instrução SQL maliciosa em um campo de entrada**; funciona quando o aplicativo **não filtra os caracteres** digitados. Permite ler, alterar ou destruir dados, falsificar identidades e até virar administrador do servidor |
-| Injeção de XML | Interfere no processamento dos dados XML ou na consulta, corrompendo o banco e dando acesso às informações e ao site |
-| Injeção de DLL | Engana um aplicativo para **chamar uma DLL maliciosa**, executada como parte do processo. A **DLL** (*Dynamic Link Library*) é uma biblioteca de código e dados que os programas do Windows usam para ganhar funções |
-| Injeção de LDAP | Injeta consultas em servidores **LDAP** (*Lightweight Directory Access Protocol*, protocolo aberto que autentica o acesso a serviços de diretório) para extrair informações do diretório da empresa |
-
-### 6.3 Estouro de Buffer
-
-Os **buffers** são áreas de memória reservadas a um aplicativo. O **estouro de buffer** ocorre quando os dados são **gravados além dos limites do buffer**, invadindo a memória de outros processos. O resultado pode ser travamento do sistema, comprometimento de dados ou **elevação de privilégios**.
-
-Essas falhas podem dar **controle total do dispositivo**: o atacante altera as instruções do programa enquanto ele é carregado na memória e instala malware. Segundo a Universidade Carnegie Mellon, **quase metade das explorações** de programas vem de alguma forma de estouro de buffer.
-
-### 6.4 Execução Remota de Código e Elevação de Privilégios
-
-A **execução remota de código** permite ao criminoso **executar qualquer comando** no dispositivo, com os privilégios do usuário que roda o aplicativo vulnerável. A **elevação de privilégios** explora um bug, uma falha de projeto ou uma configuração errada para **acessar recursos normalmente restritos**.
-
-O **Metasploit** é um projeto que reúne informações sobre vulnerabilidades e ajuda nos testes de penetração. Seu **Metasploit Framework** desenvolve e executa explorações em alvos remotos. O **Meterpreter**, uma carga útil do Metasploit, assume o controle do alvo carregando extensões **direto na memória, sem tocar no disco**, o que **escapa dos antivírus**. Ele tem até um módulo para controlar a webcam do alvo.
-
-### 6.5 Outros Ataques a Aplicativos
-
-Cada informação obtida sobre um sistema pode virar arma. Outros ataques são:
-
-| Ataque | Como funciona |
-| --- | --- |
-| CSRF (*Cross-Site Request Forgery* — falsificação de solicitação entre sites) | Comandos não autorizados são enviados **do navegador do usuário para um aplicativo web confiável** em que ele já está logado, por imagens, formulários ocultos ou JavaScript (a linguagem de programação das páginas web), sem que ele perceba; exemplo: um link que faz o banco aberto em outra aba executar uma transferência |
-| Condição de corrida | Também chamado de **TOC/TOU** (tempo de verificação/tempo de uso): o sistema, feito para executar tarefas em sequência, é **forçado a fazer duas ou mais operações ao mesmo tempo**; por exemplo, dois *threads* (as menores sequências de instruções de um programa) alteram os mesmos dados juntos |
-| Tratamento inadequado de entrada | Dados digitados **sem validação** alteram o fluxo do programa e causam estouro de buffer ou injeção de SQL |
-| Tratamento de erros | **Mensagens de erro revelam informações**, como nomes de hosts, diretórios, arquivos, bancos, tabelas e campos, usadas em ataques de injeção |
-| Ataque a API | Abuso de um ponto de acesso (*endpoint*) de uma **API** (*Application Programming Interface*), a interface que leva o pedido do usuário ao sistema e devolve a resposta |
-| Repetição | Uma transmissão válida é interceptada, alterada e repetida ou atrasada |
-| Travessia de diretório | O atacante **lê arquivos do servidor fora da pasta do site**, como arquivos de configuração, e pode até assumir o servidor |
-| Exaustão de recursos | Trava ou paralisa um programa **sobrecarregando o hardware do servidor**, e não a largura de banda como o DoS |
-
-### 6.6 Defesa Contra Ataques a Aplicativos
-
-As principais medidas são:
-
-- **escrever código sólido**, a primeira linha de defesa;
-- **tratar toda entrada externa como hostil** e validá-la;
-- manter sistemas e aplicativos **atualizados**, sem ignorar os avisos de atualização, já que nem todo programa se atualiza sozinho.
-
-### 6.7 Spam
-
-O e-mail é usado por bilhões de pessoas e virou uma grande vulnerabilidade. O **spam** (lixo eletrônico) é o **e-mail não solicitado**, em geral publicidade. Muito spam é enviado por computadores infectados e traz links maliciosos, malware ou golpes para obter dados como números de documentos e de conta bancária. Mesmo filtrado, ele consome largura de banda.
-
-Os sinais de spam são:
-
-- e-mail sem assunto;
-- pedido para atualizar os dados da conta;
-- erros de ortografia ou pontuação estranha;
-- links longos ou incompreensíveis;
-- aparência de empresa legítima com pequenas diferenças ou assunto irrelevante;
-- pedido para abrir um anexo, muitas vezes com urgência.
-
-Diante desses sinais, não se deve abrir o e-mail nem o anexo, e sim **avisar a equipe de segurança**.
-
-### 6.8 Phishing e Suas Variações
-
-O **phishing** é uma **fraude em que o criminoso se disfarça de pessoa ou empresa legítima** para levar a vítima a instalar malware ou revelar dados, como credenciais e informações financeiras. Pode chegar por e-mail, mensagem ou outro meio. Exemplo: um e-mail de uma "loja conhecida" anuncia um prêmio e leva a um site falso. As variações são:
-
-| Ataque | Como funciona |
-| --- | --- |
-| Spear phishing | **Altamente direcionado**: e-mail personalizado para uma pessoa, com base em seus interesses e atividades; exemplo: anúncio falso do carro que a vítima procura em um fórum |
-| Whaling | Phishing contra **vítimas de alto escalão**, como executivos |
-| Vishing | **Phishing por voz**: chamadas falsas por **VoIP** (*Voice over IP*) ou mensagens gravadas para obter dados como os do cartão |
-| SMiShing | **Phishing por SMS**: mensagens de texto falsas que levam a sites maliciosos ou a números fraudulentos |
-| Pharming | **Leva o usuário a uma cópia falsa de um site oficial**, onde ele digita suas credenciais |
-
-### 6.9 Defesa Contra Ataques de E-mail e Navegador
-
-As principais medidas são:
-
-- contar com a filtragem de spam dos provedores (**ISPs**, *Internet Service Providers*) e com antivírus e programas de e-mail que removem spam perigoso;
-- **educar os funcionários** sobre e-mails não solicitados e anexos;
-- **nunca supor que um anexo é seguro**, mesmo de um contato confiável; sempre verificá-lo antes;
-- participar do **APWG** (*Anti-Phishing Working Group*), associação internacional contra fraudes de phishing e falsificação de e-mail;
-- manter os programas atualizados com as correções de segurança.
-
-### 6.10 Ataques Físicos, à IA, à Cadeia de Fornecimento e à Nuvem
-
-Os ataques vão além do software:
-
-- **ataques físicos**: ações para destruir, expor, alterar, desativar ou roubar a infraestrutura ou o hardware. Exemplos: pen drive com malware; cabos USB, carregadores e adaptadores com um chip sem fio que permite controlar o dispositivo; leitores que copiam cartões de crédito para criar clones;
-- **ataques adversos à inteligência artificial**: o **aprendizado de máquina** (programas que aprendem padrões a partir de exemplos) usa modelos matemáticos que dependem dos dados de entrada; dados corrompidos distorcem o resultado. Exemplo: enganar um veículo autônomo para que leia errado as placas;
-- **ataques à cadeia de fornecimento**: interceptam os fornecedores de sistemas, peças e software. Exemplo: alterar a data de fim de vida útil (**EOL**, *End of Life*) de um software para que a empresa perca o suporte;
-- **ataques à nuvem**: exploram os dados, aplicações, plataformas e infraestruturas na nuvem (SaaS, PaaS e IaaS), já que o provedor mantém o equipamento, mas a empresa fica exposta a novas ameaças.
+- ter uma **política de segurança escrita**;
+- educar os funcionários sobre engenharia social e criar formas de **validar identidades** por telefone, e-mail ou pessoalmente;
+- controlar o **acesso físico** aos sistemas;
+- usar senhas fortes e trocá-las com frequência;
+- criptografar e proteger com senha os dados confidenciais;
+- usar hardware e software de segurança: firewalls, IPS, VPN, antivírus e filtragem de conteúdo;
+- fazer backups e **testá-los** regularmente;
+- **desligar serviços e portas desnecessários**;
+- instalar as correções semanal ou, se possível, diariamente, porque elas fecham as falhas que os ataques exploram;
+- fazer **auditorias de segurança**.
 
 ## 7. Vulnerabilidades do IP
 
@@ -718,7 +675,7 @@ Os ataques mais comuns ao IP são:
 
 O **ICMP** transporta **mensagens de diagnóstico e de erro** quando rotas, hosts ou portas não estão disponíveis. O comando **ping** envia uma **solicitação de eco** (*echo request*) para testar a conexão, e o destino devolve uma **resposta de eco** (*echo reply*).
 
-Os atacantes usam o ICMP para **reconhecimento e varredura**: mapear a topologia, descobrir os hosts ativos, identificar o sistema operacional (**impressão digital do sistema operacional**) e saber o estado de um firewall. Também o usam em ataques DoS e DDoS (ver item 5.4), como a **inundação ICMP**, com pedidos de eco de origem falsificada. As mensagens de maior interesse para o atacante são:
+Os atacantes usam o ICMP para **reconhecimento e varredura**: mapear a topologia, descobrir os hosts ativos, identificar o sistema operacional (**impressão digital do sistema operacional**) e saber o estado de um firewall. Também o usam em ataques DoS e DDoS (ver item 6.1), como a **inundação ICMP**, com pedidos de eco de origem falsificada. As mensagens de maior interesse para o atacante são:
 
 | Mensagem ICMP | Uso no ataque |
 | --- | --- |
@@ -759,7 +716,21 @@ A **falsificação de endereço MAC** exige acesso à rede interna. O **endereç
 3. o switch **atualiza a tabela CAM**, associando o MAC à porta do atacante;
 4. o switch passa a **encaminhar ao atacante** os quadros destinados ao alvo.
 
-Também há falsificação de **aplicativos e serviços**: por exemplo, conectar um **servidor DHCP falso** (o DHCP é o serviço que distribui endereços IP automaticamente) para criar uma condição MitM (ver item 5.5).
+Também há falsificação de **aplicativos e serviços**: por exemplo, conectar um **servidor DHCP falso** (o DHCP é o serviço que distribui endereços IP automaticamente) para criar uma condição MitM (ver item 6.2).
+
+### 7.8 Mitigação de Ataques de Reconhecimento
+
+Os **ataques de reconhecimento** **precedem outros ataques**: o atacante coleta informações para depois invadir ou derrubar a rede. Eles são detectados por **alarmes** que disparam quando um limite é ultrapassado, como o número de pedidos ICMP por segundo. O **Cisco ASA** (*Adaptive Security Appliance*) oferece prevenção de intrusão em um dispositivo próprio, e os roteadores **Cisco ISR** (*Integrated Services Routers*) a oferecem com software adicional.
+
+As medidas são:
+
+- **autenticação**, para garantir o acesso adequado;
+- **criptografia**, que torna inútil o **sniffer de pacotes** (programa que captura o tráfego), porque os dados capturados ficam ilegíveis;
+- **ferramentas anti-sniffer**, que detectam mudanças no tempo de resposta dos hosts, sinal de que processam mais tráfego que o normal;
+- **infraestrutura comutada**, com switches;
+- **firewall e IPS**.
+
+**Observação:** é **impossível impedir a varredura de portas**, mas o IPS e o firewall limitam o que ela descobre. Desligar o eco ICMP nos roteadores de borda impede as varreduras de ping, mas **perde os dados de diagnóstico**, e a varredura de portas pode ser feita sem ping, apenas mais devagar.
 
 ## 8. Vulnerabilidades do TCP e do UDP
 
@@ -929,6 +900,28 @@ O ataque funciona porque **o cliente aceita a primeira oferta que recebe**:
 
 ![O cliente aceita a primeira oferta que chega; se for a do servidor falso, passa a usar o atacante como gateway](img/endpoint/end_dhcp.png){width=6in}
 
+### 9.6 Mitigação de DoS e Tecnologias Antispoofing
+
+Um dos primeiros sinais de DoS são as **reclamações de usuários** sobre recursos indisponíveis ou rede lenta. Um programa de **monitoramento do uso da rede** deve estar sempre ativo, e a **análise de comportamento** detecta padrões incomuns, que também aparecem nos gráficos de utilização.
+
+O DoS pode fazer parte de uma ofensiva maior e afetar também os equipamentos do caminho: por exemplo, exceder a capacidade de pacotes por segundo do roteador entre a internet e a LAN. Em escala grande, pode comprometer a conectividade de **regiões inteiras**.
+
+Como muitos ataques DoS usam **endereços falsificados**, os roteadores e switches Cisco têm tecnologias **antispoofing**:
+
+- **segurança de porta** (*port security*), que limita quais e quantos endereços MAC podem usar cada porta do switch;
+- **DHCP snooping**, que aceita respostas DHCP só de portas confiáveis;
+- **IP Source Guard**, que bloqueia pacotes cujo IP de origem não corresponde ao que o DHCP entregou naquela porta;
+- **DAI** (*Dynamic ARP Inspection* — inspeção dinâmica de ARP), que descarta respostas ARP falsas;
+- **ACLs**.
+
+| Ataque | Principais defesas |
+| --- | --- |
+| Malware | Antivírus atualizado e filtragem no perímetro |
+| Worms | Contenção, inoculação, quarentena e tratamento |
+| Reconhecimento | Criptografia, anti-sniffer, switches, firewall e IPS |
+| Acesso | Senhas fortes, bloqueio de conta, confiança mínima, criptografia e MFA |
+| DoS | Monitoramento e tecnologias antispoofing |
+
 ## 10. Ataques ao DNS
 
 O **DNS** (*Domain Name System*) **associa nomes**, como www.cisco.com, **aos endereços IPv4 ou IPv6** de que os computadores precisam. Se um servidor DNS não sabe a resposta, pergunta a outro. As respostas usam **registros de recursos** (**RR**, *Resource Records*), que indicam o tipo de informação.
@@ -959,7 +952,7 @@ O **cache DNS** é o banco de dados temporário que guarda as consultas recentes
 
 Para esconder a identidade, os atacantes usam **técnicas furtivas de DNS**:
 
-- **fluxo rápido** (*fast flux*): esconde os sites de phishing (ver item 6.8) e malware atrás de **hosts DNS comprometidos cujos IPs mudam a cada poucos minutos**; muito usado por botnets;
+- **fluxo rápido** (*fast flux*): esconde os sites de phishing (páginas falsas que imitam empresas legítimas para roubar dados) e de malware atrás de **hosts DNS comprometidos cujos IPs mudam a cada poucos minutos**; muito usado por botnets;
 - **fluxo duplo** (*double IP flux*): muda rapidamente os IPs **e também o servidor de nomes autoritativo** (o servidor que dá a resposta oficial sobre o domínio), o que dificulta ainda mais achar a origem;
 - **algoritmos de geração de domínio** (**DGA**): o malware **gera nomes de domínio aleatórios** usados como ponto de encontro com os servidores de **comando e controle** (**C&C**), os computadores que dão ordens ao malware.
 
@@ -998,13 +991,13 @@ Para interromper o túnel:
 | Sombreamento de domínio | Criar subdomínios maliciosos em domínio legítimo |
 | Tunelamento | Esconder comandos e dados roubados no DNS |
 
-## 11. Ataques aos Serviços Corporativos
+## 11. Ataques a Aplicações Web
 
-Além dos serviços de base, os atacantes visam os serviços que a empresa usa no dia a dia: a web, o e-mail e os bancos de dados.
+Os ataques por meio de **aplicativos web** são cada vez mais comuns. Neles, o criminoso aproveita **falhas na programação do aplicativo** para chegar ao banco de dados ou ao servidor, ou usa páginas comprometidas para infectar quem as visita. Bloquear a navegação não é uma opção, porque as empresas precisam da web.
 
 ### 11.1 Como Funciona um Ataque Web
 
-Bloquear a navegação não é uma opção, porque as empresas precisam da web. Por isso, o analista precisa conhecer as etapas de um ataque web típico:
+O analista precisa conhecer as etapas de um ataque web típico:
 
 1. a vítima visita, sem saber, uma página **comprometida** por malware;
 2. a página a **redireciona**, muitas vezes por vários servidores comprometidos, para um site com código malicioso;
@@ -1027,16 +1020,77 @@ Os **logs de conexão dos servidores** revelam o tipo de varredura ou ataque pel
 | 4xx | Erro do cliente | O cliente parece ter errado |
 | 5xx | Erro do servidor | O servidor errou ou não pode atender |
 
-### 11.3 Defesas Contra Ataques Web
+### 11.3 Cross-Site Scripting (XSS)
 
-As contramedidas são:
+O **XSS** (*Cross-Site Scripting* — script entre sites) é uma vulnerabilidade comum em aplicativos web:
 
-- manter o sistema operacional e os navegadores **atualizados**;
-- usar um **proxy web**, como o Cisco Cloud Web Security ou o Cisco Web Security Appliance, para **bloquear sites maliciosos**;
-- seguir as boas práticas do **OWASP** (*Open Web Application Security Project*) ao desenvolver aplicativos; sua lista **OWASP Top 10** reúne os riscos de segurança web mais explorados;
-- **educar os usuários**.
+1. o criminoso **injeta um script malicioso** em uma página web;
+2. a vítima acessa a página, e o script passa para o navegador dela;
+3. o script acessa **cookies** (pequenos arquivos que o site guarda no navegador, por exemplo para manter o login), **tokens de sessão** (o código que prova que o usuário já está logado) ou outras informações e as envia ao criminoso;
+4. com elas, o criminoso **se passa pelo usuário**.
 
-### 11.4 iFrames Maliciosos
+### 11.4 Tipos de XSS e Prevenção
+
+O XSS ataca o **lado do cliente**: o script malicioso roda no navegador da vítima. Os scripts, em JavaScript, Visual Basic e outras linguagens, coletam informações, espalham malware ou preparam outros ataques. Como na injeção de SQL, a causa é a **falta de validação** do conteúdo publicado em um site confiável. Há dois tipos:
+
+- **armazenado** (persistente): fica **gravado no servidor** e atinge **todos os visitantes** da página;
+- **refletido** (não persistente): fica **em um link**, e só é infectado quem clica nele.
+
+Para prevenir:
+
+- conscientizar os desenvolvedores sobre o XSS;
+- usar um **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusão) para detectar e bloquear scripts maliciosos;
+- usar proxy web e Cisco Umbrella;
+- ensinar os usuários a identificar phishing e avisar a equipe de segurança da informação.
+
+### 11.5 Ataques de Injeção
+
+A maioria dos sites guarda seus dados em um banco de dados, como os de **SQL** (*Structured Query Language* — a linguagem de consulta dos bancos relacionais) ou de **XML** (*Extensible Markup Language*). Nos ataques de injeção, o criminoso digita, em um campo de formulário, comandos em vez de dados comuns; se o sistema não filtrar a entrada, executa esses comandos. Eles exploram as fraquezas desses bancos e de outros componentes:
+
+| Ataque | Como funciona |
+| --- | --- |
+| Injeção de SQL | O criminoso **digita uma instrução SQL maliciosa em um campo de entrada**; funciona quando o aplicativo **não filtra os caracteres** digitados. Permite ler, alterar ou destruir dados, falsificar identidades e até virar administrador do servidor |
+| Injeção de XML | Interfere no processamento dos dados XML ou na consulta, corrompendo o banco e dando acesso às informações e ao site |
+| Injeção de DLL | Engana um aplicativo para **chamar uma DLL maliciosa**, executada como parte do processo. A **DLL** (*Dynamic Link Library*) é uma biblioteca de código e dados que os programas do Windows usam para ganhar funções |
+| Injeção de LDAP | Injeta consultas em servidores **LDAP** (*Lightweight Directory Access Protocol*, protocolo aberto que autentica o acesso a serviços de diretório) para extrair informações do diretório da empresa |
+
+### 11.6 Bancos de Dados Expostos e Injeção de Código
+
+Os aplicativos web costumam se ligar a um **banco de dados relacional**, que guarda dados confidenciais e por isso é alvo frequente:
+
+- **injeção de código**: o atacante digita comandos em um campo de entrada inseguro, como código PHP, e eles **são executados no servidor com as permissões do aplicativo web**; ocorre por **validação insuficiente da entrada**;
+- **injeção de SQL**: um dos ataques mais comuns; a consulta maliciosa entra pelos dados do cliente e permite **ler e alterar dados, executar operações de administração** e às vezes dar comandos ao sistema operacional.
+
+Sem **validação rigorosa da entrada**, o aplicativo fica vulnerável. O analista precisa reconhecer consultas SQL suspeitas, descobrir **qual ID de usuário** o atacante usou e o que mais ele pode ter acessado.
+
+### 11.7 Estouro de Buffer
+
+Os **buffers** são áreas de memória reservadas a um aplicativo. O **estouro de buffer** ocorre quando os dados são **gravados além dos limites do buffer**, invadindo a memória de outros processos. O resultado pode ser travamento do sistema, comprometimento de dados ou **elevação de privilégios**.
+
+Essas falhas podem dar **controle total do dispositivo**: o atacante altera as instruções do programa enquanto ele é carregado na memória e instala malware. Segundo a Universidade Carnegie Mellon, **quase metade das explorações** de programas vem de alguma forma de estouro de buffer.
+
+### 11.8 Execução Remota de Código e Elevação de Privilégios
+
+A **execução remota de código** permite ao criminoso **executar qualquer comando** no dispositivo, com os privilégios do usuário que roda o aplicativo vulnerável. A **elevação de privilégios** explora um bug, uma falha de projeto ou uma configuração errada para **acessar recursos normalmente restritos**.
+
+O **Metasploit** é um projeto que reúne informações sobre vulnerabilidades e ajuda nos testes de penetração. Seu **Metasploit Framework** desenvolve e executa explorações em alvos remotos. O **Meterpreter**, uma carga útil do Metasploit, assume o controle do alvo carregando extensões **direto na memória, sem tocar no disco**, o que **escapa dos antivírus**. Ele tem até um módulo para controlar a webcam do alvo.
+
+### 11.9 Outros Ataques a Aplicativos
+
+Cada informação obtida sobre um sistema pode virar arma. Outros ataques são:
+
+| Ataque | Como funciona |
+| --- | --- |
+| CSRF (*Cross-Site Request Forgery* — falsificação de solicitação entre sites) | Comandos não autorizados são enviados **do navegador do usuário para um aplicativo web confiável** em que ele já está logado, por imagens, formulários ocultos ou JavaScript (a linguagem de programação das páginas web), sem que ele perceba; exemplo: um link que faz o banco aberto em outra aba executar uma transferência |
+| Condição de corrida | Também chamado de **TOC/TOU** (tempo de verificação/tempo de uso): o sistema, feito para executar tarefas em sequência, é **forçado a fazer duas ou mais operações ao mesmo tempo**; por exemplo, dois *threads* (as menores sequências de instruções de um programa) alteram os mesmos dados juntos |
+| Tratamento inadequado de entrada | Dados digitados **sem validação** alteram o fluxo do programa e causam estouro de buffer ou injeção de SQL |
+| Tratamento de erros | **Mensagens de erro revelam informações**, como nomes de hosts, diretórios, arquivos, bancos, tabelas e campos, usadas em ataques de injeção |
+| Ataque a API | Abuso de um ponto de acesso (*endpoint*) de uma **API** (*Application Programming Interface*), a interface que leva o pedido do usuário ao sistema e devolve a resposta |
+| Repetição | Uma transmissão válida é interceptada, alterada e repetida ou atrasada |
+| Travessia de diretório | O atacante **lê arquivos do servidor fora da pasta do site**, como arquivos de configuração, e pode até assumir o servidor |
+| Exaustão de recursos | Trava ou paralisa um programa **sobrecarregando o hardware do servidor**, e não a largura de banda como o DoS |
+
+### 11.10 iFrames Maliciosos
 
 Um **iFrame** (*inline frame*) é um elemento do HTML (a linguagem das páginas web) que **carrega dentro da página outra página de outra origem**; é muito usado para inserir anúncios. O atacante invade um servidor web e acrescenta um iFrame que aponta para o seu servidor. Às vezes o iFrame tem **poucos pixels**, quase invisível, e entrega spam, kits de exploração e outros malwares.
 
@@ -1047,13 +1101,13 @@ Para prevenir:
 - usar um serviço como o Cisco Umbrella para bloquear sites conhecidos como maliciosos;
 - explicar aos usuários o que é um iFrame.
 
-### 11.5 Amortecimento HTTP 302
+### 11.11 Amortecimento HTTP 302
 
 O **amortecimento HTTP 302** (*302 cushioning*) usa uma função legítima: o código **302 Found**, que **redireciona o navegador para outra URL**, informada no campo Location. É usado, por exemplo, quando um conteúdo muda de endereço. O atacante encadeia **vários redirecionamentos** até a página com a exploração. Como redirecionamentos legítimos são frequentes, o ataque é **difícil de detectar**.
 
 As defesas são o proxy web, o Cisco Umbrella e a explicação aos usuários sobre as cadeias de redirecionamento.
 
-### 11.6 Sequência com Sombreamento de Domínio
+### 11.12 Sequência com Sombreamento de Domínio
 
 O sombreamento de domínio, que cria subdomínios maliciosos com credenciais roubadas, costuma ser combinado com os ataques anteriores:
 
@@ -1069,15 +1123,59 @@ Para prevenir:
 - usar proxy web e Cisco Umbrella;
 - fazer os donos **validarem suas contas** e procurarem subdomínios não autorizados.
 
-### 11.7 Ameaças ao E-mail
+### 11.13 Defesa Contra Ataques a Aplicativos e à Web
 
-O e-mail virou a espinha dorsal da comunicação corporativa, com mais de **100 bilhões de mensagens corporativas por dia**. Antes, era texto lido em servidores protegidos pelo firewall; hoje, mensagens **HTML** são lidas em muitos dispositivos **fora do firewall**, o que abre mais caminhos para ataques. As principais ameaças são:
+As principais medidas são:
+
+- **escrever código sólido**, a primeira linha de defesa;
+- **tratar toda entrada externa como hostil** e validá-la;
+- manter sistemas e aplicativos **atualizados**, sem ignorar os avisos de atualização, já que nem todo programa se atualiza sozinho.
+
+Na navegação, as contramedidas são:
+
+- usar um **proxy web**, como o Cisco Cloud Web Security ou o Cisco Web Security Appliance, para **bloquear sites maliciosos**;
+- seguir as boas práticas do **OWASP** (*Open Web Application Security Project*) ao desenvolver aplicativos; sua lista **OWASP Top 10** reúne os riscos de segurança web mais explorados;
+- **educar os usuários**.
+
+## 12. Ataques ao E-mail
+
+O e-mail é usado por bilhões de pessoas e é a **espinha dorsal da comunicação corporativa**, por isso virou uma das maiores portas de entrada de ataques. Este módulo reúne as ameaças que chegam pela caixa de entrada e as formas de se defender delas.
+
+### 12.1 Spam
+
+O **spam** (lixo eletrônico) é o **e-mail não solicitado**, em geral publicidade. Muito spam é enviado por computadores infectados e traz links maliciosos, malware ou golpes para obter dados como números de documentos e de conta bancária. Mesmo filtrado, ele consome largura de banda.
+
+Os sinais de spam são:
+
+- e-mail sem assunto;
+- pedido para atualizar os dados da conta;
+- erros de ortografia ou pontuação estranha;
+- links longos ou incompreensíveis;
+- aparência de empresa legítima com pequenas diferenças ou assunto irrelevante;
+- pedido para abrir um anexo, muitas vezes com urgência.
+
+Diante desses sinais, não se deve abrir o e-mail nem o anexo, e sim **avisar a equipe de segurança**.
+
+### 12.2 Phishing e Suas Variações
+
+O **phishing** é uma **fraude em que o criminoso se disfarça de pessoa ou empresa legítima** para levar a vítima a instalar malware ou revelar dados, como credenciais e informações financeiras. Pode chegar por e-mail, mensagem ou outro meio. Exemplo: um e-mail de uma "loja conhecida" anuncia um prêmio e leva a um site falso. As variações são:
+
+| Ataque | Como funciona |
+| --- | --- |
+| Spear phishing | **Altamente direcionado**: e-mail personalizado para uma pessoa, com base em seus interesses e atividades; exemplo: anúncio falso do carro que a vítima procura em um fórum |
+| Whaling | Phishing contra **vítimas de alto escalão**, como executivos |
+| Vishing | **Phishing por voz**: chamadas falsas por **VoIP** (*Voice over IP*) ou mensagens gravadas para obter dados como os do cartão |
+| SMiShing | **Phishing por SMS**: mensagens de texto falsas que levam a sites maliciosos ou a números fraudulentos |
+| Pharming | **Leva o usuário a uma cópia falsa de um site oficial**, onde ele digita suas credenciais |
+
+### 12.3 Outras Ameaças ao E-mail
+
+São mais de **100 bilhões de mensagens corporativas por dia**. Antes, era texto lido em servidores protegidos pelo firewall; hoje, mensagens **HTML** são lidas em muitos dispositivos **fora do firewall**, o que abre mais caminhos para ataques. Além do spam e do phishing, as principais ameaças são:
 
 | Ameaça | Como funciona |
 | --- | --- |
 | Ataques por anexo | Conteúdo malicioso em arquivos de aparência profissional, como um e-mail "do departamento de TI", muitas vezes voltado a um setor específico |
 | Falsificação de e-mail | Remetente falso, como um banco com logotipo idêntico, pedindo dinheiro, dados ou "confirmação" de credenciais |
-| Spam | E-mails não solicitados com anúncios ou arquivos maliciosos; uma resposta mostra ao atacante que o endereço é válido |
 | Retransmissor aberto (*open relay*) | Servidor **SMTP** (*Simple Mail Transfer Protocol*, o protocolo de envio de e-mail) mal configurado que **deixa qualquer um na internet enviar e-mails**; usado para mandar grandes volumes de spam e malware |
 | Homóglifos | Caracteres quase idênticos, como O (letra) e 0 (zero) ou l (L minúsculo) e 1 (um), em links de phishing; no DNS, levam a um endereço totalmente diferente |
 
@@ -1089,117 +1187,15 @@ As defesas são:
 - usar um equipamento de segurança de e-mail, como o **Cisco Email Security Appliance**, que bloqueia phishing, spam e malware;
 - **educar os usuários**, que são **a última linha de defesa** quando um ataque passa pelas proteções: reconhecer spam, phishing, links suspeitos e homóglifos e nunca abrir anexos suspeitos.
 
-### 11.8 Bancos de Dados Expostos pela Web
+### 12.4 Defesa Contra Ataques ao E-mail
 
-Os aplicativos web costumam se ligar a um **banco de dados relacional**, que guarda dados confidenciais e por isso é alvo frequente:
+As principais medidas são:
 
-- **injeção de código**: o atacante digita comandos em um campo de entrada inseguro, como código PHP, e eles **são executados no servidor com as permissões do aplicativo web**; ocorre por **validação insuficiente da entrada**;
-- **injeção de SQL** (ver item 6.2): um dos ataques mais comuns; a consulta maliciosa entra pelos dados do cliente e permite **ler e alterar dados, executar operações de administração** e às vezes dar comandos ao sistema operacional.
-
-Sem **validação rigorosa da entrada**, o aplicativo fica vulnerável. O analista precisa reconhecer consultas SQL suspeitas, descobrir **qual ID de usuário** o atacante usou e o que mais ele pode ter acessado.
-
-### 11.9 Scripts no Lado do Cliente
-
-O **XSS** (ver item 6.1), em que um script malicioso é injetado em uma página e executado no navegador da vítima, ataca o **lado do cliente**. Os scripts, em JavaScript, Visual Basic e outras linguagens, coletam informações, espalham malware ou preparam outros ataques. Como na injeção de SQL, a causa é a **falta de validação** do conteúdo publicado em um site confiável. Há dois tipos:
-
-- **armazenado** (persistente): fica **gravado no servidor** e atinge **todos os visitantes** da página;
-- **refletido** (não persistente): fica **em um link**, e só é infectado quem clica nele.
-
-Para prevenir:
-
-- conscientizar os desenvolvedores sobre o XSS;
-- usar um **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusão) para detectar e bloquear scripts maliciosos;
-- usar proxy web e Cisco Umbrella;
-- ensinar os usuários a identificar phishing e avisar a equipe de segurança da informação.
-
-## 12. Mitigação de Ataques Comuns
-
-Defender a rede exige **vigilância constante e educação contínua**. As técnicas de mitigação também são chamadas de **contramedidas**.
-
-### 12.1 Boas Práticas de Defesa
-
-As melhores práticas para proteger uma rede são:
-
-- ter uma **política de segurança escrita**;
-- educar os funcionários sobre engenharia social e criar formas de **validar identidades** por telefone, e-mail ou pessoalmente;
-- controlar o **acesso físico** aos sistemas;
-- usar senhas fortes e trocá-las com frequência;
-- criptografar e proteger com senha os dados confidenciais;
-- usar hardware e software de segurança: firewalls, IPS, VPN, antivírus e filtragem de conteúdo;
-- fazer backups e **testá-los** regularmente;
-- **desligar serviços e portas desnecessários**;
-- instalar as correções semanal ou, se possível, diariamente, para evitar estouros de buffer e elevação de privilégios;
-- fazer **auditorias de segurança**.
-
-### 12.2 Mitigação de Malware
-
-O **antivírus** impede que os hosts sejam infectados e espalhem código malicioso. Limpar computadores infectados leva muito mais tempo do que mantê-los atualizados. É o produto de segurança **mais usado** no mercado, de empresas como Symantec, McAfee e Trend Micro, muitas vezes com licenças por volume.
-
-**Importante:** a **atualização automática das definições de vírus** é o requisito mais crítico para manter a rede livre de vírus e deve constar na política de segurança.
-
-O antivírus é **baseado em host**: instalado em computadores e servidores, ele **não impede o vírus de entrar na rede**. Por isso, os dispositivos de segurança no **perímetro** identificam arquivos de malware pelos seus **IOCs** e os retiram do tráfego antes que causem um incidente. Os atacantes alteram o malware para escapar dessa detecção, e **nenhuma técnica é 100% eficaz**: incidentes vão acontecer.
-
-### 12.3 Mitigação de Worms
-
-Os worms dependem mais da rede que os vírus, e combatê-los exige coordenação. A resposta tem **quatro fases**:
-
-1. **contenção**: **limita a propagação** às áreas já afetadas, segmentando a rede com **ACLs de entrada e saída** em roteadores e firewalls;
-2. **inoculação**: ao mesmo tempo ou logo depois, **aplica a correção do fabricante em todos os sistemas não infectados**, tirando alvos do worm (ver item 5.1);
-3. **quarentena**: **identifica as máquinas infectadas** dentro das áreas contidas e as desconecta, bloqueia ou remove;
-4. **tratamento**: **desinfecta** os sistemas: encerra o processo do worm, remove arquivos e configurações alterados e corrige a vulnerabilidade; nos casos graves, reinstala o sistema.
-
-Contenção → Inoculação → Quarentena → Tratamento
-
-### 12.4 Mitigação de Reconhecimento
-
-Os **ataques de reconhecimento** **precedem outros ataques**: o atacante coleta informações para depois invadir ou derrubar a rede. Eles são detectados por **alarmes** que disparam quando um limite é ultrapassado, como o número de pedidos ICMP por segundo. O **Cisco ASA** (*Adaptive Security Appliance*) oferece prevenção de intrusão em um dispositivo próprio, e os roteadores **Cisco ISR** (*Integrated Services Routers*) a oferecem com software adicional.
-
-As medidas são:
-
-- **autenticação**, para garantir o acesso adequado;
-- **criptografia**, que torna inútil o **sniffer de pacotes** (programa que captura o tráfego), porque os dados capturados ficam ilegíveis;
-- **ferramentas anti-sniffer**, que detectam mudanças no tempo de resposta dos hosts, sinal de que processam mais tráfego que o normal;
-- **infraestrutura comutada**, com switches;
-- **firewall e IPS**.
-
-**Observação:** é **impossível impedir a varredura de portas**, mas o IPS e o firewall limitam o que ela descobre. Desligar o eco ICMP nos roteadores de borda impede as varreduras de ping, mas **perde os dados de diagnóstico**, e a varredura de portas pode ser feita sem ping, apenas mais devagar.
-
-### 12.5 Mitigação de Ataques de Acesso
-
-Muitos **ataques de acesso** usam a simples adivinhação de senhas ou **ataques de dicionário e de força bruta**, que testam muitas senhas seguidas. As defesas são:
-
-- **política de autenticação forte**:
-  - senhas com **pelo menos oito caracteres**, com letras maiúsculas e minúsculas, números e caracteres especiais;
-  - **bloqueio da conta** depois de um número de tentativas erradas;
-- **princípio da confiança mínima**: os sistemas não confiam uns nos outros sem necessidade; por exemplo, um servidor confiável não deve confiar sem condições em servidores web;
-- **criptografia** no acesso remoto e no tráfego dos protocolos de roteamento, o que reduz as chances de MitM;
-- protocolos de autenticação **criptografados ou com hash**;
-- **MFA** (*Multi-Factor Authentication* — autenticação multifator): **dois ou mais meios independentes de verificação**, como a senha mais um código por SMS ou um **token de uso único** gerado por software ou dispositivo;
-- educação contra engenharia social.
-
-Os ataques de acesso são detectados pela **revisão dos logs**, do uso de banda e da carga dos processos; por exemplo, um número incomum de logins com falha. A política deve exigir logs de todos os dispositivos e servidores.
-
-### 12.6 Mitigação de DoS
-
-Um dos primeiros sinais de DoS são as **reclamações de usuários** sobre recursos indisponíveis ou rede lenta. Um programa de **monitoramento do uso da rede** deve estar sempre ativo, e a **análise de comportamento** detecta padrões incomuns, que também aparecem nos gráficos de utilização.
-
-O DoS pode fazer parte de uma ofensiva maior e afetar também os equipamentos do caminho: por exemplo, exceder a capacidade de pacotes por segundo do roteador entre a internet e a LAN. Em escala grande, pode comprometer a conectividade de **regiões inteiras**.
-
-Como muitos ataques DoS usam **endereços falsificados**, os roteadores e switches Cisco têm tecnologias **antispoofing**:
-
-- **segurança de porta** (*port security*), que limita quais e quantos endereços MAC podem usar cada porta do switch;
-- **DHCP (ver item 9.4) snooping**, que aceita respostas DHCP só de portas confiáveis;
-- **IP Source Guard**, que bloqueia pacotes cujo IP de origem não corresponde ao que o DHCP entregou naquela porta;
-- **DAI** (*Dynamic ARP Inspection* — inspeção dinâmica de ARP), que descarta respostas ARP falsas;
-- **ACLs**.
-
-| Ataque | Principais defesas |
-| --- | --- |
-| Malware | Antivírus atualizado e filtragem no perímetro |
-| Worms | Contenção, inoculação, quarentena e tratamento |
-| Reconhecimento | Criptografia, anti-sniffer, switches, firewall e IPS |
-| Acesso | Senhas fortes, bloqueio de conta, confiança mínima, criptografia e MFA |
-| DoS | Monitoramento e tecnologias antispoofing |
+- contar com a filtragem de spam dos provedores (**ISPs**, *Internet Service Providers*) e com antivírus e programas de e-mail que removem spam perigoso;
+- **educar os funcionários** sobre e-mails não solicitados e anexos;
+- **nunca supor que um anexo é seguro**, mesmo de um contato confiável; sempre verificá-lo antes;
+- participar do **APWG** (*Anti-Phishing Working Group*), associação internacional contra fraudes de phishing e falsificação de e-mail;
+- manter os programas atualizados com as correções de segurança.
 
 ## 13. Comunicação sem Fio
 
@@ -1516,19 +1512,7 @@ Quando o tráfego malicioso chega a um sensor com IPS, o sensor envia um registr
 
 **Observação:** IDS e IPS **se complementam**. O IDS pode validar o IPS com uma inspeção mais profunda fora de linha, enquanto o IPS se concentra nos padrões mais críticos. A escolha depende dos objetivos da política de segurança.
 
-### 16.5 IPS de Host e IPS de Rede
-
-Há dois tipos de IPS:
-
-- **HIPS** (*Host-based IPS*): software instalado no host que monitora o sistema operacional e os processos críticos. Bloqueia comportamentos fora do normal, como alterações não autorizadas no registro (o banco de configurações do Windows, visto no módulo 19), mudanças em diretórios do sistema, instalação de programas e estouros de buffer, e impede o host de participar de um DoS ou de uma sessão FTP ilícita. Funciona como **antivírus, antimalware e firewall juntos**;
-- **IPS de rede**: equipamento dedicado ou não, com **sensores em pontos definidos da rede**, que detectam e reagem em tempo real, onde quer que esteja o alvo. É **componente essencial** da prevenção de intrusão; o HIPS deve ser integrado a ele.
-
-| HIPS |  |
-| --- | --- |
-| Vantagens | Proteção específica para o sistema do host; protege aplicativos e sistema; **protege depois que a mensagem é descriptografada** |
-| Desvantagens | Depende do sistema operacional; **precisa ser instalado em todos os hosts**; só tem visão local, sem enxergar eventos coordenados na rede |
-
-### 16.6 Equipamentos de Segurança Especializados
+### 16.5 Equipamentos de Segurança Especializados
 
 A Cisco oferece equipamentos especializados:
 
@@ -2034,7 +2018,7 @@ O **Visualizador de Eventos** registra o **histórico de eventos de aplicativos,
 
 ### 21.3 Atualizações do Windows
 
-Nenhum software é perfeito, e alguns ataques chegam antes das defesas, os **ataques de dia zero** (ver item 5.6). Para a maior proteção possível, o Windows deve estar sempre com as correções e os service packs mais recentes:
+Nenhum software é perfeito, e alguns ataques chegam antes das defesas, os **ataques de dia zero** (ver item 6.3). Para a maior proteção possível, o Windows deve estar sempre com as correções e os service packs mais recentes:
 
 - **patches** (correções): atualizações de código que impedem que um vírus ou worm recém-descoberto tenha sucesso;
 - **service pack**: um pacote que reúne várias correções e atualizações.
@@ -2553,7 +2537,7 @@ A imprensa costuma noticiar ataques externos: DoS que derruba o acesso público,
 
 O perímetro está sempre se expandindo: as pessoas acessam a rede da empresa por VPN com dispositivos que também usam redes públicas e domésticas pouco protegidas. Esses dispositivos são protegidos por:
 
-- **antivírus/antimalware**: detecta e mitiga vírus e malware; exemplos: Windows Defender, **Cisco AMP (ver item 16.6) for Endpoints**, Norton, McAfee e Trend Micro. Há três formas de detecção:
+- **antivírus/antimalware**: detecta e mitiga vírus e malware; exemplos: Windows Defender, **Cisco AMP (ver item 16.5) for Endpoints**, Norton, McAfee e Trend Micro. Há três formas de detecção:
   - **por assinatura**: reconhece características de **malware conhecido**;
   - **heurística**: reconhece **características gerais** comuns a vários tipos de malware;
   - **por comportamento**: analisa **comportamentos suspeitos**;
@@ -2584,7 +2568,19 @@ Essas tecnologias trabalham com NGFW, IPS de nova geração, sensores HIDS nos e
 
 Além do antimalware, o host conta com firewalls próprios e com sistemas que detectam e impedem intrusões.
 
-### 28.1 Firewalls de Host
+### 28.1 IPS de Host e IPS de Rede
+
+Há dois tipos de IPS:
+
+- **HIPS** (*Host-based IPS*): software instalado no host que monitora o sistema operacional e os processos críticos. Bloqueia comportamentos fora do normal, como alterações não autorizadas no registro (o banco de configurações do Windows, visto no módulo 19), mudanças em diretórios do sistema, instalação de programas e estouros de buffer, e impede o host de participar de um DoS ou de uma sessão FTP ilícita. Funciona como **antivírus, antimalware e firewall juntos**;
+- **IPS de rede**: equipamento dedicado ou não, com **sensores em pontos definidos da rede**, que detectam e reagem em tempo real, onde quer que esteja o alvo. É **componente essencial** da prevenção de intrusão; o HIPS deve ser integrado a ele.
+
+| HIPS |  |
+| --- | --- |
+| Vantagens | Proteção específica para o sistema do host; protege aplicativos e sistema; **protege depois que a mensagem é descriptografada** |
+| Desvantagens | Depende do sistema operacional; **precisa ser instalado em todos os hosts**; só tem visão local, sem enxergar eventos coordenados na rede |
+
+### 28.2 Firewalls de Host
 
 Os **firewalls pessoais de host** são programas que **controlam o tráfego que entra e sai do computador**; também existem para celulares e tablets Android. Eles usam **perfis** (conjuntos de políticas predefinidas) ou regras por endereço, protocolo e porta, e podem **alertar o usuário** sobre comportamento suspeito, perguntando se o aplicativo pode rodar.
 
@@ -2599,7 +2595,7 @@ Os **firewalls distribuídos** combinam o firewall de host com **gerenciamento c
 | nftables | Sucessor do iptables; usa uma **máquina virtual simples no kernel** que inspeciona os pacotes e aplica as regras |
 | TCP Wrappers | Controle de acesso e registro por regras no Linux, filtrando por IP e serviço de rede |
 
-### 28.2 Detecção de Intrusão Baseada em Host
+### 28.3 Detecção de Intrusão Baseada em Host
 
 A diferença entre detecção e prevenção no host é pouco nítida, e algumas fontes falam em **HIPDS**; o setor prefere a sigla **HIDS**. Um **HIDS** protege o host contra **malware conhecido e desconhecido** e oferece:
 
@@ -2612,7 +2608,7 @@ A diferença entre detecção e prevenção no host é pouco nítida, e algumas 
 
 O HIDS **combina antimalware e firewall**: além de detectar o malware, **impede que ele rode**. Como roda no próprio host, é um sistema **baseado em agente**, em geral com um **servidor de gerenciamento** central que recebe os logs e alertas para a equipe de segurança.
 
-### 28.3 Funcionamento do HIDS
+### 28.4 Funcionamento do HIDS
 
 O HIDS usa estratégias **proativas e reativas**. Contra ameaças conhecidas, usa **assinaturas**, que não funcionam contra ameaças novas ou de dia zero nem contra o **malware polimórfico**, cujas variações mudam a assinatura o suficiente para escapar. Por isso, há mais duas estratégias:
 
@@ -2625,7 +2621,7 @@ O HIDS usa estratégias **proativas e reativas**. Contra ameaças conhecidas, us
 | Anomalias | Desvios da linha de base | Muitos falsos alarmes |
 | Política | Violações de regras | Depende de regras bem definidas |
 
-### 28.4 Produtos HIDS
+### 28.5 Produtos HIDS
 
 A maioria dos produtos combina software no host com **gerenciamento centralizado**, integrado ao monitoramento da rede e à inteligência de ameaças. Exemplos: **Cisco AMP**, **AlienVault USM**, **Tripwire** e **OSSEC**.
 
@@ -2668,7 +2664,7 @@ Os **sites** também podem entrar nessas listas, criadas à mão ou obtidas de s
 
 O **sandboxing** (caixa de areia) permite **executar e analisar arquivos suspeitos em um ambiente seguro**. As sandboxes automáticas observam os efeitos do malware desconhecido para descobrir seu comportamento e criar defesas.
 
-O malware polimórfico e o novo malware **entram na rede apesar das melhores defesas**. O HIDS (ver item 28.2) e outros sistemas alertam sobre um possível malware; então:
+O malware polimórfico e o novo malware **entram na rede apesar das melhores defesas**. O HIDS (ver item 28.3) e outros sistemas alertam sobre um possível malware; então:
 
 1. o **Cisco AMP** rastreia a **trajetória do arquivo** na rede e "volta no tempo" para obter uma cópia;
 2. o arquivo é executado em uma sandbox, como o **Cisco Threat Grid Glovebox**, que documenta suas atividades;

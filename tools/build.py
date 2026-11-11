@@ -237,7 +237,12 @@ def main():
     d3=json.load(open(os.path.join(src,'endpoint.json')))
     ex3=modload(os.path.join(HERE,'ex_end.py')).EX
     addcy(ex3,'ccst_t3.py')
+    ex3=remap('endpoint',ex3)
     ic3=modload(os.path.join(HERE,'icons_end.py')).ICONS
+    R3=json.load(open(os.path.join(HERE,'remap_endpoint.json')))
+    inv={12:6}
+    for o,n in R3['mods'].items(): inv.setdefault(int(n),int(o))
+    ic3={n:ic3[o] for n,o in inv.items()}
     build_track({'id':'endpoint','order':3,'short':'Endpoint','label':'Trilha 3 · Endpoint Security',
                  'title':'Segurança de Endpoint',
                  'desc':'Tríade CIA, ameaças e engenharia social, malware, ataques ao IP, TCP, ARP, DNS e serviços, redes sem fio, infraestrutura de segurança, Windows, Linux, proteção de endpoints e políticas.',
