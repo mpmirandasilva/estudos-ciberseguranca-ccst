@@ -31,6 +31,10 @@ idmap,modmap=M['idmap'],M['modmap']; forced=M.get('intro',{})
 def target(k):
     if k.startswith('m'): return 'm'+forced[k[1:]] if k[1:] in forced else None
     return idmap.get(k)
+# grifos da dona feitos sobre uma versão ainda mais antiga do texto (o site dela estava em cache): usar essa versão como origem
+v0k=os.path.join(HERE,tid+'_v0keys.json')
+V0=json.load(open(v0k)) if os.path.exists(v0k) else []
+v0=boxes(loadjs(os.path.join(HERE,tid+'_v0.js'))) if V0 else {}
 hl={}; opn={}
 for k,h in old.items():
     nk=target(k)
@@ -39,7 +43,7 @@ for k,h in old.items():
         kids=[v for c,v in idmap.items() if c.startswith(k+'.') and v.count('.')==1]
         opn[k]=[x for x in ([nk] if nk and nk.count('.')==1 else [])+kids]
     if not nk or nk not in new: continue
-    a,am=text(h); b,bm=text(new[nk])
+    a,am=text(v0[k] if k in V0 else h); b,bm=text(new[nk])
     sm=difflib.SequenceMatcher(None,a,b,autojunk=False)
     seg=[[i1,i2,j1] for tag,i1,i2,j1,j2 in sm.get_opcodes() if tag=='equal']
     # grifos originais: índice antigo → novo, pelo texto do grifo
