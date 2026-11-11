@@ -575,9 +575,9 @@ Os **honeypots** são **redes ou servidores simulados para atrair atacantes**; a
 | MISP | Plataforma aberta | Compartilhamento de IOCs |
 | TIP | Plataforma | Reúne IOCs, TTPs e reputação |
 
-## 7. Perfis de Rede e de Servidor
+## 7. Perfis de Rede, Detecção de Anomalias, SIEM e SOAR
 
-Para perceber que algo está errado, é preciso saber como é o normal. A **criação de perfis** de rede e de dispositivos gera uma **linha de base estatística**, um ponto de referência do funcionamento normal. **Desvios inexplicáveis em relação à linha de base podem indicar um comprometimento.**
+Para perceber que algo está errado, é preciso saber como é o normal. A **criação de perfis** de rede e de dispositivos gera uma **linha de base estatística**, um ponto de referência do funcionamento normal. **Desvios inexplicáveis em relação à linha de base podem indicar um comprometimento.** Para acompanhar esses desvios em toda a empresa, entram o SIEM e o SOAR, que fecham o módulo.
 
 ### 7.1 Perfil de Rede
 
@@ -640,6 +640,41 @@ Além das abordagens estatísticas e comportamentais, existe a **detecção base
 | --- | --- |
 | Estatística e comportamental | Desvio da linha de base |
 | Baseada em regras | Pacotes que correspondem a padrões conhecidos |
+
+### 7.4 SIEM
+
+O **SIEM** (*Security Information and Event Management* — gerenciamento de eventos e informações de segurança) usa **coletores de logs** para reunir dados de dispositivos de segurança, equipamentos de rede, servidores e aplicativos, com **relatórios em tempo real e análise de longo prazo**. Ele surgiu da união de dois produtos: o **SIM** (*Security Information Management*) e o **SEM** (*Security Event Management*). Pode ser software, integrado ao **Cisco ISE**, ou serviço gerenciado.
+
+Suas funções essenciais são:
+
+- **correlação**: examina logs e eventos de sistemas diferentes, **acelerando a detecção** e a reação;
+- **agregação**: **reduz o volume** de eventos, consolidando registros duplicados;
+- **análise forense**: permite **pesquisar os logs de toda a empresa**;
+- **retenção e relatórios**: apresenta os eventos em monitoramento em tempo real e resumos de longo prazo.
+
+Os objetivos do SIEM no monitoramento são detectar **ameaças internas e externas**, monitorar a atividade e o uso de recursos, gerar **relatórios de conformidade para auditorias** e apoiar a resposta a incidentes. Ao detectar um problema, ele registra mais informações, **gera um alerta** e pode instruir outros controles a interromper a atividade. Os SIEMs avançados incluem **análise de comportamento de usuários e entidades** (**UEBA**, *User and Entity Behavior Analytics*).
+
+O SIEM detalha a origem da atividade suspeita:
+
+| Informação | Exemplos |
+| --- | --- |
+| Do usuário | Nome, status de autenticação, local, grupo de autorização, quarentena |
+| Do dispositivo | Fabricante, modelo, versão do SO, MAC, forma de conexão, localização |
+| De postura | Conformidade com a política, versão do antivírus, patches do SO, conformidade com o MDM (*Mobile Device Management*, gerenciamento de dispositivos móveis) |
+
+Com isso, o analista responde rapidamente: **quem está ligado ao evento**, se é um usuário importante com acesso a informações confidenciais, se ele está autorizado a acessar o recurso, que outros recursos ele acessa, **que tipo de dispositivo** está em uso e se há um problema de conformidade.
+
+**Observação:** o SIEM é **caro para comprar e manter** e só compensa quando a empresa gera **milhões de eventos por dia**; também é preciso pensar no volume de dados registrados, porque alguém precisa revisar os relatórios.
+
+### 7.5 SOAR
+
+As ferramentas **SOAR** (*Security Orchestration, Automation and Response* — orquestração, automação e resposta de segurança) **coletam dados de ameaças de várias fontes e respondem a eventos de nível mais baixo sem intervenção humana**. Seus três recursos principais são:
+
+- gerenciamento de ameaças e vulnerabilidades;
+- resposta a incidentes;
+- automação das operações de segurança.
+
+O SOAR pode ser **integrado ao SIEM**: o SIEM detecta e correlaciona, e o SOAR automatiza a resposta.
 
 ## 8. Avaliações e Testes de Segurança
 
@@ -744,11 +779,53 @@ Os resultados dos testes servem para:
 - melhorar outras atividades, como avaliações de risco, **C&A** (*Certification and Accreditation* — certificação e autorização) e melhoria de desempenho;
 - servir de referência para as **ações corretivas**.
 
-## 9. Ferramentas de Teste e Automação de Segurança
+## 9. Teste de Penetração
 
-Os testes da seção anterior usam ferramentas, algumas de código aberto e outras comerciais, com licença. Elas vão de comandos simples do sistema operacional a plataformas que analisam milhões de eventos por dia.
+O **teste de penetração (ver item 8.1)** (*pen test*) **testa os pontos fracos dos sistemas usando as técnicas de um atacante**. Ele simula como alguém obteria acesso não autorizado e comprometeria os sistemas, e mostra como a empresa **aguentaria um ataque real**. Também é chamado de **hacking ético**.
 
-### 9.1 Utilitários de Linha de Comando
+**Importante:** o teste de penetração **não é o mesmo que o teste de vulnerabilidades**, que só identifica possíveis problemas. No pen test, o especialista **invade, com permissão da empresa**, um site, uma rede ou um servidor, usando os métodos dos hackers *black hat*. O objetivo principal é **encontrar e corrigir as vulnerabilidades antes dos criminosos**.
+
+### 9.1 Tipos de Teste
+
+Conforme o que o especialista sabe sobre o alvo, o teste é de três tipos:
+
+| Tipo | Conhecimento do especialista | Custo e tempo |
+| --- | --- | --- |
+| Caixa preta | **Nenhum**; ataca do ponto de vista de um usuário comum | **Menor** (mais rápido e barato) |
+| Caixa cinza | **Limitado**: ambiente parcialmente conhecido | Intermediário |
+| Caixa branca | **Completo**: simula alguém de dentro ou quem obteve as informações no reconhecimento | **Maior** (mais demorado e caro) |
+
+### 9.2 Fases do Teste de Penetração
+
+O teste tem quatro fases:
+
+Planejamento → Descoberta → Ataque → Relatório
+
+1. **planejamento**: define as **regras de engajamento** do teste;
+2. **descoberta**: faz o **reconhecimento** do alvo, de duas formas:
+   - **passivo** (*footprinting*): sem interagir com o alvo, consultando o site da empresa e fontes públicas;
+   - **ativo**: com interação, como a **varredura de portas**;
+3. **ataque**: usa as informações para **entrar no sistema**. O testador tenta a **escalada de privilégios** e o **movimento lateral**, passando (*pivoting*) de um sistema a outro. Pode instalar ferramentas ou plantar um **backdoor**, o que se chama **persistência**. No fim, **limpa o sistema**, removendo os vestígios;
+4. **relatório**: entrega à empresa a **documentação detalhada das vulnerabilidades, das ações e dos resultados**.
+
+### 9.3 Exercícios de Equipes
+
+Algumas empresas fazem **exercícios com equipes concorrentes**, mais longos que um pen test:
+
+| Equipe | Papel |
+| --- | --- |
+| Vermelha (*red team*) | **Adversário**: tenta atacar sem ser percebida |
+| Azul (*blue team*) | **Defensores**: tentam frustrar a equipe vermelha |
+| Branca (*white team*) | **Árbitro neutro**: define objetivos e regras e supervisiona; menos técnica, mas conhece **governança e conformidade** |
+| Roxa (*purple team*) | Vermelha e azul **trabalhando juntas** para achar vulnerabilidades e melhorar os controles |
+
+Outra opção é o **programa de recompensas por bugs** (*bug bounty*), um esforço formal, em geral **aberto ao público**, para achar falhas que levem a vulnerabilidades em aplicativos online, normalmente com **recompensa em dinheiro**.
+
+## 10. Ferramentas de Teste de Segurança
+
+As avaliações e os testes de penetração usam ferramentas, algumas de código aberto e outras comerciais, com licença. Elas vão de comandos simples do sistema operacional a scanners e analisadores de pacotes.
+
+### 10.1 Utilitários de Linha de Comando
 
 Vários comandos ajudam a avaliar a segurança de uma rede:
 
@@ -765,7 +842,7 @@ Vários comandos ajudam a avaliar a segurança de uma rede:
 | netcat | Lê e grava conexões TCP e UDP: varredura de portas, monitoramento, **captura de banner** e cópia de arquivos | netcat |
 | hping | **Monta e analisa pacotes**: varredura de portas, descoberta de caminho, identificação do SO e teste de firewall | hping |
 
-### 9.2 Ferramentas de Teste de Rede
+### 10.2 Ferramentas de Teste de Rede
 
 As principais ferramentas são:
 
@@ -780,7 +857,7 @@ As principais ferramentas são:
 
 **Observação:** essas ferramentas evoluem rápido, e a lista inclui algumas legadas; o objetivo é conhecer os tipos de ferramenta.
 
-### 9.3 Nmap e Zenmap
+### 10.3 Nmap e Zenmap
 
 O **Nmap** é um scanner de baixo nível, gratuito e muito usado para **mapear a rede e fazer reconhecimento**. O **Zenmap** é sua versão gráfica. Ele roda em UNIX, Linux, Windows e macOS e **não tem recursos da camada de aplicação**. Suas funções básicas são:
 
@@ -793,48 +870,13 @@ Entre os recursos avançados está a **varredura de protocolos**, ou varredura d
 
 **Importante:** o Nmap serve aos testes de segurança, mas **também a fins maliciosos**: ele pode até usar **hosts falsos (iscas)** na mesma LAN do alvo para esconder a origem da varredura.
 
-### 9.4 SuperScan
+### 10.4 SuperScan
 
 O **SuperScan** é uma ferramenta de varredura de portas para **Windows** que exige **privilégios de administrador**. A versão 4 oferece velocidade ajustável, faixas de IP ilimitadas, detecção de hosts por vários métodos ICMP, **varredura TCP SYN**, varredura UDP por dois métodos, relatórios em HTML, **captura de banners**, ordem aleatória de IPs e portas, ferramentas como ping, traceroute e whois e **enumeração de hosts Windows**.
 
 Ferramentas como o Nmap e o SuperScan ajudam a antecipar os mecanismos de ataque, mas **nenhum teste prepara o administrador para todos os problemas** de segurança.
 
-### 9.5 SIEM
-
-O **SIEM** (*Security Information and Event Management* — gerenciamento de eventos e informações de segurança) usa **coletores de logs** para reunir dados de dispositivos de segurança, equipamentos de rede, servidores e aplicativos, com **relatórios em tempo real e análise de longo prazo**. Ele surgiu da união de dois produtos: o **SIM** (*Security Information Management*) e o **SEM** (*Security Event Management*). Pode ser software, integrado ao **Cisco ISE**, ou serviço gerenciado.
-
-Suas funções essenciais são:
-
-- **correlação**: examina logs e eventos de sistemas diferentes, **acelerando a detecção** e a reação;
-- **agregação**: **reduz o volume** de eventos, consolidando registros duplicados;
-- **análise forense**: permite **pesquisar os logs de toda a empresa**;
-- **retenção e relatórios**: apresenta os eventos em monitoramento em tempo real e resumos de longo prazo.
-
-Os objetivos do SIEM no monitoramento são detectar **ameaças internas e externas**, monitorar a atividade e o uso de recursos, gerar **relatórios de conformidade para auditorias** e apoiar a resposta a incidentes. Ao detectar um problema, ele registra mais informações, **gera um alerta** e pode instruir outros controles a interromper a atividade. Os SIEMs avançados incluem **análise de comportamento de usuários e entidades** (**UEBA**, *User and Entity Behavior Analytics*).
-
-O SIEM detalha a origem da atividade suspeita:
-
-| Informação | Exemplos |
-| --- | --- |
-| Do usuário | Nome, status de autenticação, local, grupo de autorização, quarentena |
-| Do dispositivo | Fabricante, modelo, versão do SO, MAC, forma de conexão, localização |
-| De postura | Conformidade com a política, versão do antivírus, patches do SO, conformidade com o MDM |
-
-Com isso, o analista responde rapidamente: **quem está ligado ao evento**, se é um usuário importante com acesso a informações confidenciais, se ele está autorizado a acessar o recurso, que outros recursos ele acessa, **que tipo de dispositivo** está em uso e se há um problema de conformidade.
-
-**Observação:** o SIEM é **caro para comprar e manter** e só compensa quando a empresa gera **milhões de eventos por dia**; também é preciso pensar no volume de dados registrados, porque alguém precisa revisar os relatórios.
-
-### 9.6 SOAR
-
-As ferramentas **SOAR** (*Security Orchestration, Automation and Response* — orquestração, automação e resposta de segurança) **coletam dados de ameaças de várias fontes e respondem a eventos de nível mais baixo sem intervenção humana**. Seus três recursos principais são:
-
-- gerenciamento de ameaças e vulnerabilidades;
-- resposta a incidentes;
-- automação das operações de segurança.
-
-O SOAR pode ser **integrado ao SIEM**: o SIEM detecta e correlaciona, e o SOAR automatiza a resposta.
-
-### 9.7 Analisadores de Pacotes
+### 10.5 Analisadores de Pacotes
 
 Os **analisadores de pacotes** (*packet analyzers* ou *sniffers*) **interceptam e registram o tráfego de rede**. Servem para fins legítimos ou ilegítimos:
 
@@ -845,48 +887,6 @@ Os **analisadores de pacotes** (*packet analyzers* ou *sniffers*) **interceptam 
 - detecção de uso indevido da rede.
 
 O **sniffing** é como espionar alguém: o atacante **examina todo o tráfego que passa pela placa de rede**, endereçado a ele ou não, com software, hardware ou os dois. Ele pode ver tudo ou focar um protocolo, um serviço ou um texto, como um login ou uma senha, e alguns sniffers chegam a **modificar o tráfego**. A **segurança física** evita que sniffers sejam ligados à rede interna. Os administradores também usam sniffers para analisar o tráfego, achar problemas de largura de banda e resolver falhas.
-
-## 10. Teste de Penetração
-
-O **teste de penetração (ver item 8.1)** (*pen test*) **testa os pontos fracos dos sistemas usando as técnicas de um atacante**. Ele simula como alguém obteria acesso não autorizado e comprometeria os sistemas, e mostra como a empresa **aguentaria um ataque real**. Também é chamado de **hacking ético**.
-
-**Importante:** o teste de penetração **não é o mesmo que o teste de vulnerabilidades**, que só identifica possíveis problemas. No pen test, o especialista **invade, com permissão da empresa**, um site, uma rede ou um servidor, usando os métodos dos hackers *black hat*. O objetivo principal é **encontrar e corrigir as vulnerabilidades antes dos criminosos**.
-
-### 10.1 Tipos de Teste
-
-Conforme o que o especialista sabe sobre o alvo, o teste é de três tipos:
-
-| Tipo | Conhecimento do especialista | Custo e tempo |
-| --- | --- | --- |
-| Caixa preta | **Nenhum**; ataca do ponto de vista de um usuário comum | **Menor** (mais rápido e barato) |
-| Caixa cinza | **Limitado**: ambiente parcialmente conhecido | Intermediário |
-| Caixa branca | **Completo**: simula alguém de dentro ou quem obteve as informações no reconhecimento | **Maior** (mais demorado e caro) |
-
-### 10.2 Fases do Teste de Penetração
-
-O teste tem quatro fases:
-
-Planejamento → Descoberta → Ataque → Relatório
-
-1. **planejamento**: define as **regras de engajamento** do teste;
-2. **descoberta**: faz o **reconhecimento** do alvo, de duas formas:
-   - **passivo** (*footprinting*): sem interagir com o alvo, consultando o site da empresa e fontes públicas;
-   - **ativo**: com interação, como a **varredura de portas**;
-3. **ataque**: usa as informações para **entrar no sistema**. O testador tenta a **escalada de privilégios** e o **movimento lateral**, passando (*pivoting*) de um sistema a outro. Pode instalar ferramentas ou plantar um **backdoor**, o que se chama **persistência**. No fim, **limpa o sistema**, removendo os vestígios;
-4. **relatório**: entrega à empresa a **documentação detalhada das vulnerabilidades, das ações e dos resultados**.
-
-### 10.3 Exercícios de Equipes
-
-Algumas empresas fazem **exercícios com equipes concorrentes**, mais longos que um pen test:
-
-| Equipe | Papel |
-| --- | --- |
-| Vermelha (*red team*) | **Adversário**: tenta atacar sem ser percebida |
-| Azul (*blue team*) | **Defensores**: tentam frustrar a equipe vermelha |
-| Branca (*white team*) | **Árbitro neutro**: define objetivos e regras e supervisiona; menos técnica, mas conhece **governança e conformidade** |
-| Roxa (*purple team*) | Vermelha e azul **trabalhando juntas** para achar vulnerabilidades e melhorar os controles |
-
-Outra opção é o **programa de recompensas por bugs** (*bug bounty*), um esforço formal, em geral **aberto ao público**, para achar falhas que levem a vulnerabilidades em aplicativos online, normalmente com **recompensa em dinheiro**.
 
 ## 11. Pontuação de Vulnerabilidades (CVSS)
 

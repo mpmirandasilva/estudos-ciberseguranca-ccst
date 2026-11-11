@@ -267,7 +267,12 @@ def main():
     d5=json.load(open(os.path.join(src,'ameacas.json')))
     ex5=modload(os.path.join(HERE,'ex_gt.py')).EX
     addcy(ex5,'ccst_t5.py')
+    ex5=remap('ameacas',ex5)
     ic5=modload(os.path.join(HERE,'icons_gt.py')).ICONS
+    R5=json.load(open(os.path.join(HERE,'remap_ameacas.json')))
+    inv={}
+    for o,n in R5['mods'].items(): inv.setdefault(int(n),int(o))
+    ic5={n:ic5[o] for n,o in inv.items()}
     build_track({'id':'ameacas','order':5,'short':'Ameaças','label':'Trilha 5 · Cyber Threat Management',
                  'title':'Gerenciamento de Ameaças Cibernéticas',
                  'desc':'Governança, ética e leis, ISO 27000, NIST e CIS, gerenciamento de riscos e controles, inteligência de ameaças, testes e CVSS, gerenciamento de patches, Cyber Kill Chain, Modelo Diamond, perícia forense, resposta a incidentes e continuidade.',
