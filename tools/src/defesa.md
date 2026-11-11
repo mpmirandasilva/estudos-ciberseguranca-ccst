@@ -26,7 +26,7 @@ O analista identifica três elementos:
 
 O **agente de ameaça** (ou ator de ameaça) é quem explora a vulnerabilidade: um criminoso, um funcionário mal-intencionado ou um grupo organizado.
 
-A **superfície de ataque** é tudo o que pode ser atingido. Ela cresce junto com a organização.
+A **superfície de ataque** é tudo o que pode ser atingido. Ela cresce junto com a organização: cada novo servidor, aplicativo, celular ou funcionário com acesso é mais uma porta que o atacante pode tentar abrir.
 
 **Importante:** a vulnerabilidade é o **ponto fraco** (uma senha padrão nunca trocada); a ameaça é o **perigo** que se aproveita dele.
 
@@ -223,9 +223,9 @@ A defesa em profundidade não é impenetrável, mas **minimiza os riscos**. Ela 
 | Limitação | Só o acesso necessário ao trabalho | Documentos sigilosos em sala com câmeras |
 | Diversidade | Camadas diferentes entre si | Firewall de um fabricante e antivírus de outro |
 | Ofuscação | Não revelar detalhes úteis ao atacante | Mensagem de erro sem a versão do sistema |
-| Simplicidade | Simples por dentro, complexo por fora | Configuração que a equipe entende e mantém |
+| Simplicidade | Fácil de entender para quem administra, difícil de entender para quem ataca | Configuração que a equipe entende e mantém sem erros |
 
-**Observação:** na diversidade, a técnica que vence uma camada não vence as outras.
+**Observação:** na diversidade, a técnica que vence uma camada não vence as outras. Na simplicidade, a ideia é que um sistema complicado demais acaba mal configurado, e a falha de configuração vira uma brecha.
 
 ## 4. Criptografia e Confidencialidade
 
@@ -262,7 +262,7 @@ Os dados precisam de proteção em **três estados**:
 
 ### 4.3 Criptografia Simétrica
 
-Na **criptografia simétrica**, **as duas partes usam a mesma chave**, chamada **chave pré-compartilhada** ou **chave secreta**. Ela precisa ser combinada **antes** da comunicação.
+Na **criptografia simétrica**, **as duas partes usam a mesma chave**, chamada **chave pré-compartilhada** ou **chave secreta**. Ela precisa ser combinada **antes** da comunicação. Isso cria um problema: como entregar a chave ao outro lado sem que alguém a copie no caminho? A criptografia assimétrica e o Diffie-Hellman, explicados a seguir, resolvem esse problema.
 
 Entre suas principais características estão:
 
@@ -293,6 +293,8 @@ Na **criptografia assimétrica**, ou **de chave pública**, cada um tem **um par
 - **privada**: só o dono conhece.
 
 **O que uma chave do par criptografa, só a outra descriptografa.** A privada não pode ser calculada a partir da pública.
+
+Funciona como uma caixa de correio: qualquer pessoa pode pôr uma carta pela fenda (a chave pública), mas só o dono, com a chave da caixa (a privada), consegue tirá-la.
 
 Entre suas principais características estão:
 
@@ -472,7 +474,7 @@ Quem rouba os hashes tenta adivinhar as senhas por dois ataques:
 - **dicionário**: compara os hashes roubados com os de uma lista de senhas comuns;
 - **força bruta**: testa todas as combinações; por isso a senha precisa ser longa.
 
-O **alongamento de chave** (*key stretching*) deixa cada tentativa muito lenta.
+O **alongamento de chave** (*key stretching*) deixa cada tentativa muito lenta: o hash é recalculado milhares de vezes. Para o usuário, que digita a senha uma vez, a demora é de uma fração de segundo; para o atacante, que testa milhões de senhas, a demora se multiplica.
 
 #### 5.7.1 Salt
 
@@ -494,7 +496,7 @@ O salt inutiliza as tabelas que os atacantes preparam com antecedência:
 | --- | --- |
 | De pesquisa | Hashes pré-calculados de um dicionário |
 | De pesquisa reversa | Liga cada hash roubado a todos os usuários que o usam |
-| Rainbow | Ocupa menos espaço e cobre mais hashes |
+| Rainbow | Versão compacta das tabelas de pesquisa: ocupa menos espaço e cobre mais hashes |
 
 ## 6. Assinaturas Digitais e Infraestrutura de Chave Pública (PKI)
 
@@ -1032,6 +1034,8 @@ Um **protocolo de autenticação** define **o que as partes trocam para se auten
 | EAP (*Extensible Authentication Protocol*) | Estrutura que aceita vários métodos; comum no Wi-Fi corporativo | Depende do método |
 | 802.1X | Controle de acesso por porta: só libera a conexão depois da autenticação, confirmada por um servidor RADIUS | Alta |
 | Kerberos | Autenticação mútua com tíquetes; usado nos domínios Windows | Alta |
+
+No CHAP, o servidor envia um número aleatório (o **desafio**); o cliente junta esse número à senha, calcula o hash e devolve o resultado (a **resposta**). O servidor faz a mesma conta e compara. Quem escuta a rede vê só o desafio e o hash, nunca a senha.
 
 ### 12.3 Servidores RADIUS e TACACS+
 
@@ -1747,7 +1751,7 @@ WEP → WPA → WPA2 → WPA3
 | --- | --- | --- |
 | WEP (*Wired Equivalent Privacy*) | Primeiro padrão; quebrado em minutos | Fraco, não usar |
 | WPA (*Wi-Fi Protected Access*) | **TKIP** (*Temporal Key Integrity Protocol*) e **MIC** (*Message Integrity Check*), que detecta dados alterados | Substituiu o WEP |
-| WPA2 | **AES** obrigatório, com **CCMP** no lugar do TKIP | Seguro |
+| WPA2 | **AES** obrigatório, com **CCMP** (protocolo que usa o AES para cifrar e conferir a integridade) no lugar do TKIP | Seguro |
 | WPA3 | Criptografia mais robusta e troca de chaves melhor | O mais atual |
 
 Modos de uso:
@@ -1916,6 +1920,8 @@ Essa é a **redundância de primeiro salto**. Protocolos:
 
 ### 19.7 Redundância de Local
 
+A **redundância de local** mantém uma cópia dos dados em outro prédio ou cidade, para o caso de o local principal ser atingido por incêndio, enchente ou falta de energia. A cópia é feita por **replicação**, que pode ser de três tipos:
+
 | Replicação | Sincronização | Largura de banda | Distância entre locais |
 | --- | --- | --- | --- |
 | Síncrona | Em tempo real | Alta | Pequena |
@@ -1995,7 +2001,7 @@ Ferramentas e termos:
 | Técnica | O que faz |
 | --- | --- |
 | Normalização | Converte cada entrada para a forma mais simples, o que ajuda a achar entradas maliciosas |
-| Procedimento armazenado | Comandos SQL prontos, guardados no banco, que dificultam a injeção de SQL |
+| Procedimento armazenado | Comandos SQL prontos, guardados no banco, que dificultam a injeção de SQL (ataque que digita comandos de banco de dados em campos de formulário) |
 | Ofuscação | Esconde os dados com caracteres aleatórios |
 | Camuflagem | Troca dados confidenciais por fictícios realistas |
 | Reutilização de código e SDKs | Código pronto, mais rápido e barato |
@@ -2292,7 +2298,7 @@ Um **IPS** (*Intrusion Prevention System* — sistema de prevenção de intrusã
 
 Formas de detecção:
 
-- **por assinatura**: compara com regras de ataques conhecidos; precisa, mas não reconhece ataques novos;
+- **por assinatura**: compara com regras de ataques conhecidos; é precisa, mas não reconhece ataques novos;
 - **por anomalia**: compara com o comportamento normal (linha de base); percebe ataques novos, mas gera mais alarmes falsos.
 
 Conforme o lugar:
@@ -2686,6 +2692,8 @@ O que fazer:
 | Base | Etapas conhecidas | Estatística |
 | Portas | Conhecidas | Previstas com certa confiança |
 | Resultado | Pior caso | Caminhos mais prováveis |
+
+Exemplo: um ataque a um site usa a porta 80, que é conhecida, e pode ser analisado de forma determinística. Um ataque que usa portas escolhidas na hora só pode ser estimado, de forma probabilística.
 
 ## Glossário de Siglas
 

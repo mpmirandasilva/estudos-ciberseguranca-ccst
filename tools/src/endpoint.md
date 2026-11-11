@@ -195,7 +195,7 @@ O **ator de ameaça** é o hacker de chapéu cinza ou preto.
 
 ### 2.7 Evolução dos Atores de Ameaça
 
-O *hacking* começou nos anos 1960 com o **phreaking** telefônico. Nos anos 1980, surgiu a **discagem de guerra** (*war dialing*), que ligava para todos os números em busca de modems.
+O *hacking* começou nos anos 1960 com o **phreaking** telefônico (manipular o sistema da telefônica para fazer ligações de graça). Nos anos 1980, surgiu a **discagem de guerra** (*war dialing*), que ligava para todos os números em busca de modems.
 
 | Tipo | Características |
 | --- | --- |
@@ -398,7 +398,7 @@ Defesa contra a carona: a **mantrap** (eclusa), em que **a porta externa precisa
 | Fraude de fatura | Fatura falsa que leva a pagar ou a digitar credenciais |
 | Ataque de bebedouro (*watering hole*) | Infecta **sites que a empresa-alvo usa** |
 | Typosquatting | Explora **erros de digitação** no endereço, como "gooogle.com" |
-| Adendo (*prepending*) | Remove a etiqueta "externo" do e-mail |
+| Adendo (*prepending*) | Remove a etiqueta "externo" do e-mail ou acrescenta marcas como "RE:" no assunto, para a mensagem parecer interna ou uma resposta |
 | Campanhas de influência | Notícias falsas e desinformação |
 
 ### 4.6 Defesa Contra o Engano
@@ -754,7 +754,7 @@ Ferramentas: dsniff, Cain & Abel, ettercap e Yersinia.
 O **switch** encaminha cada quadro pela **tabela de endereços MAC** (tabela CAM).
 
 - **falsificação de MAC**: usa o MAC de um dispositivo válido e recebe os quadros dele;
-- **inundação de MAC** (*MAC flooding*): **inunda o switch com MACs falsos**.
+- **inundação de MAC** (*MAC flooding*): **inunda o switch com MACs falsos**. A tabela enche, e o switch passa a enviar os quadros para todas as portas, como um hub; assim, o atacante captura o tráfego dos outros.
 
 | Ataque | O que falsifica | Resultado |
 | --- | --- | --- |
@@ -826,7 +826,7 @@ Um **resolvedor aberto** **responde a consultas de qualquer cliente**, e por iss
 ### 10.3 Técnicas Furtivas e Sombreamento de Domínio
 
 - **fluxo rápido** (*fast flux*): esconde sites maliciosos atrás de **IPs que mudam a cada poucos minutos**;
-- **fluxo duplo** (*double IP flux*): muda os IPs **e o servidor de nomes autoritativo**;
+- **fluxo duplo** (*double IP flux*): muda os IPs **e o servidor de nomes autoritativo** (o servidor que dá a resposta oficial sobre o domínio);
 - **DGA** (algoritmos de geração de domínio): o malware **gera nomes de domínio aleatórios** para achar os servidores de **comando e controle** (**C&C**).
 
 No **sombreamento de domínio** (*domain shadowing*), o atacante **rouba as credenciais de um domínio e cria muitos subdomínios** maliciosos.
@@ -943,7 +943,7 @@ O **Metasploit** é uma ferramenta de testes de penetração. Sua carga útil **
 | Ataque | Como funciona |
 | --- | --- |
 | CSRF (*Cross-Site Request Forgery*) | Envia comandos do navegador do usuário para um site em que ele **já está logado** |
-| Condição de corrida (TOC/TOU) | Força o sistema a fazer **duas operações ao mesmo tempo** |
+| Condição de corrida (TOC/TOU) | Força o sistema a fazer **duas operações ao mesmo tempo**; o atacante troca algo entre o momento em que o sistema confere uma permissão (*time of check*) e o momento em que a usa (*time of use*) |
 | Tratamento inadequado de entrada | Dados sem validação alteram o programa |
 | Tratamento de erros | **Mensagens de erro revelam informações** |
 | Ataque a API | Abuso de uma **API** (*Application Programming Interface*) |
@@ -1009,7 +1009,7 @@ O **phishing** é uma **fraude em que o criminoso se disfarça de pessoa ou empr
 | Whaling | Contra **vítimas de alto escalão** |
 | Vishing | **Phishing por voz** |
 | SMiShing | **Phishing por SMS** |
-| Pharming | **Leva o usuário a uma cópia falsa de um site oficial** |
+| Pharming | **Leva o usuário a uma cópia falsa de um site oficial**, mesmo quando ele digita o endereço certo (por exemplo, com o DNS envenenado) |
 
 ### 12.3 Outras Ameaças ao E-mail
 
@@ -1155,7 +1155,7 @@ O **Bluetooth** é **de curto alcance e baixa potência**, por isso **o atacante
 O **WEP** (*Wired Equivalent Privacy*) tinha falhas graves:
 
 - **não tinha gerenciamento de chaves**;
-- seu **vetor de inicialização** (IV) era **pequeno, legível e estático**.
+- seu **vetor de inicialização** (IV) era **pequeno, legível e estático**; o IV é o valor misturado à chave para que cada pacote seja cifrado de um jeito diferente.
 
 O **WPA** e o **WPA2** o substituíram. Com o WPA2, o atacante **não recupera a chave só observando o tráfego**.
 
@@ -1287,7 +1287,7 @@ Os dois são implantados como **sensores** e usam **assinaturas** (regras que re
 | Solução | Vantagens | Desvantagens |
 | --- | --- | --- |
 | IDS (fora de linha) | **Não afeta a rede** | **Não impede o pacote que disparou o alerta** |
-| IPS (em linha) | **Bloqueia o pacote de gatilho** | Falhas do sensor **afetam a rede**; causa latência e *jitter* |
+| IPS (em linha) | **Bloqueia o pacote de gatilho** | Falhas do sensor **afetam a rede**; causa latência (atraso) e *jitter* (variação do atraso) |
 
 **Observação:** IDS e IPS **se complementam**.
 
@@ -1513,10 +1513,10 @@ Há dois tipos de **firmware** (software da placa-mãe):
 
 De forma simplificada:
 
-1. o BIOS faz o **POST** (teste dos dispositivos) e lê o **MBR**; o UEFI carrega os arquivos **.efi** da partição **ESP**;
+1. o BIOS faz o **POST** (teste dos dispositivos) e lê o **MBR** (o primeiro setor do disco, que aponta onde está o sistema); o UEFI carrega os arquivos **.efi** da partição **ESP** (partição de sistema EFI);
 2. o **Bootmgr.exe** lê o **BCD** (configuração de inicialização);
 3. se estava hibernando, o **Winresume.exe** restaura o estado;
-4. senão, o **Winload.exe** usa a **KMCS** para garantir que **todos os drivers tenham assinatura digital**;
+4. senão, o **Winload.exe** usa a **KMCS** (*Kernel-Mode Code Signing*, assinatura de código do kernel) para garantir que **todos os drivers tenham assinatura digital**;
 5. o **Ntoskrnl.exe** inicia o kernel;
 6. o **SMSS** prepara o ambiente do usuário e o logon.
 
@@ -1564,7 +1564,7 @@ O **registro** é um **banco de dados hierárquico** com todas as configuraçõe
 | --- | --- |
 | HKEY\_CURRENT\_USER (HKCU) | Usuário conectado |
 | HKEY\_USERS (HKU) | Todas as contas |
-| HKEY\_CLASSES\_ROOT (HKCR) | Registros OLE |
+| HKEY\_CLASSES\_ROOT (HKCR) | Tipos de arquivo e qual programa abre cada um (registros OLE) |
 | HKEY\_LOCAL\_MACHINE (HKLM) | Informações do sistema |
 | HKEY\_CURRENT\_CONFIG (HKCC) | Perfil de hardware atual |
 

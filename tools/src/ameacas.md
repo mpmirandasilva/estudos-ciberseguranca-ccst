@@ -23,6 +23,8 @@ A **governança de dados** define quem decide sobre os dados:
 | Administrador dos dados (*data steward*) | Garante que os dados atendam ao negócio e às normas |
 | Encarregado (*DPO*, *Data Protection Officer*) | **Supervisiona a estratégia de proteção de dados** |
 
+Exemplo: o diretor financeiro é o **proprietário** dos dados de salários e decide quem pode vê-los; a equipe de TI, que configura as permissões e faz os backups, é a **custodiante**.
+
 ### 1.2 Políticas de Segurança Cibernética
 
 Uma **política de segurança cibernética** é um **documento de alto nível com a visão da empresa sobre segurança**: metas, escopo e responsabilidades. Ela:
@@ -191,6 +193,8 @@ Exemplo: o objetivo "controlar o acesso às redes" é atingido pelo controle "us
 ### 3.4 Aplicação da ISO 27000
 
 A empresa escolhe os controles aplicáveis em uma **SOA** (*Statement of Applicability* — **declaração de aplicabilidade**), conforme suas prioridades na tríade CIA. Exemplo: na Amazon, a **disponibilidade** pesa mais.
+
+Cada estado dos dados costuma ficar a cargo de uma equipe diferente:
 
 | Estado dos dados | Responsável típico |
 | --- | --- |
@@ -531,7 +535,7 @@ Com X = 5, Y = 100, Z = 30 e N = 500: a cada 5 minutos, amostrar 1 de cada 100 f
 
 ### 7.4 SIEM
 
-O **SIEM** (*Security Information and Event Management*) **reúne os logs** de dispositivos, servidores e aplicativos, com relatórios em tempo real e análise de longo prazo. Une o **SIM** e o **SEM**.
+O **SIEM** (*Security Information and Event Management*) **reúne os logs** de dispositivos, servidores e aplicativos, com relatórios em tempo real e análise de longo prazo. Une o **SIM** (gerenciamento de informações de segurança, que guarda e analisa os logs) e o **SEM** (gerenciamento de eventos de segurança, que monitora em tempo real).
 
 Funções essenciais:
 
@@ -766,11 +770,11 @@ As **métricas de explorabilidade** descrevem a exploração:
 
 | Métrica | O que expressa |
 | --- | --- |
-| Vetor de ataque (AV) | **Proximidade do atacante**; **quanto mais distante, maior a gravidade** |
+| Vetor de ataque (AV) | **Proximidade do atacante**; **quanto mais distante, maior a gravidade**: uma falha explorável pela internet é mais grave que uma que exige tocar no equipamento |
 | Complexidade do ataque (AC) | Condições **fora do controle do atacante** |
 | Privilégios necessários (PR) | **Nível de acesso** necessário |
 | Interação do usuário (UI) | Se precisa da **ação de um usuário** |
-| Escopo (S) | Se a exploração **passa de uma autoridade para outra** |
+| Escopo (S) | Se a exploração **passa de uma autoridade para outra**; exemplo: uma falha em uma máquina virtual que permite atingir o servidor físico |
 
 As **métricas de impacto** seguem a **tríade CIA**: impacto na confidencialidade (C), na integridade (I) e na disponibilidade (A).
 
